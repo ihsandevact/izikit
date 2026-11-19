@@ -141,8 +141,14 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
       return;
     }
 
-    const header = await readFileHeaderBytes(selected, 32);
-    const mime = detectImageMimeFromBytes(header);
+    let mime: SupportedImageMime | null = null;
+    try {
+      const header = await readFileHeaderBytes(selected, 32);
+      mime = detectImageMimeFromBytes(header);
+    } catch {
+      setErrors([copy.errors.generic]);
+      return;
+    }
     if (!mime) {
       setErrors([`${copy.errors.notImage} ${selected.name}`]);
       return;

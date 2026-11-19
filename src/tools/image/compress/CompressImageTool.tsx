@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
 import { SITE_CONFIG } from '@/config/site';
 import { calculateSavings, formatBytes, replaceFileExtension } from '@/lib/format';
+import { createClientId } from '@/lib/id';
 import {
   detectImageMimeFromBytes,
   mimeToExtension,
@@ -103,20 +104,24 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
         continue;
       }
 
-      const header = await readFileHeaderBytes(file, 32);
-      const detectedMime = detectImageMimeFromBytes(header);
-      if (!detectedMime) {
-        nextErrors.push(`${copy.errors.notImage} ${file.name}`);
-        continue;
-      }
+      try {
+        const header = await readFileHeaderBytes(file, 32);
+        const detectedMime = detectImageMimeFromBytes(header);
+        if (!detectedMime) {
+          nextErrors.push(`${copy.errors.notImage} ${file.name}`);
+          continue;
+        }
 
-      accepted.push({
-        id: `${file.name}-${file.size}-${crypto.randomUUID()}`,
-        file,
-        mime: detectedMime,
-        originalUrl: URL.createObjectURL(file),
-        status: 'queued',
-      });
+        accepted.push({
+          id: `${file.name}-${file.size}-${createClientId()}`,
+          file,
+          mime: detectedMime,
+          originalUrl: URL.createObjectURL(file),
+          status: 'queued',
+        });
+      } catch {
+        nextErrors.push(`${copy.errors.generic} (${file.name})`);
+      }
     }
 
     if (nextErrors.length > 0) {

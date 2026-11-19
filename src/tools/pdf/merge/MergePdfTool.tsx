@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
 import { SITE_CONFIG } from '@/config/site';
 import { formatBytes, sanitizeFilename } from '@/lib/format';
+import { createClientId } from '@/lib/id';
 import { hasPdfMagicBytes, readFileHeaderBytes } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
@@ -78,18 +79,22 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
         continue;
       }
 
-      const header = await readFileHeaderBytes(file, 1024);
-      if (!hasPdfMagicBytes(header)) {
-        nextErrors.push(`${copy.errors.notPdf} ${file.name}`);
-        continue;
-      }
+      try {
+        const header = await readFileHeaderBytes(file, 1024);
+        if (!hasPdfMagicBytes(header)) {
+          nextErrors.push(`${copy.errors.notPdf} ${file.name}`);
+          continue;
+        }
 
-      accepted.push({
-        id: `${file.name}-${file.size}-${crypto.randomUUID()}`,
-        file,
-        pageCount: null,
-        inspecting: true,
-      });
+        accepted.push({
+          id: `${file.name}-${file.size}-${createClientId()}`,
+          file,
+          pageCount: null,
+          inspecting: true,
+        });
+      } catch {
+        nextErrors.push(`${copy.errors.corrupt} ${file.name}`);
+      }
     }
 
     if (nextErrors.length > 0) {

@@ -25,15 +25,14 @@ export function hasPdfMagicBytes(bytes: Uint8Array): boolean {
  * Inspect magic bytes of an image buffer to detect JPEG, PNG, or WebP reliably.
  */
 export function detectImageMimeFromBytes(bytes: Uint8Array): SupportedImageMime | null {
-  if (bytes.length < 12) return null;
-
   // JPEG: FF D8 FF
-  if (bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
+  if (bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff) {
     return 'image/jpeg';
   }
 
   // PNG: 89 50 4E 47 0D 0A 1A 0A
   if (
+    bytes.length >= 8 &&
     bytes[0] === 0x89 &&
     bytes[1] === 0x50 &&
     bytes[2] === 0x4e &&
@@ -48,6 +47,7 @@ export function detectImageMimeFromBytes(bytes: Uint8Array): SupportedImageMime 
 
   // WebP: RIFF....WEBP
   if (
+    bytes.length >= 12 &&
     bytes[0] === 0x52 &&
     bytes[1] === 0x49 &&
     bytes[2] === 0x46 &&
@@ -63,9 +63,32 @@ export function detectImageMimeFromBytes(bytes: Uint8Array): SupportedImageMime 
   return null;
 }
 
+function readBlobWithFileReader(blob: Blob): Promise<ArrayBuffer> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.result instanceof ArrayBuffer) {
+        resolve(reader.result);
+      } else {
+        reject(new Error('Failed to read file bytes as ArrayBuffer.'));
+      }
+    };
+    reader.onerror = () => reject(reader.error ?? new Error('FileReader failed to read file.'));
+    reader.readAsArrayBuffer(blob);
+  });
+}
+
 export async function readFileHeaderBytes(file: File, byteCount = 1024): Promise<Uint8Array> {
   const slice = file.slice(0, byteCount);
-  const buffer = await slice.arrayBuffer();
+  if (typeof slice.arrayBuffer === 'function') {
+    try {
+      const buffer = await slice.arrayBuffer();
+      return new Uint8Array(buffer);
+    } catch {
+      // Fall back to FileReader on browsers/WebViews where Blob.arrayBuffer fails
+    }
+  }
+  const buffer = await readBlobWithFileReader(slice);
   return new Uint8Array(buffer);
 }
 

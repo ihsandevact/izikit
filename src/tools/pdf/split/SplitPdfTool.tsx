@@ -68,9 +68,14 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
       return;
     }
 
-    const header = await readFileHeaderBytes(selected, 1024);
-    if (!hasPdfMagicBytes(header)) {
-      setErrors([`${copy.errors.notPdf} ${selected.name}`]);
+    try {
+      const header = await readFileHeaderBytes(selected, 1024);
+      if (!hasPdfMagicBytes(header)) {
+        setErrors([`${copy.errors.notPdf} ${selected.name}`]);
+        return;
+      }
+    } catch {
+      setErrors([`${copy.errors.corrupt} ${selected.name}`]);
       return;
     }
 
