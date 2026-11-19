@@ -1,0 +1,111 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ToolDirectory from '@/components/home/ToolDirectory';
+import { getDictionary, getLocalizedPath, getSeoUrls, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = getDictionary(locale);
+const seo = getSeoUrls('/', locale);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'izikit',
+  url: seo.canonical,
+  inLanguage: dict.langTag,
+  description: dict.home.seoDescription,
+};
+---
+
+<BaseLayout
+  locale={locale}
+  currentRoute="/"
+  title={dict.home.seoTitle}
+  description={dict.home.seoDescription}
+  jsonLd={jsonLd}
+>
+  <section class="mx-auto max-w-5xl px-4 pt-8 pb-6 sm:px-6 sm:pt-12 sm:pb-8">
+    <div class="max-w-3xl space-y-4">
+      <h1
+        class="font-display m-0 text-[clamp(2rem,4.5vw,3.1rem)] leading-[1.12] font-bold text-[var(--ink-primary)]"
+      >
+        {dict.home.headline}
+      </h1>
+      <p class="m-0 text-base leading-relaxed text-[var(--ink-muted)] sm:text-lg">
+        {dict.home.subheadline}
+      </p>
+      <p class="m-0 inline-flex items-center gap-2 text-sm font-medium text-[var(--success)]">
+        <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0" aria-hidden="true">
+          <path
+            d="M10 2.5L4 4.8v4.7c0 3.7 2.5 6.8 6 8 3.5-1.2 6-4.3 6-8V4.8L10 2.5Z"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M7.3 10.2l1.8 1.8 3.7-3.8"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>{dict.site.privacyNote}</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 pb-12 sm:px-6">
+    <ToolDirectory client:load locale={locale} />
+  </section>
+
+  <section
+    aria-labelledby="how-local-heading"
+    class="border-t border-[var(--border-subtle)] bg-[var(--bg-recess)]"
+  >
+    <div class="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-12">
+      <div class="max-w-2xl space-y-2">
+        <h2
+          id="how-local-heading"
+          class="font-display m-0 text-2xl font-bold text-[var(--ink-primary)]"
+        >
+          {dict.home.howItWorksTitle}
+        </h2>
+        <p class="m-0 text-sm leading-relaxed text-[var(--ink-muted)] sm:text-base">
+          {dict.home.howItWorksLead}
+        </p>
+      </div>
+
+      <div class="mt-6 grid gap-6 md:grid-cols-3">
+        {
+          dict.home.pillars.map((pillar, idx) => (
+            <div class="space-y-2 border-t border-[var(--border-control)] pt-4">
+              <span class="font-data text-xs font-semibold text-[var(--accent)]">
+                0{idx + 1}
+              </span>
+              <h3 class="m-0 text-base font-semibold text-[var(--ink-primary)]">
+                {pillar.title}
+              </h3>
+              <p class="m-0 text-sm leading-relaxed text-[var(--ink-muted)]">
+                {pillar.body}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-6">
+        <a
+          href={getLocalizedPath('/about', locale)}
+          class="inline-flex min-h-11 items-center text-sm font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          {dict.nav.about}
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

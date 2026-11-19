@@ -1,0 +1,198 @@
+@import '@fontsource/fraunces/600.css';
+@import '@fontsource/fraunces/700.css';
+@import '@fontsource/plus-jakarta-sans/400.css';
+@import '@fontsource/plus-jakarta-sans/500.css';
+@import '@fontsource/plus-jakarta-sans/600.css';
+@import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource/ibm-plex-mono/400.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+@import '@fontsource/ibm-plex-mono/600.css';
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+:root {
+  --bg-paper: #f7f4ee;
+  --bg-card: #ffffff;
+  --bg-recess: #efeae0;
+  --ink-primary: #181615;
+  --ink-muted: #57524b;
+  --border-subtle: #d8d1c4;
+  --border-control: #857d71;
+  --accent: #b93815;
+  --accent-hover: #9d2e10;
+  --accent-ink: #ffffff;
+  --accent-tint: #f9ebe6;
+  --success: #1f6b48;
+  --success-tint: #e8f4ee;
+  --danger: #b42318;
+  --danger-tint: #fcecea;
+  --focus-ring: #b93815;
+  color-scheme: light;
+}
+
+.dark {
+  --bg-paper: #141311;
+  --bg-card: #1d1b18;
+  --bg-recess: #26231f;
+  --ink-primary: #f4f0e8;
+  --ink-muted: #b6aea2;
+  --border-subtle: #34302b;
+  --border-control: #827a70;
+  --accent: #eb7a53;
+  --accent-hover: #f28e6b;
+  --accent-ink: #141311;
+  --accent-tint: #332019;
+  --success: #62c395;
+  --success-tint: #172b22;
+  --danger: #f07167;
+  --danger-tint: #341a18;
+  --focus-ring: #eb7a53;
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    background-color: var(--bg-paper);
+    color: var(--ink-primary);
+    font-family: var(--font-sans);
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--bg-paper);
+    color: var(--ink-primary);
+    display: flex;
+    flex-direction: column;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.015em;
+  }
+
+  /* Antislop R-39: pointer cursor once in base layer for enabled interactive controls */
+  a[href],
+  button:not(:disabled),
+  summary,
+  select:not(:disabled),
+  label[for],
+  input[type='checkbox']:not(:disabled),
+  input[type='radio']:not(:disabled),
+  input[type='range']:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  [role='tab']:not([aria-disabled='true']),
+  [role='switch']:not([aria-disabled='true']) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  select:disabled,
+  input:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Antislop R-32: high-contrast visible focus indicator across both themes */
+  :focus-visible {
+    outline: 2.5px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tactile stationery workbench button (ENERGY 2, MOTION 1) */
+.btn-primary {
+  background-color: var(--accent);
+  color: var(--accent-ink);
+  border: 1px solid var(--accent);
+  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--ink-primary) 26%, transparent);
+  transition: background-color 140ms ease, transform 100ms ease, box-shadow 100ms ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--accent-hover);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--ink-primary) 26%, transparent);
+}
+
+.btn-primary:disabled {
+  opacity: 0.52;
+  box-shadow: none;
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--ink-primary);
+  border: 1px solid var(--border-control);
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-recess);
+  border-color: var(--ink-primary);
+}
+
+.btn-secondary:active:not(:disabled) {
+  background-color: var(--bg-recess);
+}
+
+.btn-secondary:disabled {
+  opacity: 0.45;
+}
+
+/* Skip link for keyboard navigation */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0.5rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+
+.skip-link:focus {
+  left: 0.75rem;
+}
+
+/* Range input styling for Compress Image slider */
+input[type='range'].izikit-range {
+  accent-color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

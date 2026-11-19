@@ -1,0 +1,168 @@
+---
+import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
+import ThemeToggle from './ThemeToggle';
+
+interface Props {
+  locale: Locale;
+  currentRoute: string;
+}
+
+const { locale, currentRoute } = Astro.props;
+const dict = getDictionary(locale);
+const otherLocale: Locale = locale === 'id' ? 'en' : 'id';
+
+const homeHref = getLocalizedPath('/', locale);
+const mergeHref = getLocalizedPath('/merge-pdf', locale);
+const splitHref = getLocalizedPath('/split-pdf', locale);
+const imageToPdfHref = getLocalizedPath('/image-to-pdf', locale);
+const compressHref = getLocalizedPath('/compress-image', locale);
+const aboutHref = getLocalizedPath('/about', locale);
+const switchLangHref = getLocalizedPath(currentRoute, otherLocale);
+
+const navItems = [
+  { href: homeHref, label: dict.nav.tools, route: '/' },
+  { href: mergeHref, label: dict.nav.mergePdf, route: '/merge-pdf' },
+  { href: splitHref, label: dict.nav.splitPdf, route: '/split-pdf' },
+  { href: imageToPdfHref, label: dict.nav.imageToPdf, route: '/image-to-pdf' },
+  { href: compressHref, label: dict.nav.compressImage, route: '/compress-image' },
+  { href: aboutHref, label: dict.nav.about, route: '/about' },
+];
+
+const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(/^\/+|\/+$/g, '')}`;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]/95 backdrop-blur-xs"
+>
+  <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+    <a
+      href={homeHref}
+      class="inline-flex min-h-11 items-center gap-2.5 rounded-lg px-1 text-[var(--ink-primary)] no-underline"
+    >
+      <svg viewBox="0 0 28 28" fill="none" class="h-7 w-7 shrink-0" aria-hidden="true">
+        <path
+          d="M6 3.5h11l5 5V23a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 5 23V5A1.5 1.5 0 0 1 6.5 3.5Z"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linejoin="round"
+        />
+        <path d="M17 3.5V8.5H22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+        <rect x="8.5" y="13.2" width="10" height="2.4" rx="0.8" fill="var(--accent)" />
+        <rect x="8.5" y="17.8" width="6.8" height="2.2" rx="0.8" fill="currentColor" />
+      </svg>
+      <span class="font-display text-xl font-bold tracking-tight">izikit</span>
+    </a>
+
+    <nav aria-label="Primary" class="hidden items-center gap-1 lg:flex">
+      {
+        navItems.map((item) => {
+          const isActive = normalizedCurrent === item.route;
+          return (
+            <a
+              href={item.href}
+              aria-current={isActive ? 'page' : undefined}
+              class:list={[
+                'inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline transition-colors',
+                isActive
+                  ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+                  : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={switchLangHref}
+        hreflang={otherLocale}
+        aria-label={dict.site.switchToOtherLang}
+        title={dict.site.switchToOtherLang}
+        class="btn-secondary font-data inline-flex h-11 min-w-11 items-center justify-center rounded-lg px-3 text-xs font-semibold tracking-wide no-underline"
+      >
+        {dict.site.otherLangCode}
+      </a>
+
+      <ThemeToggle
+        client:load
+        labelToDark={dict.site.themeToDark}
+        labelToLight={dict.site.themeToLight}
+      />
+
+      <button
+        id="mobile-menu-trigger"
+        type="button"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+        class="btn-secondary inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium lg:hidden"
+      >
+        <svg viewBox="0 0 18 18" fill="none" class="h-4 w-4" aria-hidden="true">
+          <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <span>{dict.site.menuLabel}</span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="mobile-nav-drawer"
+    hidden
+    class="border-t border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 py-3 lg:hidden"
+  >
+    <nav aria-label="Mobile" class="flex flex-col gap-1">
+      {
+        navItems.map((item) => {
+          const isActive = normalizedCurrent === item.route;
+          return (
+            <a
+              href={item.href}
+              aria-current={isActive ? 'page' : undefined}
+              class:list={[
+                'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
+                isActive
+                  ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+                  : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+</header>
+
+<script>
+  const trigger = document.getElementById('mobile-menu-trigger');
+  const drawer = document.getElementById('mobile-nav-drawer');
+
+  if (trigger && drawer) {
+    const closeMenu = (returnFocus = false) => {
+      drawer.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+      if (returnFocus) {
+        trigger.focus();
+      }
+    };
+
+    trigger.addEventListener('click', () => {
+      const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+      if (isOpen) {
+        closeMenu(false);
+      } else {
+        drawer.hidden = false;
+        trigger.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && trigger.getAttribute('aria-expanded') === 'true') {
+        closeMenu(true);
+      }
+    });
+  }
+</script>

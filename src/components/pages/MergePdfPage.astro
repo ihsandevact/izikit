@@ -1,0 +1,49 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ToolShell from '@/components/shared/ToolShell.astro';
+import MergePdfTool from '@/tools/pdf/merge/MergePdfTool';
+import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = getDictionary(locale);
+const toolMeta = dict.tools['merge-pdf'];
+const seo = getSeoUrls('/merge-pdf', locale);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `${toolMeta.name} - izikit`,
+  url: seo.canonical,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any',
+  inLanguage: dict.langTag,
+  description: toolMeta.seoDescription,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  currentRoute="/merge-pdf"
+  title={toolMeta.seoTitle}
+  description={toolMeta.seoDescription}
+  jsonLd={jsonLd}
+>
+  <ToolShell
+    locale={locale}
+    toolName={toolMeta.name}
+    toolDescription={toolMeta.shortDescription}
+    guideTitle={toolMeta.guideTitle}
+    guideItems={toolMeta.guideItems}
+  >
+    <MergePdfTool client:load locale={locale} />
+  </ToolShell>
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import '@/styles/global.css';
+import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+
+interface Props {
+  locale: Locale;
+  currentRoute: string;
+  title: string;
+  description: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { locale, currentRoute, title, description, jsonLd } = Astro.props;
+const dict = getDictionary(locale);
+const seo = getSeoUrls(currentRoute, locale);
+---
+
+<!doctype html>
+<html lang={dict.langTag}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#F7F4EE" />
+    <script is:inline src="/registerSW.js" defer></script>
+
+    <link rel="canonical" href={seo.canonical} />
+    <link rel="alternate" hreflang="id" href={seo.alternates.id} />
+    <link rel="alternate" hreflang="en" href={seo.alternates.en} />
+    <link rel="alternate" hreflang="x-default" href={seo.alternates.xDefault} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="izikit" />
+    <meta property="og:locale" content={dict.ogLocale} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    {
+      jsonLd && (
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+      )
+    }
+
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('izikit-theme');
+          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">{dict.site.skipToContent}</a>
+    <Header locale={locale} currentRoute={currentRoute} />
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+    <Footer locale={locale} currentRoute={currentRoute} />
+  </body>
+</html>

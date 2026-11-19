@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://izikit.app/sitemap-index.xml

@@ -1,0 +1,75 @@
+---
+import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+  toolName: string;
+  toolDescription: string;
+  guideTitle: string;
+  guideItems: readonly string[];
+}
+
+const { locale, toolName, toolDescription, guideTitle, guideItems } = Astro.props;
+const dict = getDictionary(locale);
+const homeHref = getLocalizedPath('/', locale);
+---
+
+<section class="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-8">
+  <nav aria-label="Breadcrumb" class="mb-4 text-sm text-[var(--ink-muted)]">
+    <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
+      <li>
+        <a
+          href={homeHref}
+          class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+        >
+          {dict.shared.backToAllTools}
+        </a>
+      </li>
+      <li aria-hidden="true">/</li>
+      <li aria-current="page" class="font-medium text-[var(--ink-primary)]">{toolName}</li>
+    </ol>
+  </nav>
+
+  <header class="mb-6 space-y-2.5">
+    <h1 class="font-display m-0 text-[clamp(1.75rem,3.6vw,2.5rem)] leading-tight font-bold text-[var(--ink-primary)]">
+      {toolName}
+    </h1>
+    <p class="m-0 max-w-2xl text-base leading-relaxed text-[var(--ink-muted)]">
+      {toolDescription}
+    </p>
+    <p class="m-0 inline-flex items-center gap-2 pt-1 text-sm font-medium text-[var(--success)]">
+      <svg viewBox="0 0 20 20" fill="none" class="h-4 w-4 shrink-0" aria-hidden="true">
+        <path
+          d="M10 2.5L4 4.8v4.7c0 3.7 2.5 6.8 6 8 3.5-1.2 6-4.3 6-8V4.8L10 2.5Z"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M7.3 10.2l1.8 1.8 3.7-3.8"
+          stroke="currentColor"
+          stroke-width="1.6"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      <span>{dict.shared.localBadge}</span>
+    </p>
+  </header>
+
+  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-6">
+    <slot />
+  </div>
+
+  <aside
+    aria-labelledby="tool-guide-heading"
+    class="mt-8 border-t border-[var(--border-subtle)] pt-6"
+  >
+    <h2 id="tool-guide-heading" class="font-display m-0 mb-3 text-lg font-semibold text-[var(--ink-primary)]">
+      {guideTitle}
+    </h2>
+    <ul class="m-0 space-y-2 pl-5 text-sm leading-relaxed text-[var(--ink-muted)]">
+      {guideItems.map((item) => <li>{item}</li>)}
+    </ul>
+  </aside>
+</section>
