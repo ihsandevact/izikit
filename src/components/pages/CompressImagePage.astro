@@ -1,49 +1,15 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import ToolShell from '@/components/shared/ToolShell.astro';
+import ToolPageLayout from './ToolPageLayout.astro';
 import CompressImageTool from '@/tools/image/compress/CompressImageTool';
-import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import type { Locale } from '@/i18n';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const dict = getDictionary(locale);
-const toolMeta = dict.tools['compress-image'];
-const seo = getSeoUrls('/compress-image', locale);
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: `${toolMeta.name} - izikit`,
-  url: seo.canonical,
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'Any',
-  inLanguage: dict.langTag,
-  description: toolMeta.seoDescription,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
-};
 ---
 
-<BaseLayout
-  locale={locale}
-  currentRoute="/compress-image"
-  title={toolMeta.seoTitle}
-  description={toolMeta.seoDescription}
-  jsonLd={jsonLd}
->
-  <ToolShell
-    locale={locale}
-    toolName={toolMeta.name}
-    toolDescription={toolMeta.shortDescription}
-    guideTitle={toolMeta.guideTitle}
-    guideItems={toolMeta.guideItems}
-  >
-    <CompressImageTool client:load locale={locale} />
-  </ToolShell>
-</BaseLayout>
+<ToolPageLayout locale={locale} route="/compress-image" toolKey="compress-image">
+  <CompressImageTool client:load locale={locale} />
+</ToolPageLayout>

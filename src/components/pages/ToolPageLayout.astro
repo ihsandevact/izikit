@@ -1,0 +1,52 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ToolShell from '@/components/shared/ToolShell.astro';
+import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+
+export type ToolDictionaryKey = keyof ReturnType<typeof getDictionary>['tools'];
+
+interface Props {
+  locale: Locale;
+  route: string;
+  toolKey: ToolDictionaryKey;
+}
+
+const { locale, route, toolKey } = Astro.props;
+const dict = getDictionary(locale);
+const toolMeta = dict.tools[toolKey];
+const seo = getSeoUrls(route, locale);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: `${toolMeta.name} - izikit`,
+  url: seo.canonical,
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'Any',
+  inLanguage: dict.langTag,
+  description: toolMeta.seoDescription,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+};
+---
+
+<BaseLayout
+  locale={locale}
+  currentRoute={route}
+  title={toolMeta.seoTitle}
+  description={toolMeta.seoDescription}
+  jsonLd={jsonLd}
+>
+  <ToolShell
+    locale={locale}
+    toolName={toolMeta.name}
+    toolDescription={toolMeta.shortDescription}
+    guideTitle={toolMeta.guideTitle}
+    guideItems={toolMeta.guideItems}
+  >
+    <slot />
+  </ToolShell>
+</BaseLayout>

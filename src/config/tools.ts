@@ -120,11 +120,3 @@ export const TOOLS: readonly ToolDefinition[] = [
 export function getLiveTools(): ToolDefinition[] {
   return TOOLS.filter((tool) => tool.status === 'live');
 }
-
-export function getUpcomingTools(): ToolDefinition[] {
-  return TOOLS.filter((tool) => tool.status === 'coming-soon');
-}
-
-export function getToolById(id: string): ToolDefinition | undefined {
-  return TOOLS.find((tool) => tool.id === id);
-}

@@ -1,12 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { calculateSavings, formatBytes, replaceFileExtension } from '@/lib/format';
-import { createClientId } from '@/lib/id';
 import {
-  detectImageMimeFromBytes,
   mimeToExtension,
-  readFileHeaderBytes,
+  validateImageFiles,
   type SupportedImageMime,
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
@@ -95,41 +92,21 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
 
   const handleFilesSelected = async (incomingFiles: File[]) => {
     setErrors([]);
-    const nextErrors: string[] = [];
-    const accepted: ImageQueueItem[] = [];
-
-    for (const file of incomingFiles) {
-      if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
-        nextErrors.push(`${copy.errors.tooLarge} ${file.name} (${formatBytes(file.size)})`);
-        continue;
-      }
-
-      try {
-        const header = await readFileHeaderBytes(file, 32);
-        const detectedMime = detectImageMimeFromBytes(header);
-        if (!detectedMime) {
-          nextErrors.push(`${copy.errors.notImage} ${file.name}`);
-          continue;
-        }
-
-        accepted.push({
-          id: `${file.name}-${file.size}-${createClientId()}`,
-          file,
-          mime: detectedMime,
-          originalUrl: URL.createObjectURL(file),
-          status: 'queued',
-        });
-      } catch {
-        nextErrors.push(`${copy.errors.generic} (${file.name})`);
-      }
-    }
+    const { accepted, errors: nextErrors } = await validateImageFiles(incomingFiles, copy.errors);
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
     }
 
     if (accepted.length > 0) {
-      setItems((prev) => [...prev, ...accepted]);
+      const nextItems: ImageQueueItem[] = accepted.map(({ id, file, mime }) => ({
+        id,
+        file,
+        mime,
+        originalUrl: URL.createObjectURL(file),
+        status: 'queued',
+      }));
+      setItems((prev) => [...prev, ...nextItems]);
     }
   };
 
@@ -332,7 +309,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
 
               <div className="space-y-1.5">
                 <label htmlFor={formatId} className="block text-sm font-medium text-[var(--ink-primary)]">
-                  {copy.formatLabel}
+                  {dict.shared.outputFormatLabel}
                 </label>
                 <select
                   id={formatId}
@@ -346,7 +323,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                   className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-card)] px-3 text-sm text-[var(--ink-primary)]"
                 >
                   <option value="image/webp">{copy.formatWebp}</option>
-                  <option value="original">{copy.formatOriginal}</option>
+                  <option value="original">{dict.shared.outputFormatOriginal}</option>
                   <option value="image/jpeg">{copy.formatJpeg}</option>
                   <option value="image/png">{copy.formatPng}</option>
                 </select>
@@ -445,7 +422,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                     className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
                   >
                     <DownloadIcon className="h-4 w-4" />
-                    <span>{isZipping ? copy.buildingZip : copy.downloadZip}</span>
+                    <span>{isZipping ? dict.shared.buildingZip : copy.downloadZip}</span>
                   </button>
                 ) : (
                   <button
@@ -492,7 +469,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                       alt={item.file.name}
                       width={52}
                       height={52}
-                      className="h-13 w-13 shrink-0 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
+                      className="h-13 w-13 shrink-0 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
                     />
                     <div className="min-w-0 space-y-0.5">
                       <p className="m-0 truncate text-sm font-medium text-[var(--ink-primary)]">

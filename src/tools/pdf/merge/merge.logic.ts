@@ -1,4 +1,5 @@
 import { PDFDocument } from 'pdf-lib';
+import { loadPdfDocumentOrThrow } from '../shared/pdf-loader';
 
 export type PdfErrorCode = 'ENCRYPTED' | 'CORRUPT' | 'NEED_TWO_FILES';
 
@@ -32,24 +33,18 @@ export interface MergeProgressInfo {
   fileName?: string;
 }
 
-function classifyLoadError(err: unknown, fileName: string): PdfProcessingError {
-  const message = err instanceof Error ? err.message : String(err);
-  if (/encrypt/i.test(message)) {
-    return new PdfProcessingError('ENCRYPTED', message, fileName);
-  }
-  return new PdfProcessingError('CORRUPT', message, fileName);
+function loadMergePdf(bytes: Uint8Array, fileName: string): Promise<PDFDocument> {
+  return loadPdfDocumentOrThrow(bytes, {
+    createError: (kind, message) => new PdfProcessingError(kind, message, fileName),
+  });
 }
 
 /**
  * Inspects a single PDF buffer to count pages and detect encrypted or malformed files.
  */
 export async function inspectPdfPages(bytes: Uint8Array, fileName: string): Promise<number> {
-  try {
-    const doc = await PDFDocument.load(bytes, { updateMetadata: false });
-    return doc.getPageCount();
-  } catch (err) {
-    throw classifyLoadError(err, fileName);
-  }
+  const doc = await loadMergePdf(bytes, fileName);
+  return doc.getPageCount();
 }
 
 /**
@@ -75,12 +70,7 @@ export async function mergePdfBuffers(
       fileName: item.name,
     });
 
-    let sourceDoc: PDFDocument;
-    try {
-      sourceDoc = await PDFDocument.load(item.bytes, { updateMetadata: false });
-    } catch (err) {
-      throw classifyLoadError(err, item.name);
-    }
+    const sourceDoc = await loadMergePdf(item.bytes, item.name);
 
     const indices = sourceDoc.getPageIndices();
     const copiedPages = await mergedDoc.copyPages(sourceDoc, indices);

@@ -1,5 +1,7 @@
 ---
 import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
+import { getLiveTools } from '@/config/tools';
+import { BrandMarkIcon } from '@/components/shared/icons';
 import ThemeToggle from './ThemeToggle';
 
 interface Props {
@@ -12,55 +14,48 @@ const dict = getDictionary(locale);
 const otherLocale: Locale = locale === 'id' ? 'en' : 'id';
 
 const homeHref = getLocalizedPath('/', locale);
-const mergeHref = getLocalizedPath('/merge-pdf', locale);
-const splitHref = getLocalizedPath('/split-pdf', locale);
-const imageToPdfHref = getLocalizedPath('/image-to-pdf', locale);
-const compressHref = getLocalizedPath('/compress-image', locale);
 const aboutHref = getLocalizedPath('/about', locale);
 const switchLangHref = getLocalizedPath(currentRoute, otherLocale);
 
-const navItems = [
+const liveTools = getLiveTools();
+const pdfTools = liveTools.filter((tool) => tool.category === 'pdf');
+const imageTools = liveTools.filter((tool) => tool.category === 'image');
+
+const desktopNav = [
   { href: homeHref, label: dict.nav.tools, route: '/' },
-  { href: mergeHref, label: dict.nav.mergePdf, route: '/merge-pdf' },
-  { href: splitHref, label: dict.nav.splitPdf, route: '/split-pdf' },
-  { href: imageToPdfHref, label: dict.nav.imageToPdf, route: '/image-to-pdf' },
-  { href: compressHref, label: dict.nav.compressImage, route: '/compress-image' },
+  { href: `${homeHref}#pdf-tools`, label: dict.nav.pdfGroup, route: '#pdf' },
+  { href: `${homeHref}#image-tools`, label: dict.nav.imageGroup, route: '#image' },
   { href: aboutHref, label: dict.nav.about, route: '/about' },
 ];
 
 const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(/^\/+|\/+$/g, '')}`;
+const isPdfRoute = pdfTools.some((t) => `/${t.slug}` === normalizedCurrent);
+const isImageRoute = imageTools.some((t) => `/${t.slug}` === normalizedCurrent);
 ---
 
 <header
   class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]/95 backdrop-blur-xs"
 >
-  <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+  <div class="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2 sm:px-6 sm:py-2.5">
     <a
       href={homeHref}
-      class="inline-flex min-h-11 items-center gap-2.5 rounded-lg px-1 text-[var(--ink-primary)] no-underline"
+      class="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 text-[var(--ink-primary)] no-underline"
     >
-      <svg viewBox="0 0 28 28" fill="none" class="h-7 w-7 shrink-0" aria-hidden="true">
-        <path
-          d="M6 3.5h11l5 5V23a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 5 23V5A1.5 1.5 0 0 1 6.5 3.5Z"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linejoin="round"
-        />
-        <path d="M17 3.5V8.5H22" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
-        <rect x="8.5" y="13.2" width="10" height="2.4" rx="0.8" fill="var(--accent)" />
-        <rect x="8.5" y="17.8" width="6.8" height="2.2" rx="0.8" fill="currentColor" />
-      </svg>
+      <BrandMarkIcon className="h-7 w-7 shrink-0" />
       <span class="font-display text-xl font-bold tracking-tight">izikit</span>
     </a>
 
-    <nav aria-label="Primary" class="hidden items-center gap-1 lg:flex">
+    <nav aria-label="Primary" class="hidden items-center gap-1 md:flex">
       {
-        navItems.map((item) => {
-          const isActive = normalizedCurrent === item.route;
+        desktopNav.map((item) => {
+          const isActive =
+            normalizedCurrent === item.route ||
+            (item.route === '#pdf' && isPdfRoute) ||
+            (item.route === '#image' && isImageRoute);
           return (
             <a
               href={item.href}
-              aria-current={isActive ? 'page' : undefined}
+              aria-current={normalizedCurrent === item.route ? 'page' : undefined}
               class:list={[
                 'inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline transition-colors',
                 isActive
@@ -97,7 +92,7 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
         type="button"
         aria-expanded="false"
         aria-controls="mobile-nav-drawer"
-        class="btn-secondary inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium lg:hidden"
+        class="btn-secondary inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium md:hidden"
       >
         <svg viewBox="0 0 18 18" fill="none" class="h-4 w-4" aria-hidden="true">
           <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
@@ -110,28 +105,89 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
   <div
     id="mobile-nav-drawer"
     hidden
-    class="border-t border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 py-3 lg:hidden"
+    class="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden"
   >
-    <nav aria-label="Mobile" class="flex flex-col gap-1">
-      {
-        navItems.map((item) => {
-          const isActive = normalizedCurrent === item.route;
-          return (
-            <a
-              href={item.href}
-              aria-current={isActive ? 'page' : undefined}
-              class:list={[
-                'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
-                isActive
-                  ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-                  : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-              ]}
-            >
-              {item.label}
-            </a>
-          );
-        })
-      }
+    <nav aria-label="Mobile" class="space-y-4">
+      <div class="flex flex-col gap-1">
+        <a
+          href={homeHref}
+          aria-current={normalizedCurrent === '/' ? 'page' : undefined}
+          class:list={[
+            'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
+            normalizedCurrent === '/'
+              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+          ]}
+        >
+          {dict.nav.tools}
+        </a>
+        <a
+          href={aboutHref}
+          aria-current={normalizedCurrent === '/about' ? 'page' : undefined}
+          class:list={[
+            'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
+            normalizedCurrent === '/about'
+              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+          ]}
+        >
+          {dict.nav.about}
+        </a>
+      </div>
+
+      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-3">
+        <p class="m-0 px-3.5 pb-1 text-xs font-semibold text-[var(--ink-muted)]">
+          {dict.nav.pdfGroup}
+        </p>
+        {
+          pdfTools.map((tool) => {
+            const href = getLocalizedPath(`/${tool.slug}`, locale);
+            const meta = dict.tools[tool.id as keyof typeof dict.tools];
+            const isActive = normalizedCurrent === `/${tool.slug}`;
+            return (
+              <a
+                href={href}
+                aria-current={isActive ? 'page' : undefined}
+                class:list={[
+                  'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
+                  isActive
+                    ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+                    : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+                ]}
+              >
+                {meta.name}
+              </a>
+            );
+          })
+        }
+      </div>
+
+      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-3">
+        <p class="m-0 px-3.5 pb-1 text-xs font-semibold text-[var(--ink-muted)]">
+          {dict.nav.imageGroup}
+        </p>
+        {
+          imageTools.map((tool) => {
+            const href = getLocalizedPath(`/${tool.slug}`, locale);
+            const meta = dict.tools[tool.id as keyof typeof dict.tools];
+            const isActive = normalizedCurrent === `/${tool.slug}`;
+            return (
+              <a
+                href={href}
+                aria-current={isActive ? 'page' : undefined}
+                class:list={[
+                  'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
+                  isActive
+                    ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
+                    : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+                ]}
+              >
+                {meta.name}
+              </a>
+            );
+          })
+        }
+      </div>
     </nav>
   </div>
 </header>

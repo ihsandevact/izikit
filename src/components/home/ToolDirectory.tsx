@@ -1,5 +1,5 @@
 import { useId, useMemo, useState } from 'react';
-import { TOOLS, type ToolCategory } from '@/config/tools';
+import { TOOLS, type ToolCategory, type ToolDefinition } from '@/config/tools';
 import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
 import { SearchIcon, ToolGlyph } from '@/components/shared/icons';
 
@@ -40,6 +40,8 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
   }, [category, dict, locale, normalizedQuery]);
 
   const liveTools = filteredTools.filter((t) => t.status === 'live');
+  const livePdfTools = liveTools.filter((t) => t.category === 'pdf');
+  const liveImageTools = liveTools.filter((t) => t.category === 'image');
   const upcomingTools = filteredTools.filter((t) => t.status === 'coming-soon');
 
   const filterTabs: Array<{ value: CategoryFilter; label: string }> = [
@@ -53,8 +55,51 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
     setCategory('all');
   };
 
+  const renderToolCard = (tool: ToolDefinition, variant: 'pdf' | 'image') => {
+    const meta = dict.tools[tool.id as keyof typeof dict.tools];
+    const href = getLocalizedPath(`/${tool.slug}`, locale);
+
+    return (
+      <a
+        key={tool.id}
+        href={href}
+        className={`group flex flex-col justify-between gap-4 rounded-xl border bg-[var(--bg-card)] p-4 text-[var(--ink-primary)] no-underline transition-colors hover:border-[var(--accent)] sm:p-5 ${
+          variant === 'pdf'
+            ? 'border-[var(--border-control)]'
+            : 'border-[var(--border-subtle)] hover:bg-[var(--bg-paper)]'
+        }`}
+      >
+        <div className="space-y-3">
+          <div className="flex items-start justify-between gap-3">
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)] text-[var(--accent)] sm:h-11 sm:w-11">
+              <ToolGlyph icon={tool.icon} className="h-5 w-5" />
+            </span>
+            <span className="font-data text-xs text-[var(--ink-muted)]">
+              {tool.acceptedExtensions.join(' ')}
+            </span>
+          </div>
+
+          <div className="space-y-1.5">
+            <h3 className="font-display m-0 text-lg font-bold text-[var(--ink-primary)] group-hover:text-[var(--accent)] sm:text-xl">
+              {meta.name}
+            </h3>
+            <p className="m-0 text-sm leading-relaxed text-[var(--ink-muted)]">
+              {meta.shortDescription}
+            </p>
+          </div>
+        </div>
+
+        <div className="border-t border-[var(--border-subtle)] pt-3">
+          <span className="text-sm font-semibold text-[var(--accent)] underline-offset-4 group-hover:underline">
+            {meta.cta}
+          </span>
+        </div>
+      </a>
+    );
+  };
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-7 sm:space-y-9">
       {/* Search + Category Filter Bar */}
       <div className="flex flex-col gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3 sm:p-4 md:flex-row md:items-center md:justify-between">
         <div className="relative flex-1">
@@ -80,7 +125,7 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
               type="button"
               onClick={() => setQuery('')}
               aria-label={dict.home.clearSearch}
-              className="absolute top-0 right-0 inline-flex h-11 min-w-11 items-center justify-center rounded-r-lg text-xs font-semibold text-[var(--ink-muted)] hover:text-[var(--ink-primary)]"
+              className="absolute top-0 right-0 inline-flex h-11 min-w-11 items-center justify-center rounded-r-lg text-sm font-semibold text-[var(--ink-muted)] hover:text-[var(--ink-primary)]"
             >
               ×
             </button>
@@ -90,7 +135,7 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
         <div
           role="tablist"
           aria-label={dict.home.searchLabel}
-          className="flex flex-wrap items-center gap-1.5"
+          className="flex flex-wrap items-center gap-2"
         >
           {filterTabs.map((tab) => {
             const active = category === tab.value;
@@ -132,69 +177,54 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
           </button>
         </div>
       ) : (
-        <div className="space-y-10">
-          {/* Active Live Tools */}
-          {liveTools.length > 0 && (
-            <section aria-labelledby="active-tools-heading" className="space-y-4">
+        <div className="space-y-8 sm:space-y-10">
+          {/* PDF Documents Group (2x2 balanced grid on sm+) */}
+          {livePdfTools.length > 0 && (
+            <section id="pdf-tools" aria-labelledby="pdf-tools-heading" className="space-y-3.5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2
-                  id="active-tools-heading"
+                  id="pdf-tools-heading"
                   className="font-display m-0 text-xl font-bold text-[var(--ink-primary)]"
                 >
-                  {dict.home.activeSectionTitle}
+                  {dict.home.pdfSectionTitle}
                 </h2>
                 <p className="m-0 text-sm text-[var(--ink-muted)]">
-                  {dict.home.activeSectionHint}
+                  {dict.home.pdfSectionHint}
                 </p>
               </div>
 
-              <div className="grid gap-4 md:grid-cols-2">
-                {liveTools.map((tool) => {
-                  const meta = dict.tools[tool.id as keyof typeof dict.tools];
-                  const href = getLocalizedPath(`/${tool.slug}`, locale);
-
-                  return (
-                    <a
-                      key={tool.id}
-                      href={href}
-                      className="group flex flex-col justify-between gap-5 rounded-xl border border-[var(--border-control)] bg-[var(--bg-card)] p-5 text-[var(--ink-primary)] no-underline transition-colors hover:border-[var(--accent)]"
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-start justify-between gap-3">
-                          <span className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)] text-[var(--accent)]">
-                            <ToolGlyph icon={tool.icon} className="h-5 w-5" />
-                          </span>
-                          <span className="font-data rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-paper)] px-2 py-1 text-xs font-medium text-[var(--ink-muted)]">
-                            {meta.categoryLabel}
-                          </span>
-                        </div>
-
-                        <div className="space-y-1.5">
-                          <h3 className="font-display m-0 text-xl font-bold text-[var(--ink-primary)] group-hover:text-[var(--accent)]">
-                            {meta.name}
-                          </h3>
-                          <p className="m-0 text-sm leading-relaxed text-[var(--ink-muted)]">
-                            {meta.shortDescription}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border-subtle)] pt-3.5">
-                        <span className="font-data text-xs text-[var(--ink-muted)]">
-                          {tool.acceptedExtensions.join(' ')}
-                        </span>
-                        <span className="text-sm font-semibold text-[var(--accent)] underline-offset-4 group-hover:underline">
-                          {dict.home.openToolCta}
-                        </span>
-                      </div>
-                    </a>
-                  );
-                })}
+              <div className="grid gap-3.5 sm:grid-cols-2 sm:gap-4">
+                {livePdfTools.map((tool) => renderToolCard(tool, 'pdf'))}
               </div>
             </section>
           )}
 
-          {/* Upcoming Phase 1 Queue (Ledger List - distinct rhythm from active cards) */}
+          {/* Images Group (3-column row on lg+, 2-col on tablet, 1-col on phone) */}
+          {liveImageTools.length > 0 && (
+            <section
+              id="image-tools"
+              aria-labelledby="image-tools-heading"
+              className="space-y-3.5 border-t border-[var(--border-subtle)] pt-6 sm:pt-8"
+            >
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h2
+                  id="image-tools-heading"
+                  className="font-display m-0 text-xl font-bold text-[var(--ink-primary)]"
+                >
+                  {dict.home.imageSectionTitle}
+                </h2>
+                <p className="m-0 text-sm text-[var(--ink-muted)]">
+                  {dict.home.imageSectionHint}
+                </p>
+              </div>
+
+              <div className="grid gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+                {liveImageTools.map((tool) => renderToolCard(tool, 'image'))}
+              </div>
+            </section>
+          )}
+
+          {/* Upcoming Queue (only renders when coming-soon tools exist) */}
           {upcomingTools.length > 0 && (
             <section aria-labelledby="upcoming-tools-heading" className="space-y-3">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -233,7 +263,7 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
                       </div>
 
                       <div className="flex items-center gap-2 sm:shrink-0">
-                        <span className="font-data text-xs text-[var(--ink-muted)]">
+                        <span className="text-xs text-[var(--ink-muted)]">
                           {meta.categoryLabel}
                         </span>
                         <span className="rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-2.5 py-1 text-xs font-medium text-[var(--ink-muted)]">

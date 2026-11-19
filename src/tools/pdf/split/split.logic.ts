@@ -1,4 +1,5 @@
 import { PDFDocument } from 'pdf-lib';
+import { loadPdfDocumentOrThrow } from '../shared/pdf-loader';
 import {
   parsePageRanges,
   SplitPdfError,
@@ -35,21 +36,12 @@ export interface SplitProgressInfo {
 }
 
 async function loadSourcePdf(bytes: Uint8Array): Promise<{ doc: PDFDocument; totalPages: number }> {
-  try {
-    const doc = await PDFDocument.load(bytes, { updateMetadata: false });
-    const totalPages = doc.getPageCount();
-    if (totalPages < 1) {
-      throw new SplitPdfError('CORRUPT', 'PDF document contains zero pages.');
-    }
-    return { doc, totalPages };
-  } catch (err) {
-    if (err instanceof SplitPdfError) throw err;
-    const message = err instanceof Error ? err.message : String(err);
-    if (/encrypt/i.test(message)) {
-      throw new SplitPdfError('ENCRYPTED', message);
-    }
-    throw new SplitPdfError('CORRUPT', message);
-  }
+  const doc = await loadPdfDocumentOrThrow(bytes, {
+    requireNonEmpty: true,
+    emptyMessage: 'PDF document contains zero pages.',
+    createError: (kind, message) => new SplitPdfError(kind, message),
+  });
+  return { doc, totalPages: doc.getPageCount() };
 }
 
 export async function inspectSplitPdfPages(bytes: Uint8Array): Promise<number> {

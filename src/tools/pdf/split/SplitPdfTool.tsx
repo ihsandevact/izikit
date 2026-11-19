@@ -1,8 +1,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes } from '@/lib/format';
-import { hasPdfMagicBytes, readFileHeaderBytes } from '@/lib/file-validation';
+import { validatePdfFiles } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadAsZip, downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
@@ -63,19 +62,13 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
     setErrors([]);
     setOutputs([]);
 
-    if (selected.size > SITE_CONFIG.limits.pdfSoftMaxBytes) {
-      setErrors([`${copy.errors.tooLarge} ${selected.name} (${formatBytes(selected.size)})`]);
-      return;
-    }
-
-    try {
-      const header = await readFileHeaderBytes(selected, 1024);
-      if (!hasPdfMagicBytes(header)) {
-        setErrors([`${copy.errors.notPdf} ${selected.name}`]);
-        return;
-      }
-    } catch {
-      setErrors([`${copy.errors.corrupt} ${selected.name}`]);
+    const { accepted, errors: validationErrors } = await validatePdfFiles([selected], {
+      tooLarge: copy.errors.tooLarge,
+      notPdf: copy.errors.notPdf,
+      generic: copy.errors.corrupt,
+    });
+    if (validationErrors.length > 0 || accepted.length === 0) {
+      setErrors(validationErrors.length > 0 ? validationErrors : [`${copy.errors.corrupt} ${selected.name}`]);
       return;
     }
 
@@ -266,7 +259,7 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
                 {formatBytes(file.size)} ·{' '}
                 {inspecting
                   ? copy.inspectingPages
-                  : `${pageCount ?? 0} ${dict.mergePdf.pagesUnit}`}
+                  : `${pageCount ?? 0} ${dict.shared.pagesUnit}`}
               </p>
             </div>
             <button
@@ -347,12 +340,14 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
                 </p>
                 {rangePreview && (
                   <p
-                    className={`font-data m-0 text-xs font-medium ${
-                      rangePreview.valid ? 'text-[var(--success)]' : 'text-[var(--danger)]'
+                    className={`m-0 text-xs font-medium ${
+                      rangePreview.valid
+                        ? 'font-data text-[var(--success)]'
+                        : 'text-[var(--danger)]'
                     }`}
                   >
                     {rangePreview.valid
-                      ? `${copy.previewSummary}: ${rangePreview.outputCount} ${copy.filesUnit} (${rangePreview.totalSelectedPages} ${dict.mergePdf.pagesUnit})`
+                      ? `${copy.previewSummary}: ${rangePreview.outputCount} ${copy.filesUnit} (${rangePreview.totalSelectedPages} ${dict.shared.pagesUnit})`
                       : copy.errors.invalidRange}
                   </p>
                 )}
@@ -405,7 +400,7 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
                 className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
               >
                 <DownloadIcon className="h-4 w-4" />
-                <span>{isZipping ? dict.compressImage.buildingZip : copy.downloadZip}</span>
+                <span>{isZipping ? dict.shared.buildingZip : copy.downloadZip}</span>
               </button>
             ) : (
               <button
@@ -430,7 +425,7 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
                     {item.filename}
                   </p>
                   <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
-                    {item.pageCount} {dict.mergePdf.pagesUnit} · {formatBytes(item.blob.size)}
+                    {item.pageCount} {dict.shared.pagesUnit} · {formatBytes(item.blob.size)}
                   </p>
                 </div>
                 <button

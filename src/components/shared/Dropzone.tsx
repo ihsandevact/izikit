@@ -155,7 +155,7 @@ export default function Dropzone({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`rounded-xl border-2 border-dashed px-5 py-10 text-center transition-colors sm:px-8 sm:py-12 ${
+      className={`rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors sm:px-8 sm:py-10 ${
         disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:border-[var(--accent)]'
       } ${
         isDragging

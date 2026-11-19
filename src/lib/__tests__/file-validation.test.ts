@@ -1,0 +1,47 @@
+import { describe, expect, it } from 'vitest';
+import { validateImageFiles, validatePdfFiles } from '../file-validation';
+
+const PNG_HEADER = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0]);
+const PDF_HEADER = new TextEncoder().encode('%PDF-1.7\n');
+
+describe('validateImageFiles', () => {
+  const messages = {
+    tooLarge: 'Too large:',
+    notImage: 'Not image:',
+    generic: 'Generic error',
+  };
+
+  it('accepts valid images and rejects non-images', async () => {
+    const validPng = new File([PNG_HEADER], 'photo.png', { type: 'image/png' });
+    const fakeImg = new File([new TextEncoder().encode('hello world 1234')], 'fake.png', {
+      type: 'image/png',
+    });
+
+    const result = await validateImageFiles([validPng, fakeImg], messages);
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].mime).toBe('image/png');
+    expect(result.accepted[0].file.name).toBe('photo.png');
+    expect(result.accepted[0].id).toContain('photo.png');
+    expect(result.errors).toEqual(['Not image: fake.png']);
+  });
+});
+
+describe('validatePdfFiles', () => {
+  const messages = {
+    tooLarge: 'Too large:',
+    notPdf: 'Not PDF:',
+    generic: 'Corrupt:',
+  };
+
+  it('accepts valid PDFs and rejects non-PDF files', async () => {
+    const validPdf = new File([PDF_HEADER], 'doc.pdf', { type: 'application/pdf' });
+    const fakePdf = new File([new TextEncoder().encode('not a pdf')], 'fake.pdf', {
+      type: 'application/pdf',
+    });
+
+    const result = await validatePdfFiles([validPdf, fakePdf], messages);
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].file.name).toBe('doc.pdf');
+    expect(result.errors).toEqual(['Not PDF: fake.pdf']);
+  });
+});

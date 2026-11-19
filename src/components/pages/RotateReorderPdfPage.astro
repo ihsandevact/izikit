@@ -1,49 +1,15 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import ToolShell from '@/components/shared/ToolShell.astro';
+import ToolPageLayout from './ToolPageLayout.astro';
 import RotateReorderPdfTool from '@/tools/pdf/rotate-reorder/RotateReorderPdfTool';
-import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import type { Locale } from '@/i18n';
 
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
-const dict = getDictionary(locale);
-const toolMeta = dict.tools['rotate-reorder-pdf'];
-const seo = getSeoUrls('/rotate-reorder-pdf', locale);
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: `${toolMeta.name} - izikit`,
-  url: seo.canonical,
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'Any',
-  inLanguage: dict.langTag,
-  description: toolMeta.seoDescription,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
-};
 ---
 
-<BaseLayout
-  locale={locale}
-  currentRoute="/rotate-reorder-pdf"
-  title={toolMeta.seoTitle}
-  description={toolMeta.seoDescription}
-  jsonLd={jsonLd}
->
-  <ToolShell
-    locale={locale}
-    toolName={toolMeta.name}
-    toolDescription={toolMeta.shortDescription}
-    guideTitle={toolMeta.guideTitle}
-    guideItems={toolMeta.guideItems}
-  >
-    <RotateReorderPdfTool client:load locale={locale} />
-  </ToolShell>
-</BaseLayout>
+<ToolPageLayout locale={locale} route="/rotate-reorder-pdf" toolKey="rotate-reorder-pdf">
+  <RotateReorderPdfTool client:load locale={locale} />
+</ToolPageLayout>

@@ -1,4 +1,31 @@
+import { SITE_CONFIG } from '@/config/site';
+import { formatBytes } from './format';
+import { createClientId } from './id';
+
 export type SupportedImageMime = 'image/jpeg' | 'image/png' | 'image/webp';
+
+export interface ValidatedImageFile {
+  id: string;
+  file: File;
+  mime: SupportedImageMime;
+}
+
+export interface ValidatedPdfFile {
+  id: string;
+  file: File;
+}
+
+export interface ImageValidationMessages {
+  tooLarge: string;
+  notImage: string;
+  generic: string;
+}
+
+export interface PdfValidationMessages {
+  tooLarge: string;
+  notPdf: string;
+  generic: string;
+}
 
 /**
  * Inspect magic bytes of a file buffer to verify real PDF header (%PDF-).
@@ -101,4 +128,70 @@ export function mimeToExtension(mime: SupportedImageMime): string {
     case 'image/webp':
       return 'webp';
   }
+}
+
+export async function validateImageFiles(
+  incomingFiles: readonly File[],
+  messages: ImageValidationMessages,
+): Promise<{ accepted: ValidatedImageFile[]; errors: string[] }> {
+  const errors: string[] = [];
+  const accepted: ValidatedImageFile[] = [];
+
+  for (const file of incomingFiles) {
+    if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
+      errors.push(`${messages.tooLarge} ${file.name} (${formatBytes(file.size)})`);
+      continue;
+    }
+
+    try {
+      const header = await readFileHeaderBytes(file, 32);
+      const mime = detectImageMimeFromBytes(header);
+      if (!mime) {
+        errors.push(`${messages.notImage} ${file.name}`);
+        continue;
+      }
+
+      accepted.push({
+        id: `${file.name}-${file.size}-${createClientId()}`,
+        file,
+        mime,
+      });
+    } catch {
+      errors.push(`${messages.generic} (${file.name})`);
+    }
+  }
+
+  return { accepted, errors };
+}
+
+export async function validatePdfFiles(
+  incomingFiles: readonly File[],
+  messages: PdfValidationMessages,
+): Promise<{ accepted: ValidatedPdfFile[]; errors: string[] }> {
+  const errors: string[] = [];
+  const accepted: ValidatedPdfFile[] = [];
+
+  for (const file of incomingFiles) {
+    if (file.size > SITE_CONFIG.limits.pdfSoftMaxBytes) {
+      errors.push(`${messages.tooLarge} ${file.name} (${formatBytes(file.size)})`);
+      continue;
+    }
+
+    try {
+      const header = await readFileHeaderBytes(file, 1024);
+      if (!hasPdfMagicBytes(header)) {
+        errors.push(`${messages.notPdf} ${file.name}`);
+        continue;
+      }
+
+      accepted.push({
+        id: `${file.name}-${file.size}-${createClientId()}`,
+        file,
+      });
+    } catch {
+      errors.push(`${messages.generic} (${file.name})`);
+    }
+  }
+
+  return { accepted, errors };
 }

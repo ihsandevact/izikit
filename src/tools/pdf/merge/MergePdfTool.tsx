@@ -1,9 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes, sanitizeFilename } from '@/lib/format';
-import { createClientId } from '@/lib/id';
-import { hasPdfMagicBytes, readFileHeaderBytes } from '@/lib/file-validation';
+import { validatePdfFiles } from '@/lib/file-validation';
+import { moveListItem, reorderById } from '@/lib/list';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
@@ -70,32 +69,18 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
     setErrors([]);
     setResult(null);
 
-    const nextErrors: string[] = [];
-    const accepted: PdfQueueItem[] = [];
+    const { accepted: validated, errors: nextErrors } = await validatePdfFiles(incomingFiles, {
+      tooLarge: copy.errors.tooLarge,
+      notPdf: copy.errors.notPdf,
+      generic: copy.errors.corrupt,
+    });
 
-    for (const file of incomingFiles) {
-      if (file.size > SITE_CONFIG.limits.pdfSoftMaxBytes) {
-        nextErrors.push(`${copy.errors.tooLarge} ${file.name} (${formatBytes(file.size)})`);
-        continue;
-      }
-
-      try {
-        const header = await readFileHeaderBytes(file, 1024);
-        if (!hasPdfMagicBytes(header)) {
-          nextErrors.push(`${copy.errors.notPdf} ${file.name}`);
-          continue;
-        }
-
-        accepted.push({
-          id: `${file.name}-${file.size}-${createClientId()}`,
-          file,
-          pageCount: null,
-          inspecting: true,
-        });
-      } catch {
-        nextErrors.push(`${copy.errors.corrupt} ${file.name}`);
-      }
-    }
+    const accepted: PdfQueueItem[] = validated.map(({ id, file }) => ({
+      id,
+      file,
+      pageCount: null,
+      inspecting: true,
+    }));
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
@@ -138,26 +123,13 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
     const target = index + direction;
     if (target < 0 || target >= items.length) return;
     setResult(null);
-    setItems((prev) => {
-      const next = [...prev];
-      const [moved] = next.splice(index, 1);
-      next.splice(target, 0, moved);
-      return next;
-    });
+    setItems((prev) => moveListItem(prev, index, direction));
   };
 
   const reorderByIds = (sourceId: string, targetId: string) => {
     if (sourceId === targetId) return;
     setResult(null);
-    setItems((prev) => {
-      const fromIndex = prev.findIndex((item) => item.id === sourceId);
-      const toIndex = prev.findIndex((item) => item.id === targetId);
-      if (fromIndex === -1 || toIndex === -1) return prev;
-      const next = [...prev];
-      const [moved] = next.splice(fromIndex, 1);
-      next.splice(toIndex, 0, moved);
-      return next;
-    });
+    setItems((prev) => reorderById(prev, sourceId, targetId));
   };
 
   const removeItem = (id: string) => {
@@ -329,7 +301,7 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
                     >
                       <GripIcon className="h-4 w-4" />
                     </span>
-                    <span className="font-data inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] text-xs font-semibold text-[var(--ink-primary)]">
+                    <span className="font-data inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-card)] text-xs font-semibold text-[var(--ink-primary)]">
                       {index + 1}
                     </span>
                     <div className="min-w-0">
@@ -340,18 +312,18 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
                         {formatBytes(item.file.size)} ·{' '}
                         {item.inspecting
                           ? copy.inspectingPages
-                          : `${item.pageCount ?? 0} ${copy.pagesUnit}`}
+                          : `${item.pageCount ?? 0} ${dict.shared.pagesUnit}`}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-end gap-1.5">
+                  <div className="flex items-center justify-end gap-2">
                     <button
                       type="button"
                       onClick={() => moveItem(index, -1)}
                       disabled={isMerging || index === 0}
-                      aria-label={`${copy.moveUp}: ${item.file.name}`}
-                      title={copy.moveUp}
+                      aria-label={`${dict.shared.moveUp}: ${item.file.name}`}
+                      title={dict.shared.moveUp}
                       className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                     >
                       <ArrowUpIcon className="h-4 w-4" />
@@ -360,8 +332,8 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
                       type="button"
                       onClick={() => moveItem(index, 1)}
                       disabled={isMerging || index === items.length - 1}
-                      aria-label={`${copy.moveDown}: ${item.file.name}`}
-                      title={copy.moveDown}
+                      aria-label={`${dict.shared.moveDown}: ${item.file.name}`}
+                      title={dict.shared.moveDown}
                       className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                     >
                       <ArrowDownIcon className="h-4 w-4" />
@@ -407,7 +379,7 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
               />
               <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
                 {copy.totalSummary}: {items.length} {copy.filesUnit} · {totalPages}{' '}
-                {copy.pagesUnit} · {formatBytes(totalBytes)}
+                {dict.shared.pagesUnit} · {formatBytes(totalBytes)}
               </p>
             </div>
 
@@ -441,7 +413,7 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
                 {copy.resultReadyTitle}
               </h3>
               <p className="font-data m-0 text-sm text-[var(--ink-muted)]">
-                {result.filename} · {result.totalPages} {copy.pagesUnit} ·{' '}
+                {result.filename} · {result.totalPages} {dict.shared.pagesUnit} ·{' '}
                 {formatBytes(result.blob.size)}
               </p>
             </div>

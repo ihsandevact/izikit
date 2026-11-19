@@ -1,11 +1,9 @@
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes, replaceFileExtension } from '@/lib/format';
 import {
-  detectImageMimeFromBytes,
   mimeToExtension,
-  readFileHeaderBytes,
+  validateImageFiles,
   type SupportedImageMime,
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
@@ -136,23 +134,15 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
     if (output?.url) URL.revokeObjectURL(output.url);
     setOutput(null);
 
-    if (selected.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
-      setErrors([`${copy.errors.tooLarge} ${selected.name} (${formatBytes(selected.size)})`]);
+    const { accepted, errors: validationErrors } = await validateImageFiles(
+      [selected],
+      copy.errors,
+    );
+    if (validationErrors.length > 0 || accepted.length === 0) {
+      setErrors(validationErrors.length > 0 ? validationErrors : [copy.errors.generic]);
       return;
     }
-
-    let mime: SupportedImageMime | null = null;
-    try {
-      const header = await readFileHeaderBytes(selected, 32);
-      mime = detectImageMimeFromBytes(header);
-    } catch {
-      setErrors([copy.errors.generic]);
-      return;
-    }
-    if (!mime) {
-      setErrors([`${copy.errors.notImage} ${selected.name}`]);
-      return;
-    }
+    const { mime } = accepted[0];
 
     if (sourceUrl) URL.revokeObjectURL(sourceUrl);
     const nextUrl = URL.createObjectURL(selected);
@@ -427,7 +417,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                 </span>
               </div>
 
-              <div className="flex min-h-64 items-center justify-center overflow-hidden rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3">
+              <div className="flex min-h-64 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3">
                 <div
                   className="relative inline-block max-w-full transition-transform duration-150"
                   style={{
@@ -439,7 +429,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                     alt={file.name}
                     width={sourceDims.width}
                     height={sourceDims.height}
-                    className="block max-h-72 w-auto max-w-full"
+                    className="block max-h-52 max-w-52 w-auto object-contain sm:max-h-64 sm:max-w-64"
                   />
                   {overlayStyle && (
                     <div
@@ -518,7 +508,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                 <p className="m-0 text-xs font-semibold text-[var(--ink-primary)]">
                   {copy.cropSectionLabel}
                 </p>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="flex flex-wrap gap-2">
                   {presets.map((p) => {
                     const active = cropPreset === p.value;
                     return (
@@ -605,7 +595,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                   <span className="text-xs font-semibold text-[var(--ink-primary)]">
                     {copy.resizeSectionLabel}
                   </span>
-                  <div className="flex gap-1.5">
+                  <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setResizeMode('pixels')}
@@ -708,7 +698,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
               <div className="space-y-3 border-t border-[var(--border-subtle)] pt-4">
                 <div className="space-y-1.5">
                   <label htmlFor={formatId} className="block text-xs font-semibold text-[var(--ink-primary)]">
-                    {dict.compressImage.formatLabel}
+                    {dict.shared.outputFormatLabel}
                   </label>
                   <select
                     id={formatId}
@@ -719,7 +709,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                     }}
                     className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-card)] px-3 text-sm text-[var(--ink-primary)]"
                   >
-                    <option value="original">{dict.compressImage.formatOriginal}</option>
+                    <option value="original">{dict.shared.outputFormatOriginal}</option>
                     <option value="image/webp">WebP</option>
                     <option value="image/jpeg">JPEG</option>
                     <option value="image/png">PNG</option>

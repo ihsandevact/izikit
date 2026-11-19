@@ -1,13 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes, sanitizeFilename } from '@/lib/format';
-import { createClientId } from '@/lib/id';
-import {
-  detectImageMimeFromBytes,
-  readFileHeaderBytes,
-  type SupportedImageMime,
-} from '@/lib/file-validation';
+import { validateImageFiles, type SupportedImageMime } from '@/lib/file-validation';
+import { moveListItem, reorderById } from '@/lib/list';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
@@ -91,39 +86,19 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
     setErrors([]);
     setResult(null);
 
-    const nextErrors: string[] = [];
-    const accepted: ImagePdfQueueItem[] = [];
-
-    for (const file of incoming) {
-      if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
-        nextErrors.push(`${copy.errors.tooLarge} ${file.name} (${formatBytes(file.size)})`);
-        continue;
-      }
-
-      try {
-        const header = await readFileHeaderBytes(file, 32);
-        const mime = detectImageMimeFromBytes(header);
-        if (!mime) {
-          nextErrors.push(`${copy.errors.notImage} ${file.name}`);
-          continue;
-        }
-
-        accepted.push({
-          id: `${file.name}-${file.size}-${createClientId()}`,
-          file,
-          mime,
-          previewUrl: URL.createObjectURL(file),
-        });
-      } catch {
-        nextErrors.push(`${copy.errors.generic} (${file.name})`);
-      }
-    }
+    const { accepted, errors: nextErrors } = await validateImageFiles(incoming, copy.errors);
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
     }
     if (accepted.length > 0) {
-      setItems((prev) => [...prev, ...accepted]);
+      const nextItems: ImagePdfQueueItem[] = accepted.map(({ id, file, mime }) => ({
+        id,
+        file,
+        mime,
+        previewUrl: URL.createObjectURL(file),
+      }));
+      setItems((prev) => [...prev, ...nextItems]);
     }
   };
 
@@ -131,26 +106,13 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
     const target = index + direction;
     if (target < 0 || target >= items.length) return;
     setResult(null);
-    setItems((prev) => {
-      const next = [...prev];
-      const [moved] = next.splice(index, 1);
-      next.splice(target, 0, moved);
-      return next;
-    });
+    setItems((prev) => moveListItem(prev, index, direction));
   };
 
   const reorderByIds = (sourceId: string, targetId: string) => {
     if (sourceId === targetId) return;
     setResult(null);
-    setItems((prev) => {
-      const fromIndex = prev.findIndex((item) => item.id === sourceId);
-      const toIndex = prev.findIndex((item) => item.id === targetId);
-      if (fromIndex === -1 || toIndex === -1) return prev;
-      const next = [...prev];
-      const [moved] = next.splice(fromIndex, 1);
-      next.splice(toIndex, 0, moved);
-      return next;
-    });
+    setItems((prev) => reorderById(prev, sourceId, targetId));
   };
 
   const removeItem = (id: string) => {
@@ -308,7 +270,7 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
                     <span aria-hidden="true" className="hidden text-[var(--ink-muted)] sm:inline-flex">
                       <GripIcon className="h-4 w-4" />
                     </span>
-                    <span className="font-data inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] text-xs font-semibold text-[var(--ink-primary)]">
+                    <span className="font-data inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-card)] text-xs font-semibold text-[var(--ink-primary)]">
                       {index + 1}
                     </span>
                     <img
@@ -328,13 +290,13 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-end gap-1.5">
+                  <div className="flex items-center justify-end gap-2">
                     <button
                       type="button"
                       onClick={() => moveItem(index, -1)}
                       disabled={isBuilding || index === 0}
-                      aria-label={`${dict.mergePdf.moveUp}: ${item.file.name}`}
-                      title={dict.mergePdf.moveUp}
+                      aria-label={`${dict.shared.moveUp}: ${item.file.name}`}
+                      title={dict.shared.moveUp}
                       className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                     >
                       <ArrowUpIcon className="h-4 w-4" />
@@ -343,8 +305,8 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
                       type="button"
                       onClick={() => moveItem(index, 1)}
                       disabled={isBuilding || index === items.length - 1}
-                      aria-label={`${dict.mergePdf.moveDown}: ${item.file.name}`}
-                      title={dict.mergePdf.moveDown}
+                      aria-label={`${dict.shared.moveDown}: ${item.file.name}`}
+                      title={dict.shared.moveDown}
                       className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                     >
                       <ArrowDownIcon className="h-4 w-4" />
@@ -486,7 +448,7 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
                 {copy.resultReadyTitle}
               </h3>
               <p className="font-data m-0 text-sm text-[var(--ink-muted)]">
-                {result.filename} · {result.pageCount} {dict.mergePdf.pagesUnit} ·{' '}
+                {result.filename} · {result.pageCount} {dict.shared.pagesUnit} ·{' '}
                 {formatBytes(result.blob.size)}
               </p>
             </div>

@@ -1,4 +1,5 @@
 import { degrees, PDFDocument } from 'pdf-lib';
+import { loadPdfDocumentOrThrow } from '../shared/pdf-loader';
 import {
   normalizeRotation,
   RotateReorderError,
@@ -26,21 +27,12 @@ export interface RotateReorderProgress {
   total: number;
 }
 
-async function loadPdfDocument(bytes: Uint8Array): Promise<PDFDocument> {
-  try {
-    const doc = await PDFDocument.load(bytes, { updateMetadata: false });
-    if (doc.getPageCount() < 1) {
-      throw new RotateReorderError('CORRUPT', 'PDF contains zero pages.');
-    }
-    return doc;
-  } catch (err) {
-    if (err instanceof RotateReorderError) throw err;
-    const message = err instanceof Error ? err.message : String(err);
-    if (/encrypt/i.test(message)) {
-      throw new RotateReorderError('ENCRYPTED', message);
-    }
-    throw new RotateReorderError('CORRUPT', message);
-  }
+function loadPdfDocument(bytes: Uint8Array): Promise<PDFDocument> {
+  return loadPdfDocumentOrThrow(bytes, {
+    requireNonEmpty: true,
+    emptyMessage: 'PDF contains zero pages.',
+    createError: (kind, message) => new RotateReorderError(kind, message),
+  });
 }
 
 export async function inspectPdfPagesMetadata(bytes: Uint8Array): Promise<PdfPageMetadata[]> {

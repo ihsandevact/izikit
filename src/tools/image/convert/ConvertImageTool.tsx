@@ -1,12 +1,9 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes } from '@/lib/format';
-import { createClientId } from '@/lib/id';
 import {
-  detectImageMimeFromBytes,
   mimeToExtension,
-  readFileHeaderBytes,
+  validateImageFiles,
   type SupportedImageMime,
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
@@ -73,39 +70,19 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
 
   const handleFilesSelected = async (incoming: File[]) => {
     setErrors([]);
-    const nextErrors: string[] = [];
-    const accepted: ConvertQueueItem[] = [];
-
-    for (const file of incoming) {
-      if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
-        nextErrors.push(`${copy.errors.tooLarge} ${file.name} (${formatBytes(file.size)})`);
-        continue;
-      }
-
-      try {
-        const header = await readFileHeaderBytes(file, 32);
-        const mime = detectImageMimeFromBytes(header);
-        if (!mime) {
-          nextErrors.push(`${copy.errors.notImage} ${file.name}`);
-          continue;
-        }
-
-        accepted.push({
-          id: `${file.name}-${file.size}-${createClientId()}`,
-          file,
-          mime,
-          previewUrl: URL.createObjectURL(file),
-        });
-      } catch {
-        nextErrors.push(`${copy.errors.generic} (${file.name})`);
-      }
-    }
+    const { accepted, errors: nextErrors } = await validateImageFiles(incoming, copy.errors);
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
     }
     if (accepted.length > 0) {
-      setItems((prev) => [...prev, ...accepted]);
+      const nextItems: ConvertQueueItem[] = accepted.map(({ id, file, mime }) => ({
+        id,
+        file,
+        mime,
+        previewUrl: URL.createObjectURL(file),
+      }));
+      setItems((prev) => [...prev, ...nextItems]);
     }
   };
 
@@ -357,7 +334,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                     className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
                   >
                     <DownloadIcon className="h-4 w-4" />
-                    <span>{isZipping ? dict.compressImage.buildingZip : copy.downloadZip}</span>
+                    <span>{isZipping ? dict.shared.buildingZip : copy.downloadZip}</span>
                   </button>
                 ) : (
                   <button

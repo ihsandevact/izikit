@@ -1,8 +1,8 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { getDictionary, type Locale } from '@/i18n';
-import { SITE_CONFIG } from '@/config/site';
 import { formatBytes, sanitizeFilename } from '@/lib/format';
-import { hasPdfMagicBytes, readFileHeaderBytes } from '@/lib/file-validation';
+import { validatePdfFiles } from '@/lib/file-validation';
+import { moveListItem, reorderById } from '@/lib/list';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
@@ -84,19 +84,13 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
     setErrors([]);
     setResult(null);
 
-    if (selected.size > SITE_CONFIG.limits.pdfSoftMaxBytes) {
-      setErrors([`${copy.errors.tooLarge} ${selected.name} (${formatBytes(selected.size)})`]);
-      return;
-    }
-
-    try {
-      const header = await readFileHeaderBytes(selected, 1024);
-      if (!hasPdfMagicBytes(header)) {
-        setErrors([`${copy.errors.notPdf} ${selected.name}`]);
-        return;
-      }
-    } catch {
-      setErrors([`${copy.errors.corrupt} ${selected.name}`]);
+    const { accepted, errors: validationErrors } = await validatePdfFiles([selected], {
+      tooLarge: copy.errors.tooLarge,
+      notPdf: copy.errors.notPdf,
+      generic: copy.errors.corrupt,
+    });
+    if (validationErrors.length > 0 || accepted.length === 0) {
+      setErrors(validationErrors.length > 0 ? validationErrors : [`${copy.errors.corrupt} ${selected.name}`]);
       return;
     }
 
@@ -187,26 +181,13 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
     const target = index + direction;
     if (target < 0 || target >= pages.length) return;
     setResult(null);
-    setPages((prev) => {
-      const next = [...prev];
-      const [moved] = next.splice(index, 1);
-      next.splice(target, 0, moved);
-      return next;
-    });
+    setPages((prev) => moveListItem(prev, index, direction));
   };
 
   const reorderByIds = (sourceId: string, targetId: string) => {
     if (sourceId === targetId) return;
     setResult(null);
-    setPages((prev) => {
-      const fromIndex = prev.findIndex((p) => p.id === sourceId);
-      const toIndex = prev.findIndex((p) => p.id === targetId);
-      if (fromIndex === -1 || toIndex === -1) return prev;
-      const next = [...prev];
-      const [moved] = next.splice(fromIndex, 1);
-      next.splice(toIndex, 0, moved);
-      return next;
-    });
+    setPages((prev) => reorderById(prev, sourceId, targetId));
   };
 
   const removePage = (id: string) => {
@@ -326,7 +307,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                 {formatBytes(file.size)} ·{' '}
                 {inspecting
                   ? copy.inspectingPages
-                  : `${pages.length}/${originalPages.length} ${dict.mergePdf.pagesUnit}`}
+                  : `${pages.length}/${originalPages.length} ${dict.shared.pagesUnit}`}
               </p>
             </div>
 
@@ -392,7 +373,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                       )}
                     </div>
 
-                    <div className="flex h-44 items-center justify-center overflow-hidden rounded-md border border-[var(--border-subtle)] bg-[var(--bg-recess)] p-2">
+                    <div className="flex h-44 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)] p-2">
                       {card.thumbnailUrl ? (
                         <img
                           src={card.thumbnailUrl}
@@ -400,7 +381,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                           width={160}
                           height={200}
                           style={{ transform: `rotate(${card.deltaRotation}deg)` }}
-                          className="max-h-36 max-w-36 rounded-xs bg-white object-contain shadow-xs transition-transform duration-150"
+                          className="max-h-36 max-w-36 rounded-sm border border-[var(--border-subtle)] bg-white object-contain transition-transform duration-150"
                         />
                       ) : (
                         <div className="text-center text-xs text-[var(--ink-muted)]">
@@ -414,8 +395,8 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-1.5">
-                      <div className="flex items-center gap-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
                         <button
                           type="button"
                           onClick={() => rotatePage(card.id, -90)}
@@ -438,13 +419,13 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-2">
                         <button
                           type="button"
                           onClick={() => movePage(index, -1)}
                           disabled={isSaving || index === 0}
-                          aria-label={`${dict.mergePdf.moveUp}: #${index + 1}`}
-                          title={dict.mergePdf.moveUp}
+                          aria-label={`${dict.shared.moveUp}: #${index + 1}`}
+                          title={dict.shared.moveUp}
                           className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                         >
                           <ArrowUpIcon className="h-4 w-4" />
@@ -453,8 +434,8 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                           type="button"
                           onClick={() => movePage(index, 1)}
                           disabled={isSaving || index === pages.length - 1}
-                          aria-label={`${dict.mergePdf.moveDown}: #${index + 1}`}
-                          title={dict.mergePdf.moveDown}
+                          aria-label={`${dict.shared.moveDown}: #${index + 1}`}
+                          title={dict.shared.moveDown}
                           className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                         >
                           <ArrowDownIcon className="h-4 w-4" />
@@ -501,7 +482,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                 disabled={isSaving || inspecting || pages.length === 0}
                 className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
               >
-                {copy.saveButton} ({pages.length} {dict.mergePdf.pagesUnit})
+                {copy.saveButton} ({pages.length} {dict.shared.pagesUnit})
               </button>
             </div>
           )}
@@ -526,7 +507,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                 {copy.resultReadyTitle}
               </h3>
               <p className="font-data m-0 text-sm text-[var(--ink-muted)]">
-                {result.filename} · {result.pageCount} {dict.mergePdf.pagesUnit} ·{' '}
+                {result.filename} · {result.pageCount} {dict.shared.pagesUnit} ·{' '}
                 {formatBytes(result.blob.size)}
               </p>
             </div>
