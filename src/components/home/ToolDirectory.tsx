@@ -193,7 +193,11 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
                 </p>
               </div>
 
-              <div className="grid gap-3.5 sm:grid-cols-2 sm:gap-4">
+              <div
+                className={`grid gap-3.5 sm:grid-cols-2 sm:gap-4 ${
+                  livePdfTools.length >= 5 ? 'lg:grid-cols-3' : ''
+                }`}
+              >
                 {livePdfTools.map((tool) => renderToolCard(tool, 'pdf'))}
               </div>
             </section>
@@ -218,7 +222,11 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
                 </p>
               </div>
 
-              <div className="grid gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+              <div
+                className={`grid gap-3.5 sm:grid-cols-2 sm:gap-4 ${
+                  liveImageTools.length === 4 ? '' : 'lg:grid-cols-3'
+                }`}
+              >
                 {liveImageTools.map((tool) => renderToolCard(tool, 'image'))}
               </div>
             </section>

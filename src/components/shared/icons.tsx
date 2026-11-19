@@ -76,6 +76,46 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <path d="M4.5 9h14l-3-3m4 9h-14l3 3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
+    case 'watermark-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M6 3.5h8.5L19 8v12.5H6V3.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M8.5 14.5l7-5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M11 18h5.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case 'compress-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M6 3.5h8.5L19 8v12.5H6V3.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M12.5 9.5v4.5m0 0l-2-2m2 2l2-2M9.5 17.5h6" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'watermark-image':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="3.5" y="4.5" width="17" height="15" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M7.5 15.5l9-7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <circle cx="15.5" cy="14.5" r="2" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case 'collage-image':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.2" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="13" y="3.5" width="7.5" height="7.5" rx="1.2" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="3.5" y="13" width="7.5" height="7.5" rx="1.2" stroke="currentColor" strokeWidth="1.75" />
+          <rect x="13" y="13" width="7.5" height="7.5" rx="1.2" stroke="currentColor" strokeWidth="1.75" />
+        </svg>
+      );
+    case 'protect-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="5" y="10.5" width="14" height="10" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M8.5 10.5V7.5a3.5 3.5 0 1 1 7 0v3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <circle cx="12" cy="15.2" r="1.3" fill="currentColor" />
+        </svg>
+      );
   }
 }
 

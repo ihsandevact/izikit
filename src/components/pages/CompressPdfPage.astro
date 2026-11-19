@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import CompressPdfTool from '@/tools/pdf/compress/CompressPdfTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/compress-pdf" toolKey="compress-pdf">
+  <CompressPdfTool client:load locale={locale} />
+</ToolPageLayout>

@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import CollageImageTool from '@/tools/image/collage/CollageImageTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/collage-image" toolKey="collage-image">
+  <CollageImageTool client:load locale={locale} />
+</ToolPageLayout>

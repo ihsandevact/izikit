@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import ProtectPdfTool from '@/tools/pdf/protect/ProtectPdfTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/protect-pdf" toolKey="protect-pdf">
+  <ProtectPdfTool client:load locale={locale} />
+</ToolPageLayout>

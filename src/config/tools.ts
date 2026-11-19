@@ -5,9 +5,14 @@ export type ToolIconKey =
   | 'split-pdf'
   | 'rotate-pdf'
   | 'image-to-pdf'
+  | 'watermark-pdf'
+  | 'compress-pdf'
+  | 'protect-pdf'
   | 'compress-image'
   | 'resize-image'
-  | 'convert-image';
+  | 'convert-image'
+  | 'watermark-image'
+  | 'collage-image';
 
 export interface ToolDefinition {
   id: string;
@@ -90,6 +95,45 @@ export const TOOLS: readonly ToolDefinition[] = [
     },
   },
   {
+    id: 'watermark-pdf',
+    slug: 'watermark-pdf',
+    category: 'pdf',
+    status: 'live',
+    phase: 2,
+    icon: 'watermark-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['watermark pdf', 'nomor halaman pdf', 'stempel pdf', 'draft', 'confidential'],
+      en: ['watermark pdf', 'page numbers pdf', 'stamp pdf', 'draft', 'confidential'],
+    },
+  },
+  {
+    id: 'compress-pdf',
+    slug: 'compress-pdf',
+    category: 'pdf',
+    status: 'live',
+    phase: 2,
+    icon: 'compress-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['kompres pdf', 'kecilkan ukuran pdf', 'resize pdf', 'a4', 'scan pdf'],
+      en: ['compress pdf', 'shrink pdf', 'reduce pdf size', 'resize pdf', 'a4'],
+    },
+  },
+  {
+    id: 'protect-pdf',
+    slug: 'protect-pdf',
+    category: 'pdf',
+    status: 'live',
+    phase: 2,
+    icon: 'protect-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['kunci pdf', 'password pdf', 'buka pdf', 'unlock pdf', 'protect pdf', 'sandi'],
+      en: ['protect pdf', 'lock pdf', 'unlock pdf', 'password pdf', 'encrypt pdf', 'decrypt'],
+    },
+  },
+  {
     id: 'resize-crop-image',
     slug: 'resize-crop-image',
     category: 'image',
@@ -113,6 +157,32 @@ export const TOOLS: readonly ToolDefinition[] = [
     keywords: {
       id: ['konversi gambar', 'ubah format gambar', 'png ke jpg', 'webp'],
       en: ['convert image', 'png to jpg', 'jpg to webp', 'format'],
+    },
+  },
+  {
+    id: 'watermark-image',
+    slug: 'watermark-image',
+    category: 'image',
+    status: 'live',
+    phase: 2,
+    icon: 'watermark-image',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['watermark gambar', 'watermark foto', 'tempel logo foto', 'teks di gambar'],
+      en: ['watermark image', 'add logo to photo', 'text on image', 'stamp photo'],
+    },
+  },
+  {
+    id: 'collage-image',
+    slug: 'collage-image',
+    category: 'image',
+    status: 'live',
+    phase: 2,
+    icon: 'collage-image',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['kolase foto', 'grid gambar', 'gabung foto', 'collage maker'],
+      en: ['photo collage', 'image grid', 'combine photos', 'collage maker'],
     },
   },
 ] as const;

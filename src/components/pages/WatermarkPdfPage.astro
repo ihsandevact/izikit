@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import WatermarkPdfTool from '@/tools/pdf/watermark/WatermarkPdfTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/watermark-pdf" toolKey="watermark-pdf">
+  <WatermarkPdfTool client:load locale={locale} />
+</ToolPageLayout>
