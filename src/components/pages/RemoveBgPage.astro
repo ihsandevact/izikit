@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import RemoveBgTool from '@/tools/image/remove-bg/RemoveBgTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/remove-bg" toolKey="remove-bg">
+  <RemoveBgTool client:load locale={locale} />
+</ToolPageLayout>

@@ -27,6 +27,30 @@ export interface PdfValidationMessages {
   generic: string;
 }
 
+export interface ValidatedDocxFile {
+  id: string;
+  file: File;
+}
+
+export interface DocxValidationMessages {
+  tooLarge: string;
+  notDocx: string;
+  generic: string;
+}
+
+/**
+ * Inspect magic bytes of a file buffer to verify real ZIP/OpenXML header (PK\x03\x04).
+ */
+export function hasZipMagicBytes(bytes: Uint8Array): boolean {
+  return (
+    bytes.length >= 4 &&
+    bytes[0] === 0x50 && // P
+    bytes[1] === 0x4b && // K
+    bytes[2] === 0x03 &&
+    bytes[3] === 0x04
+  );
+}
+
 /**
  * Inspect magic bytes of a file buffer to verify real PDF header (%PDF-).
  */
@@ -181,6 +205,43 @@ export async function validatePdfFiles(
       const header = await readFileHeaderBytes(file, 1024);
       if (!hasPdfMagicBytes(header)) {
         errors.push(`${messages.notPdf} ${file.name}`);
+        continue;
+      }
+
+      accepted.push({
+        id: `${file.name}-${file.size}-${createClientId()}`,
+        file,
+      });
+    } catch {
+      errors.push(`${messages.generic} (${file.name})`);
+    }
+  }
+
+  return { accepted, errors };
+}
+
+export async function validateDocxFiles(
+  incomingFiles: readonly File[],
+  messages: DocxValidationMessages,
+): Promise<{ accepted: ValidatedDocxFile[]; errors: string[] }> {
+  const errors: string[] = [];
+  const accepted: ValidatedDocxFile[] = [];
+
+  for (const file of incomingFiles) {
+    if (file.size > SITE_CONFIG.limits.pdfSoftMaxBytes) {
+      errors.push(`${messages.tooLarge} ${file.name} (${formatBytes(file.size)})`);
+      continue;
+    }
+
+    if (!file.name.toLowerCase().endsWith('.docx')) {
+      errors.push(`${messages.notDocx} ${file.name}`);
+      continue;
+    }
+
+    try {
+      const header = await readFileHeaderBytes(file, 32);
+      if (!hasZipMagicBytes(header)) {
+        errors.push(`${messages.notDocx} ${file.name}`);
         continue;
       }
 

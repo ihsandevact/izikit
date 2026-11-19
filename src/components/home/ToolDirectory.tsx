@@ -195,7 +195,7 @@ export default function ToolDirectory({ locale }: ToolDirectoryProps) {
 
               <div
                 className={`grid gap-3.5 sm:grid-cols-2 sm:gap-4 ${
-                  livePdfTools.length >= 5 ? 'lg:grid-cols-3' : ''
+                  livePdfTools.length % 4 === 0 ? '' : 'lg:grid-cols-3'
                 }`}
               >
                 {livePdfTools.map((tool) => renderToolCard(tool, 'pdf'))}

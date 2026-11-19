@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import EditPdfTool from '@/tools/pdf/edit/EditPdfTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/edit-pdf" toolKey="edit-pdf">
+  <EditPdfTool client:load locale={locale} />
+</ToolPageLayout>

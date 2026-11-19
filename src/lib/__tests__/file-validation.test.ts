@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { validateImageFiles, validatePdfFiles } from '../file-validation';
+import { validateDocxFiles, validateImageFiles, validatePdfFiles } from '../file-validation';
 
 const PNG_HEADER = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0]);
 const PDF_HEADER = new TextEncoder().encode('%PDF-1.7\n');
+const ZIP_HEADER = new Uint8Array([0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x00, 0x00]);
 
 describe('validateImageFiles', () => {
   const messages = {
@@ -43,5 +44,30 @@ describe('validatePdfFiles', () => {
     expect(result.accepted).toHaveLength(1);
     expect(result.accepted[0].file.name).toBe('doc.pdf');
     expect(result.errors).toEqual(['Not PDF: fake.pdf']);
+  });
+});
+
+describe('validateDocxFiles', () => {
+  const messages = {
+    tooLarge: 'Too large:',
+    notDocx: 'Not DOCX:',
+    generic: 'Corrupt:',
+  };
+
+  it('accepts valid .docx files with PK ZIP magic bytes and rejects non-docx or wrong-extension files', async () => {
+    const validDocx = new File([ZIP_HEADER], 'laporan.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    const fakeDocx = new File([new TextEncoder().encode('plain text')], 'palsu.docx', {
+      type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
+    const legacyDoc = new File([ZIP_HEADER], 'lama.doc', {
+      type: 'application/msword',
+    });
+
+    const result = await validateDocxFiles([validDocx, fakeDocx, legacyDoc], messages);
+    expect(result.accepted).toHaveLength(1);
+    expect(result.accepted[0].file.name).toBe('laporan.docx');
+    expect(result.errors).toEqual(['Not DOCX: palsu.docx', 'Not DOCX: lama.doc']);
   });
 });

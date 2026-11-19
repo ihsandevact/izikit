@@ -116,6 +116,28 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <circle cx="12" cy="15.2" r="1.3" fill="currentColor" />
         </svg>
       );
+    case 'edit-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M5 19.5h4.2l9.8-9.8a1.8 1.8 0 0 0 0-2.55l-1.65-1.65a1.8 1.8 0 0 0-2.55 0L5 15.3v4.2Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M12.8 7.5l4.2 4.2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      );
+    case 'remove-bg':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="3.5" y="4.5" width="17" height="15" rx="2" stroke="currentColor" strokeWidth="1.75" strokeDasharray="3 2.5" />
+          <circle cx="12" cy="10.2" r="2.6" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M7.5 18.2c.8-2.3 2.4-3.5 4.5-3.5s3.7 1.2 4.5 3.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      );
+    case 'word-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M6 3.5h8.5L19 8v12.5H6V3.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M8.5 11.5l1.4 5 1.6-3.6 1.6 3.6 1.4-5" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
   }
 }
 

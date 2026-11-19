@@ -8,11 +8,14 @@ export type ToolIconKey =
   | 'watermark-pdf'
   | 'compress-pdf'
   | 'protect-pdf'
+  | 'edit-pdf'
+  | 'word-to-pdf'
   | 'compress-image'
   | 'resize-image'
   | 'convert-image'
   | 'watermark-image'
-  | 'collage-image';
+  | 'collage-image'
+  | 'remove-bg';
 
 export interface ToolDefinition {
   id: string;
@@ -134,6 +137,32 @@ export const TOOLS: readonly ToolDefinition[] = [
     },
   },
   {
+    id: 'edit-pdf',
+    slug: 'edit-pdf',
+    category: 'pdf',
+    status: 'live',
+    phase: 3,
+    icon: 'edit-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['edit pdf', 'tanda tangan pdf', 'sign pdf', 'anotasi', 'stabilo', 'redact pdf'],
+      en: ['edit pdf', 'sign pdf', 'signature', 'annotate pdf', 'highlight', 'redact pdf'],
+    },
+  },
+  {
+    id: 'word-to-pdf',
+    slug: 'word-to-pdf',
+    category: 'pdf',
+    status: 'live',
+    phase: 4,
+    icon: 'word-to-pdf',
+    acceptedExtensions: ['.docx'],
+    keywords: {
+      id: ['word ke pdf', 'docx ke pdf', 'ubah word jadi pdf', 'dokumen word'],
+      en: ['word to pdf', 'docx to pdf', 'convert docx to pdf', 'microsoft word'],
+    },
+  },
+  {
     id: 'resize-crop-image',
     slug: 'resize-crop-image',
     category: 'image',
@@ -183,6 +212,19 @@ export const TOOLS: readonly ToolDefinition[] = [
     keywords: {
       id: ['kolase foto', 'grid gambar', 'gabung foto', 'collage maker'],
       en: ['photo collage', 'image grid', 'combine photos', 'collage maker'],
+    },
+  },
+  {
+    id: 'remove-bg',
+    slug: 'remove-bg',
+    category: 'image',
+    status: 'live',
+    phase: 3,
+    icon: 'remove-bg',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['hapus background', 'remove bg', 'pasfoto merah biru', 'latar transparan', 'ai lokal'],
+      en: ['remove background', 'remove bg', 'transparent background', 'cutout photo', 'id photo'],
     },
   },
 ] as const;
