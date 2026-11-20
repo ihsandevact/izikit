@@ -1,0 +1,44 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  locale="id"
+  currentRoute="/"
+  title="404 — Halaman Tidak Ditemukan | izikit"
+  description="Halaman yang kamu cari tidak ditemukan di izikit. Kembali ke beranda atau jelajahi semua alat PDF dan gambar gratis."
+  noindex={true}
+>
+  <section class="mx-auto flex max-w-2xl flex-col items-center px-4 py-16 text-center sm:px-6 sm:py-24">
+    <p class="font-data m-0 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-1 text-xs font-bold tracking-wider text-[var(--hl)]">
+      404
+    </p>
+    <h1 class="font-display m-0 mt-4 text-2xl font-extrabold text-[var(--ink-primary)] sm:text-3xl">
+      Halaman tidak ditemukan
+    </h1>
+    <p class="m-0 mt-3 max-w-md text-sm leading-relaxed text-[var(--ink-muted)] sm:text-base">
+      Tautan mungkin sudah berpindah atau alamat URL kurang tepat. Kamu bisa kembali ke beranda atau memilih langsung alat PDF dan gambar gratis di izikit.
+    </p>
+
+    <div class="mt-7 flex flex-wrap items-center justify-center gap-3">
+      <a
+        href="/"
+        class="btn-primary inline-flex min-h-11 items-center rounded-xl px-5 text-sm font-semibold no-underline"
+      >
+        Kembali ke Beranda
+      </a>
+      <a
+        href="/tools"
+        class="btn-secondary inline-flex min-h-11 items-center rounded-xl px-5 text-sm font-semibold no-underline"
+      >
+        Lihat Semua Tools
+      </a>
+      <a
+        href="/en"
+        class="inline-flex min-h-11 items-center rounded-xl px-4 text-sm font-semibold text-[var(--link)] underline-offset-4 hover:underline"
+      >
+        English Home
+      </a>
+    </div>
+  </section>
+</BaseLayout>
