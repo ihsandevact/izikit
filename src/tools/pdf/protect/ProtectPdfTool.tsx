@@ -543,7 +543,7 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
               </div>
             )}
 
-            <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="space-y-4">
               <label
                 htmlFor={showPassId}
                 className="inline-flex min-h-11 items-center gap-2 text-sm text-[var(--ink-primary)]"
@@ -558,10 +558,10 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
                 <span>{copy.showPasswordsLabel}</span>
               </label>
 
-              <div className="w-full space-y-1 sm:w-72">
+              <div className="space-y-1.5 border-t border-[var(--border-subtle)] pt-4">
                 <label
                   htmlFor={outputNameId}
-                  className="block text-xs font-medium text-[var(--ink-muted)]"
+                  className="block text-sm font-medium text-[var(--ink-primary)]"
                 >
                   {copy.outputNameLabel}
                 </label>
@@ -583,7 +583,7 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
               <button
                 type="submit"
                 disabled={isProcessing || inspecting || !inspectInfo || Boolean(validationIssue)}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {mode === 'protect' ? copy.protectButton : copy.unlockButton}
               </button>

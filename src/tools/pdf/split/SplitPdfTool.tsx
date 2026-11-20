@@ -364,7 +364,7 @@ export default function SplitPdfTool({ locale }: SplitPdfToolProps) {
                   !pageCount ||
                   (mode !== 'all-pages' && !rangePreview?.valid)
                 }
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {copy.splitButton}
               </button>

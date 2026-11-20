@@ -861,7 +861,7 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                       type="button"
                       onClick={() => removeAnnotation(selectedAnnotation.id)}
                       aria-label={`${dict.shared.removeFile}: ${copy.typeLabels[selectedAnnotation.type]}`}
-                      className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
+                      className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--danger)]"
                     >
                       <TrashIcon className="h-4 w-4" />
                     </button>
@@ -914,7 +914,7 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                               item.type === 'text' ? { ...item, fontSize: size } : item,
                             );
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
 
@@ -931,15 +931,15 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                                 item.type === 'text' ? { ...item, colorHex: hex } : item,
                               );
                             }}
-                            className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${
+                            className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border bg-[var(--bg-card)] ${
                               selectedAnnotation.colorHex === hex
                                 ? 'border-[var(--accent)] ring-2 ring-[var(--accent)]/40'
-                                : 'border-[var(--border-control)] bg-[var(--bg-card)]'
+                                : 'border-[var(--border-control)]'
                             }`}
                           >
                             <span
                               aria-hidden="true"
-                              className="h-5 w-5 rounded-full"
+                              className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                               style={{ backgroundColor: hex }}
                             />
                           </button>
@@ -985,7 +985,7 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                               };
                             });
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
 
@@ -1003,15 +1003,15 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                                   item.type === 'highlight' ? { ...item, colorHex: hex } : item,
                                 );
                               }}
-                              className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${
+                              className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border bg-[var(--bg-card)] ${
                                 selectedAnnotation.colorHex === hex
                                   ? 'border-[var(--accent)] ring-2 ring-[var(--accent)]/40'
-                                  : 'border-[var(--border-control)] bg-[var(--bg-card)]'
+                                  : 'border-[var(--border-control)]'
                               }`}
                             >
                               <span
                                 aria-hidden="true"
-                                className="h-5 w-5 rounded-full border border-black/20"
+                                className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                                 style={{ backgroundColor: hex }}
                               />
                             </button>
@@ -1033,15 +1033,15 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                                   item.type === 'redact' ? { ...item, colorHex: hex } : item,
                                 );
                               }}
-                              className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${
+                              className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border bg-[var(--bg-card)] ${
                                 selectedAnnotation.colorHex === hex
                                   ? 'border-[var(--accent)] ring-2 ring-[var(--accent)]/40'
-                                  : 'border-[var(--border-control)] bg-[var(--bg-card)]'
+                                  : 'border-[var(--border-control)]'
                               }`}
                             >
                               <span
                                 aria-hidden="true"
-                                className="h-5 w-5 rounded-full border border-black/20"
+                                className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                                 style={{ backgroundColor: hex }}
                               />
                             </button>
@@ -1088,7 +1088,7 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                           <button
                             type="button"
                             onClick={() => setSelectedId(ann.id)}
-                            className="min-w-0 flex-1 border-0 bg-transparent p-0 text-left"
+                            className="min-h-11 min-w-0 flex-1 border-0 bg-transparent p-0 text-left"
                           >
                             <span className="block text-xs font-semibold text-[var(--ink-primary)]">
                               {copy.typeLabels[ann.type]}
@@ -1101,7 +1101,7 @@ export default function EditPdfTool({ locale }: EditPdfToolProps) {
                             type="button"
                             onClick={() => removeAnnotation(ann.id)}
                             aria-label={`${dict.shared.removeFile}: ${copy.typeLabels[ann.type]}`}
-                            className="btn-secondary inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg"
+                            className="btn-secondary inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--danger)]"
                           >
                             <TrashIcon className="h-4 w-4" />
                           </button>

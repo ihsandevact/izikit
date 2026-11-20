@@ -392,35 +392,35 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
         />
       ) : (
         <div className="space-y-5">
-          {/* Batch Toolbar + Add More */}
+          {/* Add More Dropzone Bar */}
+          <Dropzone
+            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+            multiple={true}
+            compact={true}
+            disabled={isProcessing}
+            idleLabel={dict.shared.dropzoneAddMore}
+            activeLabel={dict.shared.dropzoneActive}
+            buttonLabel={dict.shared.dropzoneAddMore}
+            formatsHint={copy.formatsHint}
+            onFilesSelected={handleImagesSelected}
+          />
+
+          {/* Batch Summary Bar */}
           <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-3.5">
             <p className="font-data m-0 text-sm font-semibold text-[var(--ink-primary)]">
               {items.length} {copy.imagesUnit}
             </p>
-            <div className="flex flex-wrap items-center gap-2">
-              <Dropzone
-                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                multiple={true}
-                compact={true}
-                disabled={isProcessing}
-                idleLabel={dict.shared.dropzoneAddMore}
-                activeLabel={dict.shared.dropzoneActive}
-                buttonLabel={dict.shared.dropzoneAddMore}
-                formatsHint=""
-                onFilesSelected={handleImagesSelected}
-              />
-              <button
-                type="button"
-                onClick={clearAll}
-                disabled={isProcessing}
-                className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-xs font-medium"
-              >
-                {dict.shared.clearAll}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={clearAll}
+              disabled={isProcessing}
+              className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-xs font-medium"
+            >
+              {dict.shared.clearAll}
+            </button>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
             {/* Watermark Controls */}
             <fieldset disabled={isProcessing} className="m-0 space-y-4 border-0 p-0">
               <div className="space-y-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4">
@@ -502,7 +502,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                             setFontPercent(Number(e.target.value));
                             setOutputs([]);
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
 
@@ -532,7 +532,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                               >
                                 <span
                                   aria-hidden="true"
-                                  className="h-5 w-5 rounded-full border border-black/20"
+                                  className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                                   style={{ backgroundColor: swatch.hex }}
                                 />
                               </button>
@@ -614,7 +614,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                           setLogoScalePercent(Number(e.target.value));
                           setOutputs([]);
                         }}
-                        className="h-9 w-full accent-[var(--accent)]"
+                        className="izikit-range h-11 w-full"
                       />
                     </div>
                   </div>
@@ -664,7 +664,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                         setMarginPercent(Number(e.target.value));
                         setOutputs([]);
                       }}
-                      className="h-11 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
                 </div>
@@ -690,7 +690,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                         setOpacity(Number(e.target.value));
                         setOutputs([]);
                       }}
-                      className="h-9 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
 
@@ -712,7 +712,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                         setRotation(Number(e.target.value));
                         setOutputs([]);
                       }}
-                      className="h-9 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
                 </div>
@@ -760,7 +760,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                         setQuality(Number(e.target.value));
                         setOutputs([]);
                       }}
-                      className="h-11 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
                 </div>
@@ -774,7 +774,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                     type="button"
                     onClick={handleApply}
                     disabled={isProcessing || Boolean(validationIssue)}
-                    className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                    className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
                   >
                     {copy.applyButtonPrefix} {items.length} {copy.imagesUnit}
                   </button>
@@ -782,11 +782,11 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
               </div>
             </fieldset>
 
-            {/* Live Preview on First Image */}
+            {/* Live Preview on First Image (shown first on mobile) */}
             {firstPreview && (
               <aside
                 aria-label={copy.previewHeading}
-                className="space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:sticky lg:top-20"
+                className="order-first space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:order-none lg:sticky lg:top-20"
               >
                 <h3 className="m-0 text-sm font-semibold text-[var(--ink-primary)]">
                   {copy.previewHeading}
@@ -908,7 +908,7 @@ export default function WatermarkImageTool({ locale }: WatermarkImageToolProps) 
                   onClick={() => removeItem(item.id)}
                   disabled={isProcessing}
                   aria-label={`${dict.shared.removeFile}: ${item.file.name}`}
-                  className="btn-secondary inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg"
+                  className="btn-secondary inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--danger)]"
                 >
                   <TrashIcon className="h-4 w-4" />
                 </button>

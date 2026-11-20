@@ -70,7 +70,7 @@ describe('CollageImageTool upload, validation, and reorder flow', () => {
     });
 
     // Move first item down
-    const moveDownBtn = screen.getByRole('button', { name: /Pindah ke bawah: foto-a\.jpg/i });
+    const moveDownBtn = screen.getByRole('button', { name: /Geser turun: foto-a\.jpg/i });
     fireEvent.click(moveDownBtn);
 
     const listItems = screen.getAllByRole('listitem');

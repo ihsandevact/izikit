@@ -214,7 +214,7 @@ export default function SignaturePadModal({
       role="dialog"
       aria-modal="true"
       aria-label={copy.title}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 p-4"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -301,7 +301,7 @@ export default function SignaturePadModal({
                     aria-label={`${copy.inkColorLabel}: ${hex}`}
                     aria-pressed={inkColor === hex}
                     onClick={() => setInkColor(hex)}
-                    className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border ${
+                    className={`inline-flex h-11 w-11 items-center justify-center rounded-lg border bg-[var(--bg-paper)] ${
                       inkColor === hex
                         ? 'border-[var(--accent)] ring-2 ring-[var(--accent)]/40'
                         : 'border-[var(--border-control)]'
@@ -309,7 +309,7 @@ export default function SignaturePadModal({
                   >
                     <span
                       aria-hidden="true"
-                      className="h-5 w-5 rounded-full"
+                      className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                       style={{ backgroundColor: hex }}
                     />
                   </button>

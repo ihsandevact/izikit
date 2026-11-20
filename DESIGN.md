@@ -2,52 +2,45 @@
 
 ## Design Read
 
-Reading this as: local-first document and image utility workbench for Indonesian and global daily users, in a warm archival paper-and-ink stationery workbench style, dial ENERGY 2 / RHYTHM 2 / MOTION 1.
+Reading this as: scalable local-first multi-tool utility platform (PDF, documents, images, and everyday digital utilities) for Indonesian and global users, in a **Clean Daylight Command Launcher & Categorized Utility Catalog** style (ATM from `toowl.my.id`), dial ENERGY 2 / RHYTHM 3 / MOTION 1.
 
 ## Dials
 
-- **ENERGY 2 (Balanced):** Warm, tactile, and immediately usable without flashy neon effects or sterile grey defaults.
-- **RHYTHM 2 (Consistent with deliberate breaks):** Homepage pairs a direct workbench header and live tool filter with prominent active tool cards, followed by a quiet upcoming Fase 1 index and a transparent local-processing breakdown. Tool pages place the active workbench above the fold as the single focal point, followed by quiet usage notes.
-- **MOTION 1 (Functional feedback only):** Crisp hover, active press, and progress bar transitions only. No endless pulses, floating loops, or decorative entrance choreography. Honors `prefers-reduced-motion: reduce`.
+- **ENERGY 2 (Airy & Tactile):** Warm alabaster daylight canvas (`#F7F7F5`), pure white rounded-2xl cards (`#FFFFFF`), soft recessed icon wells (`#F0F0EC`), and a fresh Mint-Emerald active pill highlight (`#6EE7B7` with deep forest ink `#052E16`).
+- **RHYTHM 3 (Two-Zone Multi-Tool Architecture):**
+  - **Zone 1 (Above the Fold):** Centered two-tone conversational prompt (*"Mau bereskan apa hari ini?"*) over an interactive **Spotlight Command Launcher Card** featuring live search (`/`), *Terakhir Dipakai* (`localStorage` recent tools), *Populer* tools, and keyboard navigation (`↑↓` select, `↵` open, `esc` clear), followed by quick category pills.
+  - **Zone 2 (Full Catalog `#semua-tools`):** Scalable multi-category directory (*"Semua tools ¹⁵"*) organized into task-oriented sub-groups (`05`, `04`, `03`, `03`) with 3-column cards showing icon, title, status badge (`BARU` / `AI LOKAL`), diagonal launch arrow `↗`, 2-line description, and monospace format spec.
+- **MOTION 1 (Functional Feedback Only):** Snappy 120ms hover/focus transitions and deterministic progress bars. Honors `prefers-reduced-motion: reduce`.
 
-## Palette (WCAG AA Verified via contrast-check.py)
+## Palette (WCAG AA Verified)
 
-Active palette stays within 2 core surface/ink neutrals plus 1 deliberate accent (vermilion ink stamp) and semantic status tones:
+### Light Mode (Warm Alabaster & Mint-Emerald)
+- Canvas background (`--bg-paper` / `--bg-canvas`): `#F7F7F5`
+- Card surface (`--bg-card`): `#FFFFFF`
+- Recessed well (`--bg-recess`): `#F0F0EC`
+- Primary ink (`--ink-primary`): `#111315` (18.7:1 on card, 17.5:1 on canvas)
+- Secondary ink (`--ink-muted`): `#5A606A` (6.25:1 on card, 5.84:1 on canvas)
+- Structural hairline (`--border-subtle`): `#E5E5E0`
+- Control boundary (`--border-control`): `#8C929E` (3.12:1 on card, WCAG 1.4.11 pass)
+- Primary text/action accent (`--accent`): `#047857` (5.48:1 with `#FFFFFF`, 5.12:1 on canvas)
+- Active pill highlight (`--accent-pill`): `#6EE7B7` paired with `--accent-pill-ink`: `#052E16` (11.4:1 contrast)
+- Active launcher row (`--accent-row-bg`): `#F2FBF7` with border `--accent-row-border`: `#A7F3D0`
+- Error ink (`--danger`): `#B91C1C` (6.40:1 on card)
 
-### Light Mode (Archival Paper & Sumi Ink)
-- Canvas background (`--bg-paper`): `#F7F4EE`
-- Sheet surface (`--bg-card`): `#FFFFFF`
-- Recessed dropzone (`--bg-recess`): `#EFEAE0`
-- Primary ink (`--ink-primary`): `#181615` (16.43:1 on paper)
-- Secondary ink (`--ink-muted`): `#57524B` (7.05:1 on paper, 6.45:1 on recess)
-- Structural hairline (`--border-subtle`): `#D8D1C4`
-- Control boundary (`--border-control`): `#857D71` (3.70:1 on paper, WCAG 1.4.11 pass)
-- Primary accent (`--accent`): `#B93815` (5.77:1 with `#FFFFFF`, 5.26:1 on paper)
-- Success ink (`--success`): `#1F6B48` (5.88:1 on paper)
-- Error ink (`--danger`): `#B42318` (5.63:1 on paper)
-
-### Dark Mode (Drafting Table Slate & Warm Ivory)
-- Canvas background (`--bg-paper`): `#141311`
-- Sheet surface (`--bg-card`): `#1D1B18`
-- Recessed dropzone (`--bg-recess`): `#26231F`
-- Primary ink (`--ink-primary`): `#F4F0E8` (16.34:1 on slate)
-- Secondary ink (`--ink-muted`): `#B6AEA2` (8.46:1 on slate, 7.12:1 on recess)
-- Structural hairline (`--border-subtle`): `#34302B`
-- Control boundary (`--border-control`): `#827A70` (4.06:1 on card, WCAG 1.4.11 pass)
-- Primary accent (`--accent`): `#EB7A53` (6.58:1 with `#141311`, 6.09:1 on card)
-- Success ink (`--success`): `#62C395` (7.99:1 on card)
-- Error ink (`--danger`): `#F07167` (6.36:1 on card)
+### Dark Mode (Carbon Slate & Mint-Emerald)
+- Canvas background (`--bg-paper` / `--bg-canvas`): `#0D0F12`
+- Card surface (`--bg-card`): `#14171C`
+- Recessed well (`--bg-recess`): `#1C2027`
+- Primary ink (`--ink-primary`): `#F3F4F6` (15.7:1 on card)
+- Secondary ink (`--ink-muted`): `#9CA3AF` (6.80:1 on card)
+- Structural hairline (`--border-subtle`): `#242932`
+- Control boundary (`--border-control`): `#5E6675` (3.18:1 on card)
+- Primary accent (`--accent`): `#34D399` (8.65:1 on card, 10.2:1 with `#052E16`)
+- Active pill highlight (`--accent-pill`): `#34D399` paired with `--accent-pill-ink`: `#052E16`
+- Active launcher row (`--accent-row-bg`): `#11221C` with border `--accent-row-border`: `#1F4D3B`
+- Error ink (`--danger`): `#F87171` (6.15:1 on card)
 
 ## Typography (Self-Hosted Offline-Ready)
 
-- **Fraunces** (Display & wordmark): Gives izikit an unmistakable archival stationery voice instead of generic tech sans.
-- **Plus Jakarta Sans** (UI & body): Designed for high legibility across Indonesian and English prose at all sizes.
-- **IBM Plex Mono** (Data figures only): Used strictly with `tabular-nums` for file sizes, page counts, dimensions, and byte savings.
-
-## Identity Motif & One-Line Reasons (R-31)
-
-- **Color:** Warm archival paper and vermilion stamp ink directly evoke handling physical documents and proofs on a desk, separating izikit from blue-purple SaaS templates.
-- **Layout:** Each tool page puts the Dropzone/Workbench immediately at top-of-page so returning users finish in seconds, while SEO documentation stays cleanly below the workspace.
-- **Elevation & Radius:** Flat sheets with crisp 1px rules and a tight radius scale (`4px` tags, `8px` controls, `12px` workbench cards); subtle 2px tactile press offset on primary actions replaces soft floating shadows.
-- **Icons:** Custom geometric inline SVGs depicting folded sheets, document stacks, and crop/compress frames keep iconography tied directly to document and image manipulation.
-- **Logo (R-23 placeholder note):** Uses a typographic Fraunces `izikit` wordmark paired with a simple folded-sheet SVG mark until a final custom brand asset is supplied.
+- **Plus Jakarta Sans** (Display, wordmark & UI): Tight negative tracking (`-0.03em`) at bold/extrabold weights (700/800) for the conversational hero and section headings; clean 400/500/600 weights for descriptions and controls.
+- **IBM Plex Mono** (Counts, keyboard shortcuts & format tags): Used with `tabular-nums` for tool counts (`15`, `05`, `04`), keyboard keycaps (`↑`, `↓`, `↵`, `esc`, `/`), and file format labels (`PDF`, `DOCX → PDF`, `JPG / PNG / WEBP`).

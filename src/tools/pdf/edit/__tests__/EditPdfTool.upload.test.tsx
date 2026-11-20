@@ -66,12 +66,12 @@ describe('EditPdfTool upload and annotation workflow', () => {
     });
 
     const saveBtn = screen.getByRole('button', {
-      name: /Simpan PDF Hasil Edit/i,
+      name: /^Simpan PDF$/i,
     }) as HTMLButtonElement;
     expect(saveBtn.disabled).toBe(true);
 
     // Switch to Add Text tool and insert a quick text box
-    fireEvent.click(screen.getByRole('button', { name: /Tambah Teks/i }));
+    fireEvent.click(screen.getByRole('button', { name: /^Teks$/i }));
     fireEvent.click(screen.getByRole('button', { name: /Tambah teks di tengah halaman/i }));
 
     await waitFor(() => {
@@ -79,7 +79,7 @@ describe('EditPdfTool upload and annotation workflow', () => {
     });
 
     // Undo removes the annotation and disables Save again
-    fireEvent.click(screen.getByRole('button', { name: /Undo terakhir/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Urungkan \(Undo\)/i }));
     expect(saveBtn.disabled).toBe(true);
   });
 

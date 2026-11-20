@@ -232,7 +232,15 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
               {copy.settingsHeading}
             </legend>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div
+              className={`grid gap-4 ${
+                targetFormat === 'image/png'
+                  ? 'sm:grid-cols-1 max-w-sm'
+                  : targetFormat === 'image/webp'
+                    ? 'sm:grid-cols-2'
+                    : 'sm:grid-cols-2 lg:grid-cols-3'
+              }`}
+            >
               <div className="space-y-1.5">
                 <label htmlFor={targetId} className="block text-sm font-medium text-[var(--ink-primary)]">
                   {copy.targetFormatLabel}
@@ -300,9 +308,9 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
               <button
                 type="button"
                 onClick={handleConvert}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
-                {copy.convertButton} {items.length} -&gt; {targetExtUpper}
+                {copy.convertButton} {items.length} → {targetExtUpper}
               </button>
             </div>
           </fieldset>
@@ -371,9 +379,9 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                   <img
                     src={item.previewUrl}
                     alt={item.file.name}
-                    width={48}
-                    height={48}
-                    className="h-12 w-12 shrink-0 rounded border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
+                    width={56}
+                    height={56}
+                    className="h-14 w-14 shrink-0 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
                   />
                   <div className="min-w-0 space-y-0.5">
                     <p className="m-0 truncate text-sm font-medium text-[var(--ink-primary)]">
@@ -382,7 +390,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                     <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
                       {mimeToExtension(item.mime).toUpperCase()} ({formatBytes(item.file.size)})
                       {item.convertedBlob && item.outputMime
-                        ? ` -> ${mimeToExtension(item.outputMime).toUpperCase()} (${formatBytes(item.convertedBlob.size)})`
+                        ? ` → ${mimeToExtension(item.outputMime).toUpperCase()} (${formatBytes(item.convertedBlob.size)})`
                         : ''}
                     </p>
                   </div>

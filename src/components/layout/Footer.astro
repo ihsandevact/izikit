@@ -2,6 +2,7 @@
 import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
 import { SITE_CONFIG } from '@/config/site';
 import { getLiveTools } from '@/config/tools';
+import { BrandMarkIcon } from '@/components/shared/icons';
 
 interface Props {
   locale: Locale;
@@ -12,34 +13,52 @@ const { locale, currentRoute } = Astro.props;
 const dict = getDictionary(locale);
 const otherLocale: Locale = locale === 'id' ? 'en' : 'id';
 const liveTools = getLiveTools();
+const pdfTools = liveTools.filter((tool) => tool.category === 'pdf');
+const imageTools = liveTools.filter((tool) => tool.category === 'image');
 ---
 
 <footer class="mt-auto border-t border-[var(--border-subtle)] bg-[var(--bg-card)]">
-  <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6">
-    <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr]">
-      <div class="space-y-2.5">
-        <a
-          href={getLocalizedPath('/', locale)}
-          class="font-display inline-block text-lg font-bold text-[var(--ink-primary)] no-underline"
-        >
-          {SITE_CONFIG.brandName}
-        </a>
-        <p class="max-w-sm text-sm leading-relaxed text-[var(--ink-muted)]">
-          {dict.footer.localNote}
-        </p>
+  <div class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-10">
+    <div class="grid gap-7 sm:grid-cols-3 sm:gap-8 lg:grid-cols-[1.25fr_1fr_1fr_0.85fr]">
+      <div
+        class="space-y-3 sm:col-span-3 sm:flex sm:flex-wrap sm:items-center sm:justify-between sm:gap-4 sm:space-y-0 sm:border-b sm:border-[var(--border-subtle)] sm:pb-6 lg:col-span-1 lg:block lg:space-y-3 lg:border-b-0 lg:pb-0"
+      >
+        <div class="space-y-2">
+          <a
+            href={getLocalizedPath('/', locale)}
+            class="inline-flex items-center gap-2 text-lg font-extrabold text-[var(--ink-primary)] no-underline"
+          >
+            <BrandMarkIcon className="h-6 w-6 shrink-0" />
+            <span class="font-display">{SITE_CONFIG.brandName}</span>
+          </a>
+          <p class="m-0 max-w-md text-sm leading-relaxed text-[var(--ink-muted)] lg:max-w-xs">
+            {dict.footer.localNote}
+          </p>
+        </div>
+
+        <div class="flex flex-wrap gap-1.5 pt-1 sm:pt-0 lg:pt-1">
+          <span class="tech-badge rounded border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-2 py-0.5 text-[var(--ink-muted)]">
+            0 SERVER UPLOAD
+          </span>
+          <span class="tech-badge rounded border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-2 py-0.5 text-[var(--ink-muted)]">
+            OFFLINE PWA
+          </span>
+        </div>
       </div>
 
-      <div class="space-y-2">
-        <h2 class="text-sm font-semibold text-[var(--ink-primary)]">{dict.footer.activeToolsTitle}</h2>
-        <ul class="m-0 list-none space-y-1 p-0 text-sm">
+      <div class="space-y-2.5">
+        <h2 class="m-0 text-xs font-bold tracking-wider text-[var(--ink-primary)] uppercase">
+          {dict.nav.pdfGroup}
+        </h2>
+        <ul class="m-0 list-none space-y-0.5 p-0 text-sm">
           {
-            liveTools.map((tool) => {
+            pdfTools.map((tool) => {
               const meta = dict.tools[tool.id as keyof typeof dict.tools];
               return (
                 <li>
                   <a
                     href={getLocalizedPath(`/${tool.slug}`, locale)}
-                    class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+                    class="inline-flex min-h-10 items-center py-1 text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
                   >
                     {meta.name}
                   </a>
@@ -50,13 +69,38 @@ const liveTools = getLiveTools();
         </ul>
       </div>
 
-      <div class="space-y-2">
-        <h2 class="text-sm font-semibold text-[var(--ink-primary)]">{dict.footer.projectTitle}</h2>
-        <ul class="m-0 list-none space-y-1 p-0 text-sm">
+      <div class="space-y-2.5">
+        <h2 class="m-0 text-xs font-bold tracking-wider text-[var(--ink-primary)] uppercase">
+          {dict.nav.imageGroup}
+        </h2>
+        <ul class="m-0 list-none space-y-0.5 p-0 text-sm">
+          {
+            imageTools.map((tool) => {
+              const meta = dict.tools[tool.id as keyof typeof dict.tools];
+              return (
+                <li>
+                  <a
+                    href={getLocalizedPath(`/${tool.slug}`, locale)}
+                    class="inline-flex min-h-10 items-center py-1 text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+                  >
+                    {meta.name}
+                  </a>
+                </li>
+              );
+            })
+          }
+        </ul>
+      </div>
+
+      <div class="space-y-2.5">
+        <h2 class="m-0 text-xs font-bold tracking-wider text-[var(--ink-primary)] uppercase">
+          {dict.footer.projectTitle}
+        </h2>
+        <ul class="m-0 list-none space-y-0.5 p-0 text-sm">
           <li>
             <a
               href={getLocalizedPath('/about', locale)}
-              class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+              class="inline-flex min-h-10 items-center py-1 text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
             >
               {dict.nav.about}
             </a>
@@ -64,7 +108,7 @@ const liveTools = getLiveTools();
           <li>
             <a
               href={`${getLocalizedPath('/about', locale)}#support`}
-              class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+              class="inline-flex min-h-10 items-center py-1 text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
             >
               {dict.footer.supportLink}
             </a>
@@ -73,7 +117,7 @@ const liveTools = getLiveTools();
             <a
               href={getLocalizedPath(currentRoute, otherLocale)}
               hreflang={otherLocale}
-              class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+              class="inline-flex min-h-10 items-center py-1 text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
             >
               {dict.site.switchToOtherLang}
             </a>
@@ -83,10 +127,10 @@ const liveTools = getLiveTools();
     </div>
 
     <div
-      class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-4 text-xs text-[var(--ink-muted)]"
+      class="mt-8 flex flex-wrap items-center justify-between gap-2 border-t border-[var(--border-subtle)] pt-4 text-xs text-[var(--ink-muted)]"
     >
       <p class="font-data m-0">{SITE_CONFIG.brandName} v{SITE_CONFIG.version}</p>
-      <p class="m-0">100% client-side · offline PWA</p>
+      <p class="font-data m-0">100% CLIENT-SIDE · WEB WORKER + WASM</p>
     </div>
   </div>
 </footer>

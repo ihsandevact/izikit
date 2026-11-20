@@ -6,6 +6,7 @@ export async function renderPdfThumbnails(
   pdfBytes: ArrayBuffer,
   onThumbnail: (pageIndex: number, dataUrl: string) => void,
   signal?: AbortSignal,
+  maxPages?: number,
 ): Promise<void> {
   const pdfjs = await import('pdfjs-dist');
   if (!pdfjs.GlobalWorkerOptions.workerSrc) {
@@ -19,7 +20,7 @@ export async function renderPdfThumbnails(
   const doc = await loadingTask.promise;
 
   try {
-    const total = doc.numPages;
+    const total = maxPages ? Math.min(doc.numPages, maxPages) : doc.numPages;
     for (let pageNum = 1; pageNum <= total; pageNum += 1) {
       if (signal?.aborted) break;
 

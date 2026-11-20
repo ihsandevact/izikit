@@ -52,14 +52,21 @@ describe('RemoveBgTool upload, engine selection, and backdrop options', () => {
       expect(screen.getByText('pasfoto.png')).toBeTruthy();
     });
 
-    expect(screen.getByText(/Model AI Lokal \(ONNX \/ WASM\)/i)).toBeTruthy();
+    // Immediate image preview is rendered before processing
+    const previewImg = screen.getByRole('img', { name: 'pasfoto.png' }) as HTMLImageElement;
+    expect(previewImg).toBeTruthy();
+    expect(previewImg.getAttribute('src')).toMatch(/^blob:test-rbg-/);
+    expect(screen.getByText(/Pratinjau foto/i)).toBeTruthy();
+
+    expect(screen.getByText(/AI Otomatis \(Orang, Produk & Objek\)/i)).toBeTruthy();
     expect(screen.getByText(/Warna Polos \/ Studio/i)).toBeTruthy();
     expect(screen.getByRole('button', { name: /Merah Pasfoto/i })).toBeTruthy();
     expect(screen.getByRole('button', { name: /Biru Pasfoto/i })).toBeTruthy();
 
-    // Switch to Color Key mode -> tolerance slider appears
+    // Switch to Color Key mode -> tolerance slider and eyedropper hint appear
     fireEvent.click(screen.getByLabelText(/Warna Polos \/ Studio/i));
-    expect(screen.getByLabelText(/Toleransi warna/i)).toBeTruthy();
+    expect(screen.getByLabelText(/Jangkauan kemiripan warna/i)).toBeTruthy();
+    expect(screen.getByText(/Klik area latar pada foto/i)).toBeTruthy();
   });
 
   it('shows an accessible ErrorAlert when an unsupported file is uploaded', async () => {

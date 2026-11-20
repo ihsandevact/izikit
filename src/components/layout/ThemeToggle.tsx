@@ -9,7 +9,7 @@ interface ThemeToggleProps {
 const STORAGE_KEY = 'izikit-theme';
 
 export default function ThemeToggle({ labelToDark, labelToLight }: ThemeToggleProps) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -37,9 +37,9 @@ export default function ThemeToggle({ labelToDark, labelToLight }: ThemeTogglePr
       aria-label={label}
       aria-pressed={isDark}
       title={label}
-      className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-[var(--ink-muted)] transition-colors hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]"
     >
-      {mounted && isDark ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+      {mounted && isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
     </button>
   );
 }

@@ -14,6 +14,7 @@ const dict = getDictionary(locale);
 const otherLocale: Locale = locale === 'id' ? 'en' : 'id';
 
 const homeHref = getLocalizedPath('/', locale);
+const allToolsHref = getLocalizedPath('/tools', locale);
 const aboutHref = getLocalizedPath('/about', locale);
 const switchLangHref = getLocalizedPath(currentRoute, otherLocale);
 
@@ -21,65 +22,94 @@ const liveTools = getLiveTools();
 const pdfTools = liveTools.filter((tool) => tool.category === 'pdf');
 const imageTools = liveTools.filter((tool) => tool.category === 'image');
 
-const desktopNav = [
-  { href: homeHref, label: dict.nav.tools, route: '/' },
-  { href: `${homeHref}#pdf-tools`, label: dict.nav.pdfGroup, route: '#pdf' },
-  { href: `${homeHref}#image-tools`, label: dict.nav.imageGroup, route: '#image' },
-  { href: aboutHref, label: dict.nav.about, route: '/about' },
-];
-
 const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(/^\/+|\/+$/g, '')}`;
-const isPdfRoute = pdfTools.some((t) => `/${t.slug}` === normalizedCurrent);
-const isImageRoute = imageTools.some((t) => `/${t.slug}` === normalizedCurrent);
 ---
 
-<header
-  class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]/95 backdrop-blur-xs"
->
-  <div class="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2 sm:px-6 sm:py-2.5">
+<header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]">
+  <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
+    {/* Brand Mark */}
     <a
       href={homeHref}
-      class="inline-flex min-h-11 items-center gap-2 rounded-lg px-1 text-[var(--ink-primary)] no-underline"
+      class="group inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg text-[var(--ink-primary)] no-underline"
     >
       <BrandMarkIcon className="h-7 w-7 shrink-0" />
-      <span class="font-display text-xl font-bold tracking-tight">izikit</span>
+      <span class="font-display text-lg font-extrabold tracking-tight">izikit</span>
     </a>
 
-    <nav aria-label="Primary" class="hidden items-center gap-1 md:flex">
-      {
-        desktopNav.map((item) => {
-          const isActive =
-            normalizedCurrent === item.route ||
-            (item.route === '#pdf' && isPdfRoute) ||
-            (item.route === '#image' && isImageRoute);
-          return (
-            <a
-              href={item.href}
-              aria-current={normalizedCurrent === item.route ? 'page' : undefined}
-              class:list={[
-                'inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline transition-colors',
-                isActive
-                  ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-                  : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-              ]}
-            >
-              {item.label}
-            </a>
-          );
-        })
-      }
-    </nav>
+    {/* Right-aligned Minimalist Utility Bar */}
+    <div class="flex shrink-0 items-center gap-1.5 sm:gap-2.5">
+      <nav aria-label="Primary" class="hidden items-center gap-1 sm:flex sm:gap-2">
+        <a
+          href={allToolsHref}
+          aria-current={normalizedCurrent === '/tools' ? 'page' : undefined}
+          class:list={[
+            'inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
+            normalizedCurrent === '/tools'
+              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)]'
+              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+          ]}
+        >
+          <svg viewBox="0 0 18 18" fill="none" class="h-3.5 w-3.5 shrink-0" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
+            <rect x="10.5" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
+            <rect x="2.5" y="10.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
+            <rect x="10.5" y="10.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
+          </svg>
+          <span>{dict.nav.tools}</span>
+        </a>
 
-    <div class="flex items-center gap-2">
-      <a
-        href={switchLangHref}
-        hreflang={otherLocale}
-        aria-label={dict.site.switchToOtherLang}
-        title={dict.site.switchToOtherLang}
-        class="btn-secondary font-data inline-flex h-11 min-w-11 items-center justify-center rounded-lg px-3 text-xs font-semibold tracking-wide no-underline"
-      >
-        {dict.site.otherLangCode}
-      </a>
+        <a
+          href={aboutHref}
+          aria-current={normalizedCurrent === '/about' ? 'page' : undefined}
+          class:list={[
+            'inline-flex min-h-10 items-center whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
+            normalizedCurrent === '/about'
+              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)]'
+              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
+          ]}
+        >
+          {dict.nav.about}
+        </a>
+      </nav>
+
+      {/* Inline ID / EN Language Switcher */}
+      <div class="font-data inline-flex items-center gap-1 px-1 text-xs">
+        {
+          locale === 'id' ? (
+            <>
+              <span class="font-bold text-[var(--ink-primary)]">ID</span>
+              <span class="text-[var(--border-control)]" aria-hidden="true">
+                /
+              </span>
+              <a
+                href={switchLangHref}
+                hreflang="en"
+                aria-label={dict.site.switchToOtherLang}
+                title={dict.site.switchToOtherLang}
+                class="inline-flex min-h-10 items-center px-1 font-medium text-[var(--ink-muted)] no-underline hover:text-[var(--ink-primary)]"
+              >
+                EN
+              </a>
+            </>
+          ) : (
+            <>
+              <a
+                href={switchLangHref}
+                hreflang="id"
+                aria-label={dict.site.switchToOtherLang}
+                title={dict.site.switchToOtherLang}
+                class="inline-flex min-h-10 items-center px-1 font-medium text-[var(--ink-muted)] no-underline hover:text-[var(--ink-primary)]"
+              >
+                ID
+              </a>
+              <span class="text-[var(--border-control)]" aria-hidden="true">
+                /
+              </span>
+              <span class="font-bold text-[var(--ink-primary)]">EN</span>
+            </>
+          )
+        }
+      </div>
 
       <ThemeToggle
         client:load
@@ -92,9 +122,9 @@ const isImageRoute = imageTools.some((t) => `/${t.slug}` === normalizedCurrent);
         type="button"
         aria-expanded="false"
         aria-controls="mobile-nav-drawer"
-        class="btn-secondary inline-flex h-11 items-center gap-2 rounded-lg px-3 text-sm font-medium md:hidden"
+        class="inline-flex h-10 items-center gap-1.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 text-xs font-semibold text-[var(--ink-primary)] transition-colors hover:bg-[var(--bg-recess)] sm:hidden"
       >
-        <svg viewBox="0 0 18 18" fill="none" class="h-4 w-4" aria-hidden="true">
+        <svg viewBox="0 0 18 18" fill="none" class="h-4 w-4 shrink-0" aria-hidden="true">
           <path d="M2.5 4.5h13M2.5 9h13M2.5 13.5h13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
         </svg>
         <span>{dict.site.menuLabel}</span>
@@ -102,91 +132,70 @@ const isImageRoute = imageTools.some((t) => `/${t.slug}` === normalizedCurrent);
     </div>
   </div>
 
+  {/* Compact Mobile Drawer (< 640px) */}
   <div
     id="mobile-nav-drawer"
     hidden
-    class="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden"
+    class="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-xl sm:hidden"
   >
-    <nav aria-label="Mobile" class="space-y-4">
-      <div class="flex flex-col gap-1">
+    <nav aria-label="Mobile" class="space-y-3">
+      <div class="grid grid-cols-2 gap-1">
         <a
-          href={homeHref}
-          aria-current={normalizedCurrent === '/' ? 'page' : undefined}
-          class:list={[
-            'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
-            normalizedCurrent === '/'
-              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-          ]}
+          href={allToolsHref}
+          class="flex min-h-10 items-center rounded-lg bg-[var(--bg-recess)] px-3 text-xs font-semibold text-[var(--ink-primary)] no-underline"
         >
           {dict.nav.tools}
         </a>
         <a
           href={aboutHref}
-          aria-current={normalizedCurrent === '/about' ? 'page' : undefined}
-          class:list={[
-            'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
-            normalizedCurrent === '/about'
-              ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-              : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-          ]}
+          class="flex min-h-10 items-center rounded-lg bg-[var(--bg-recess)] px-3 text-xs font-semibold text-[var(--ink-primary)] no-underline"
         >
           {dict.nav.about}
         </a>
       </div>
 
-      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-3">
-        <p class="m-0 px-3.5 pb-1 text-xs font-semibold text-[var(--ink-muted)]">
+      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-2.5">
+        <p class="m-0 px-2 text-[11px] font-bold tracking-wider text-[var(--ink-muted)] uppercase">
           {dict.nav.pdfGroup}
         </p>
-        {
-          pdfTools.map((tool) => {
-            const href = getLocalizedPath(`/${tool.slug}`, locale);
-            const meta = dict.tools[tool.id as keyof typeof dict.tools];
-            const isActive = normalizedCurrent === `/${tool.slug}`;
-            return (
-              <a
-                href={href}
-                aria-current={isActive ? 'page' : undefined}
-                class:list={[
-                  'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
-                  isActive
-                    ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-                    : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-                ]}
-              >
-                {meta.name}
-              </a>
-            );
-          })
-        }
+        <div class="grid grid-cols-2 gap-1">
+          {
+            pdfTools.map((tool) => {
+              const href = getLocalizedPath(`/${tool.slug}`, locale);
+              const meta = dict.tools[tool.id as keyof typeof dict.tools];
+              return (
+                <a
+                  href={href}
+                  class="flex min-h-10 items-center rounded-lg px-2.5 text-xs font-medium text-[var(--ink-muted)] no-underline hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]"
+                >
+                  {meta.name}
+                </a>
+              );
+            })
+          }
+        </div>
       </div>
 
-      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-3">
-        <p class="m-0 px-3.5 pb-1 text-xs font-semibold text-[var(--ink-muted)]">
+      <div class="space-y-1 border-t border-[var(--border-subtle)] pt-2.5">
+        <p class="m-0 px-2 text-[11px] font-bold tracking-wider text-[var(--ink-muted)] uppercase">
           {dict.nav.imageGroup}
         </p>
-        {
-          imageTools.map((tool) => {
-            const href = getLocalizedPath(`/${tool.slug}`, locale);
-            const meta = dict.tools[tool.id as keyof typeof dict.tools];
-            const isActive = normalizedCurrent === `/${tool.slug}`;
-            return (
-              <a
-                href={href}
-                aria-current={isActive ? 'page' : undefined}
-                class:list={[
-                  'flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline',
-                  isActive
-                    ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)] underline decoration-[var(--accent)] decoration-2 underline-offset-4'
-                    : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
-                ]}
-              >
-                {meta.name}
-              </a>
-            );
-          })
-        }
+        <div class="grid grid-cols-2 gap-1">
+          {
+            imageTools.map((tool) => {
+              const href = getLocalizedPath(`/${tool.slug}`, locale);
+              const meta = dict.tools[tool.id as keyof typeof dict.tools];
+              return (
+                <a
+                  href={href}
+                  class="flex min-h-10 items-center rounded-lg px-2.5 text-xs font-medium text-[var(--ink-muted)] no-underline hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]"
+                >
+                  {meta.name}
+                </a>
+              );
+            })
+          }
+        </div>
       </div>
     </nav>
   </div>

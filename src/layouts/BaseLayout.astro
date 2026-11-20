@@ -15,10 +15,11 @@ interface Props {
 const { locale, currentRoute, title, description, jsonLd } = Astro.props;
 const dict = getDictionary(locale);
 const seo = getSeoUrls(currentRoute, locale);
+const isDev = import.meta.env.DEV;
 ---
 
 <!doctype html>
-<html lang={dict.langTag}>
+<html lang={dict.langTag} class="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -26,8 +27,7 @@ const seo = getSeoUrls(currentRoute, locale);
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#F7F4EE" />
-    <script is:inline src="/registerSW.js" defer></script>
+    <meta name="theme-color" content="#0D0F12" />
 
     <link rel="canonical" href={seo.canonical} />
     <link rel="alternate" hreflang="id" href={seo.alternates.id} />
@@ -50,13 +50,70 @@ const seo = getSeoUrls(currentRoute, locale);
       )
     }
 
-    <script is:inline>
+    <script is:inline define:vars={{ isDev }}>
       (function () {
         try {
           var saved = localStorage.getItem('izikit-theme');
-          var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (saved === 'dark' || (!saved && prefersDark)) {
+          if (saved === 'light') {
+            document.documentElement.classList.remove('dark');
+          } else {
             document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+
+        try {
+          if (!('serviceWorker' in navigator)) return;
+          var SW_SCHEMA = 'izikit-sw-v4';
+          var storedSchema = null;
+          try {
+            storedSchema = localStorage.getItem('izikit-sw-schema');
+          } catch (e) {}
+
+          if (isDev || storedSchema !== SW_SCHEMA) {
+            try {
+              localStorage.setItem('izikit-sw-schema', SW_SCHEMA);
+            } catch (e) {}
+
+            navigator.serviceWorker
+              .getRegistrations()
+              .then(function (regs) {
+                return Promise.all(
+                  regs.map(function (reg) {
+                    return reg.unregister();
+                  }),
+                );
+              })
+              .then(function () {
+                if ('caches' in window) {
+                  return caches.keys().then(function (keys) {
+                    return Promise.all(
+                      keys.map(function (key) {
+                        return caches.delete(key);
+                      }),
+                    );
+                  });
+                }
+              })
+              .then(function () {
+                if (!isDev) {
+                  navigator.serviceWorker
+                    .register('/sw.js', { scope: '/', updateViaCache: 'none' })
+                    .catch(function () {});
+                }
+              })
+              .catch(function () {});
+            return;
+          }
+
+          if (!isDev) {
+            window.addEventListener('load', function () {
+              navigator.serviceWorker
+                .register('/sw.js', { scope: '/', updateViaCache: 'none' })
+                .then(function (reg) {
+                  reg.update().catch(function () {});
+                })
+                .catch(function () {});
+            });
           }
         } catch (e) {}
       })();

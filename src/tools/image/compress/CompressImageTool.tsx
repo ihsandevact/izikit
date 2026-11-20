@@ -368,7 +368,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
               <button
                 type="button"
                 onClick={handleCompress}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {hasCompletedOnce
                   ? copy.recompressButton
@@ -467,9 +467,9 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                     <img
                       src={item.compressedUrl || item.originalUrl}
                       alt={item.file.name}
-                      width={52}
-                      height={52}
-                      className="h-13 w-13 shrink-0 rounded-sm border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 shrink-0 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
                     />
                     <div className="min-w-0 space-y-0.5">
                       <p className="m-0 truncate text-sm font-medium text-[var(--ink-primary)]">
@@ -479,7 +479,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                         <span>{formatBytes(item.file.size)}</span>
                         {item.compressedBlob ? (
                           <>
-                            <span aria-hidden="true">-&gt;</span>
+                            <span aria-hidden="true">→</span>
                             <span className="font-semibold text-[var(--ink-primary)]">
                               {formatBytes(item.compressedBlob.size)}
                             </span>
@@ -497,7 +497,7 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                       </div>
                       {item.outputWidth && item.outputHeight && (
                         <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
-                          {item.originalWidth}x{item.originalHeight} -&gt; {item.outputWidth}x
+                          {item.originalWidth}×{item.originalHeight} → {item.outputWidth}×
                           {item.outputHeight} px
                         </p>
                       )}

@@ -351,7 +351,7 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
             </div>
 
             {mode === 'rasterize' && (
-              <div className="space-y-4 rounded-lg border border-[var(--border-control)] bg-[var(--bg-card)] p-4">
+              <div className="space-y-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4">
                 <p className="m-0 text-xs leading-relaxed text-[var(--ink-muted)]">
                   {copy.rasterizeNotice}
                 </p>
@@ -371,7 +371,7 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
                         setDpi(Number(e.target.value) as RasterizeDpi);
                         setOutput(null);
                       }}
-                      className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-paper)] px-3 text-sm text-[var(--ink-primary)]"
+                      className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-card)] px-3 text-sm text-[var(--ink-primary)]"
                     >
                       <option value={96}>{copy.dpi96}</option>
                       <option value={120}>{copy.dpi120}</option>
@@ -399,7 +399,7 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
                         setJpegQuality(Number(e.target.value));
                         setOutput(null);
                       }}
-                      className="h-11 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
                 </div>
@@ -469,7 +469,7 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
                 type="button"
                 onClick={() => runCompression(mode)}
                 disabled={isProcessing || inspecting || !inspectInfo}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {copy.compressButton}
               </button>

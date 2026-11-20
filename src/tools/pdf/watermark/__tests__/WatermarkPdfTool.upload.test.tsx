@@ -85,7 +85,7 @@ describe('WatermarkPdfTool upload and configuration flow', () => {
       expect(screen.getByText('laporan.pdf')).toBeTruthy();
     });
 
-    const watermarkCheckbox = screen.getByLabelText(/Aktifkan watermark teks/i) as HTMLInputElement;
+    const watermarkCheckbox = screen.getByLabelText(/Pasang watermark teks/i) as HTMLInputElement;
     expect(watermarkCheckbox.checked).toBe(true);
     fireEvent.click(watermarkCheckbox);
 

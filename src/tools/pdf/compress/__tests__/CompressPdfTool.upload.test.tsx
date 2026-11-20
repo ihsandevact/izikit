@@ -57,15 +57,15 @@ describe('CompressPdfTool upload and mode controls', () => {
     });
 
     // Initially in lossless mode: DPI control is hidden
-    expect(screen.queryByLabelText(/Resolusi render/i)).toBeNull();
+    expect(screen.queryByLabelText(/Ketajaman gambar \(DPI\)/i)).toBeNull();
 
     // Switch to Strong Compression mode: DPI & JPEG quality controls appear with honest warning
     const strongRadio = screen.getByLabelText(/Kompresi Kuat/i);
     fireEvent.click(strongRadio);
 
-    expect(screen.getByLabelText(/Resolusi render/i)).toBeTruthy();
-    expect(screen.getByLabelText(/Kualitas JPEG/i)).toBeTruthy();
-    expect(screen.getByText(/teks tidak bisa diseleksi/i)).toBeTruthy();
+    expect(screen.getByLabelText(/Ketajaman gambar \(DPI\)/i)).toBeTruthy();
+    expect(screen.getByLabelText(/Kualitas gambar JPEG/i)).toBeTruthy();
+    expect(screen.getByText(/teks tidak lagi bisa di-copy/i)).toBeTruthy();
   });
 
   it('shows an accessible ErrorAlert when an invalid non-PDF file is selected', async () => {

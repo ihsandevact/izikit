@@ -363,14 +363,26 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2 text-xs">
-                      <span className="font-data font-semibold text-[var(--ink-primary)]">
-                        #{index + 1} ({copy.originalPageLabel} {card.sourcePageIndex + 1})
-                      </span>
-                      {card.deltaRotation !== 0 && (
-                        <span className="font-data rounded-sm bg-[var(--accent-tint)] px-1.5 py-0.5 font-semibold text-[var(--accent)]">
-                          +{card.deltaRotation}°
+                      <div className="flex min-w-0 items-center gap-1.5">
+                        <span className="font-data truncate font-semibold text-[var(--ink-primary)]">
+                          #{index + 1} ({copy.originalPageLabel} {card.sourcePageIndex + 1})
                         </span>
-                      )}
+                        {card.deltaRotation !== 0 && (
+                          <span className="font-data shrink-0 rounded-sm bg-[var(--accent-tint)] px-1.5 py-0.5 font-semibold text-[var(--accent)]">
+                            +{card.deltaRotation}°
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removePage(card.id)}
+                        disabled={isSaving || pages.length <= 1}
+                        aria-label={`${copy.removePage}: #${index + 1}`}
+                        title={copy.removePage}
+                        className="btn-secondary inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg text-[var(--danger)]"
+                      >
+                        <TrashIcon className="h-4 w-4" />
+                      </button>
                     </div>
 
                     <div className="flex h-44 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)] p-2">
@@ -389,14 +401,14 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                             {copy.originalPageLabel} {card.sourcePageIndex + 1}
                           </p>
                           <p className="font-data m-0 mt-1">
-                            {Math.round(card.width)}x{Math.round(card.height)} pt
+                            {Math.round(card.width)}×{Math.round(card.height)} pt
                           </p>
                         </div>
                       )}
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5">
                         <button
                           type="button"
                           onClick={() => rotatePage(card.id, -90)}
@@ -419,7 +431,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                         </button>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1.5">
                         <button
                           type="button"
                           onClick={() => movePage(index, -1)}
@@ -439,16 +451,6 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                           className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
                         >
                           <ArrowDownIcon className="h-4 w-4" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removePage(card.id)}
-                          disabled={isSaving || pages.length <= 1}
-                          aria-label={`${copy.removePage}: #${index + 1}`}
-                          title={copy.removePage}
-                          className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--danger)]"
-                        >
-                          <TrashIcon className="h-4 w-4" />
                         </button>
                       </div>
                     </div>
@@ -480,7 +482,7 @@ export default function RotateReorderPdfTool({ locale }: RotateReorderPdfToolPro
                 type="button"
                 onClick={handleSave}
                 disabled={isSaving || inspecting || pages.length === 0}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {copy.saveButton} ({pages.length} {dict.shared.pagesUnit})
               </button>

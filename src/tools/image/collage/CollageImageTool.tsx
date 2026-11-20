@@ -303,7 +303,20 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
         />
       ) : (
         <div className="space-y-5">
-          {/* Toolbar */}
+          {/* Add More Dropzone Bar */}
+          <Dropzone
+            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+            multiple={true}
+            compact={true}
+            disabled={isProcessing}
+            idleLabel={dict.shared.dropzoneAddMore}
+            activeLabel={dict.shared.dropzoneActive}
+            buttonLabel={dict.shared.dropzoneAddMore}
+            formatsHint={copy.formatsHint}
+            onFilesSelected={handleImagesSelected}
+          />
+
+          {/* Summary Toolbar */}
           <div className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-3.5">
             <div className="space-y-0.5">
               <p className="font-data m-0 text-sm font-semibold text-[var(--ink-primary)]">
@@ -314,30 +327,17 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                 <p className="m-0 text-xs text-[var(--accent)]">{copy.needMoreImagesHint}</p>
               )}
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Dropzone
-                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                multiple={true}
-                compact={true}
-                disabled={isProcessing}
-                idleLabel={dict.shared.dropzoneAddMore}
-                activeLabel={dict.shared.dropzoneActive}
-                buttonLabel={dict.shared.dropzoneAddMore}
-                formatsHint=""
-                onFilesSelected={handleImagesSelected}
-              />
-              <button
-                type="button"
-                onClick={clearAll}
-                disabled={isProcessing}
-                className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-xs font-medium"
-              >
-                {dict.shared.clearAll}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={clearAll}
+              disabled={isProcessing}
+              className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-xs font-medium"
+            >
+              {dict.shared.clearAll}
+            </button>
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
             {/* Configuration Controls */}
             <fieldset disabled={isProcessing} className="m-0 space-y-4 border-0 p-0">
               <div className="space-y-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4">
@@ -458,7 +458,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                         setGapPx(Number(e.target.value));
                         clearOutput();
                       }}
-                      className="h-9 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
 
@@ -480,7 +480,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                         setPaddingPx(Number(e.target.value));
                         clearOutput();
                       }}
-                      className="h-9 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
 
@@ -502,7 +502,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                         setBorderRadiusPx(Number(e.target.value));
                         clearOutput();
                       }}
-                      className="h-9 w-full accent-[var(--accent)]"
+                      className="izikit-range h-11 w-full"
                     />
                   </div>
                 </div>
@@ -535,14 +535,12 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                         >
                           <span
                             aria-hidden="true"
-                            className="h-4 w-4 rounded-full border border-black/20"
+                            className={`h-4 w-4 shrink-0 rounded-full border border-[var(--border-control)] ${
+                              swatch.value === 'transparent' ? 'bg-checkerboard' : ''
+                            }`}
                             style={
                               swatch.value === 'transparent'
-                                ? {
-                                    backgroundImage:
-                                      'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)',
-                                    backgroundSize: '8px 8px',
-                                  }
+                                ? undefined
                                 : { backgroundColor: swatch.value }
                             }
                           />
@@ -606,7 +604,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                     type="button"
                     onClick={handleCreateCollage}
                     disabled={isProcessing || items.length < 2}
-                    className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                    className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
                   >
                     {copy.createButtonPrefix} ({Math.min(items.length, totalSlots)} {copy.imagesUnit})
                   </button>
@@ -614,10 +612,10 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
               </div>
             </fieldset>
 
-            {/* Live Grid Preview */}
+            {/* Live Grid Preview (shown first on mobile) */}
             <aside
               aria-label={copy.previewHeading}
-              className="space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:sticky lg:top-20"
+              className="order-first space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:order-none lg:sticky lg:top-20"
             >
               <h3 className="m-0 text-sm font-semibold text-[var(--ink-primary)]">
                 {copy.previewHeading}
@@ -625,7 +623,9 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
 
               <div
                 aria-hidden="true"
-                className="mx-auto grid w-full max-w-[260px] overflow-hidden rounded-md border border-[var(--border-control)]"
+                className={`mx-auto grid w-full max-w-[280px] overflow-hidden rounded-md border border-[var(--border-control)] ${
+                  backgroundColor === 'transparent' ? 'bg-checkerboard' : ''
+                }`}
                 style={{
                   aspectRatio: aspectRatioCssValue(aspectRatio),
                   gridTemplateColumns: `repeat(${grid.cols}, minmax(0, 1fr))`,
@@ -633,12 +633,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                   gap: `${previewGapPx}px`,
                   padding: `${previewPadPx}px`,
                   backgroundColor:
-                    backgroundColor === 'transparent' ? 'transparent' : backgroundColor,
-                  backgroundImage:
-                    backgroundColor === 'transparent'
-                      ? 'linear-gradient(45deg, #d8d3c8 25%, transparent 25%), linear-gradient(-45deg, #d8d3c8 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d8d3c8 75%), linear-gradient(-45deg, transparent 75%, #d8d3c8 75%)'
-                      : undefined,
-                  backgroundSize: backgroundColor === 'transparent' ? '12px 12px' : undefined,
+                    backgroundColor === 'transparent' ? undefined : backgroundColor,
                 }}
               >
                 {Array.from({ length: totalSlots }).map((_, idx) => {
@@ -719,7 +714,7 @@ export default function CollageImageTool({ locale }: CollageImageToolProps) {
                     onClick={() => removeItem(item.id)}
                     disabled={isProcessing}
                     aria-label={`${dict.shared.removeFile}: ${item.file.name}`}
-                    className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg"
+                    className="btn-secondary inline-flex h-11 w-11 items-center justify-center rounded-lg text-[var(--danger)]"
                   >
                     <TrashIcon className="h-4 w-4" />
                   </button>

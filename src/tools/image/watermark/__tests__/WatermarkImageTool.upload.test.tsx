@@ -59,7 +59,7 @@ describe('WatermarkImageTool upload and mode controls', () => {
     });
 
     const submitBtn = screen.getByRole('button', {
-      name: /Beri Watermark 2 gambar/i,
+      name: /Pasang Watermark 2 gambar/i,
     }) as HTMLButtonElement;
     expect(submitBtn.disabled).toBe(false);
 

@@ -12,51 +12,74 @@ interface Props {
 
 const { locale, toolName, toolDescription, guideTitle, guideItems } = Astro.props;
 const dict = getDictionary(locale);
-const homeHref = getLocalizedPath('/', locale);
+const homeHref = getLocalizedPath('/tools', locale);
 ---
 
-<section class="mx-auto max-w-4xl px-4 py-4 sm:px-6 sm:py-7">
-  <nav aria-label="Breadcrumb" class="mb-2 text-sm text-[var(--ink-muted)] sm:mb-3">
-    <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0">
-      <li>
-        <a
-          href={homeHref}
-          class="inline-flex min-h-11 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
-        >
-          {dict.shared.backToAllTools}
-        </a>
-      </li>
-      <li aria-hidden="true">/</li>
-      <li aria-current="page" class="font-medium text-[var(--ink-primary)]">{toolName}</li>
-    </ol>
-  </nav>
+<section class="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
+  <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+    <nav aria-label="Breadcrumb" class="text-sm text-[var(--ink-muted)]">
+      <ol class="m-0 flex list-none flex-wrap items-center gap-1.5 p-0">
+        <li>
+          <a
+            href={homeHref}
+            class="inline-flex min-h-9 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+          >
+            {dict.shared.backToAllTools}
+          </a>
+        </li>
+        <li aria-hidden="true" class="font-data text-xs">/</li>
+        <li aria-current="page" class="font-semibold text-[var(--ink-primary)]">{toolName}</li>
+      </ol>
+    </nav>
 
-  <header class="mb-4 space-y-2 sm:mb-6 sm:space-y-2.5">
-    <h1 class="font-display m-0 text-[clamp(1.6rem,3.6vw,2.4rem)] leading-tight font-bold text-[var(--ink-primary)]">
+    <div class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-1 text-xs font-semibold text-[var(--success)]">
+      <ShieldLocalIcon className="h-3.5 w-3.5 shrink-0" />
+      <span>{dict.shared.localBadge}</span>
+    </div>
+  </div>
+
+  <header class="mb-4 space-y-1.5 sm:mb-5">
+    <h1 class="font-display m-0 text-[clamp(1.5rem,3.4vw,2.15rem)] leading-tight font-extrabold text-[var(--ink-primary)]">
       {toolName}
     </h1>
     <p class="m-0 max-w-2xl text-sm leading-relaxed text-[var(--ink-muted)] sm:text-base">
       {toolDescription}
     </p>
-    <p class="m-0 inline-flex items-center gap-2 pt-0.5 text-xs font-medium text-[var(--success)] sm:text-sm">
-      <ShieldLocalIcon className="h-4 w-4 shrink-0" />
-      <span>{dict.shared.localBadge}</span>
-    </p>
   </header>
 
-  <div class="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 sm:p-6">
+  <div class="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 sm:p-6">
     <slot />
   </div>
 
   <aside
     aria-labelledby="tool-guide-heading"
-    class="mt-8 border-t border-[var(--border-subtle)] pt-6"
+    class="mt-6 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:mt-8 sm:p-5"
   >
-    <h2 id="tool-guide-heading" class="font-display m-0 mb-3 text-lg font-semibold text-[var(--ink-primary)]">
-      {guideTitle}
-    </h2>
+    <div class="mb-3 flex items-center justify-between gap-2 border-b border-[var(--border-subtle)] pb-2.5">
+      <h2 id="tool-guide-heading" class="font-display m-0 text-base font-bold text-[var(--ink-primary)]">
+        {guideTitle}
+      </h2>
+      <span class="tech-badge rounded bg-[var(--bg-recess)] px-2 py-0.5 text-[var(--ink-muted)]">
+        TIPS
+      </span>
+    </div>
     <ul class="m-0 space-y-2 pl-5 text-sm leading-relaxed text-[var(--ink-muted)]">
       {guideItems.map((item) => <li>{item}</li>)}
     </ul>
   </aside>
 </section>
+
+<script>
+  try {
+    const rawPath = window.location.pathname.replace(/^\/en(\/|$)/, '/').replace(/^\/+|\/+$/g, '');
+    if (rawPath && rawPath !== 'about' && rawPath !== 'tools') {
+      const key = 'izikit-recent-tools';
+      const existingRaw = localStorage.getItem(key);
+      const existing: string[] = existingRaw ? JSON.parse(existingRaw) : [];
+      const next = [rawPath, ...existing.filter((item) => item !== rawPath)].slice(0, 3);
+      localStorage.setItem(key, JSON.stringify(next));
+    }
+  } catch {
+    // Ignore storage errors
+  }
+</script>

@@ -1,57 +1,66 @@
-@import '@fontsource/fraunces/600.css';
-@import '@fontsource/fraunces/700.css';
 @import '@fontsource/plus-jakarta-sans/400.css';
 @import '@fontsource/plus-jakarta-sans/500.css';
 @import '@fontsource/plus-jakarta-sans/600.css';
 @import '@fontsource/plus-jakarta-sans/700.css';
+@import '@fontsource/plus-jakarta-sans/800.css';
 @import '@fontsource/ibm-plex-mono/400.css';
 @import '@fontsource/ibm-plex-mono/500.css';
 @import '@fontsource/ibm-plex-mono/600.css';
 @import 'tailwindcss';
 
 @theme {
-  --font-display: 'Fraunces', Georgia, serif;
+  --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
-  --bg-paper: #f7f4ee;
+  --bg-paper: #f6f6f4;
+  --bg-canvas: #f6f6f4;
   --bg-card: #ffffff;
-  --bg-recess: #efeae0;
-  --ink-primary: #181615;
-  --ink-muted: #57524b;
-  --border-subtle: #d8d1c4;
-  --border-control: #857d71;
-  --accent: #b93815;
-  --accent-hover: #9d2e10;
+  --bg-recess: #ededeb;
+  --ink-primary: #111315;
+  --ink-muted: #575c66;
+  --border-subtle: #e2e2de;
+  --border-control: #8a909c;
+  --accent: #047857;
+  --accent-hover: #065f46;
   --accent-ink: #ffffff;
-  --accent-tint: #f9ebe6;
-  --success: #1f6b48;
-  --success-tint: #e8f4ee;
-  --danger: #b42318;
-  --danger-tint: #fcecea;
-  --focus-ring: #b93815;
+  --accent-tint: #ecfdf5;
+  --accent-pill: #10b981;
+  --accent-pill-ink: #052e16;
+  --accent-row-bg: #ecfdf5;
+  --accent-row-border: #6ee7b7;
+  --success: #047857;
+  --success-tint: #ecfdf5;
+  --danger: #b91c1c;
+  --danger-tint: #fef2f2;
+  --focus-ring: #047857;
   color-scheme: light;
 }
 
 .dark {
-  --bg-paper: #141311;
-  --bg-card: #1d1b18;
-  --bg-recess: #26231f;
-  --ink-primary: #f4f0e8;
-  --ink-muted: #b6aea2;
-  --border-subtle: #34302b;
-  --border-control: #827a70;
-  --accent: #eb7a53;
-  --accent-hover: #f28e6b;
-  --accent-ink: #141311;
-  --accent-tint: #332019;
-  --success: #62c395;
-  --success-tint: #172b22;
-  --danger: #f07167;
-  --danger-tint: #341a18;
-  --focus-ring: #eb7a53;
+  --bg-paper: #0c0e12;
+  --bg-canvas: #0c0e12;
+  --bg-card: #13161c;
+  --bg-recess: #1b1f27;
+  --ink-primary: #f3f4f6;
+  --ink-muted: #9ca3af;
+  --border-subtle: #232832;
+  --border-control: #5c6473;
+  --accent: #34d399;
+  --accent-hover: #6ee7b7;
+  --accent-ink: #052e16;
+  --accent-tint: #0f2920;
+  --accent-pill: #10b981;
+  --accent-pill-ink: #052e16;
+  --accent-row-bg: #0f241c;
+  --accent-row-border: #065f46;
+  --success: #34d399;
+  --success-tint: #0f2920;
+  --danger: #f87171;
+  --danger-tint: #2d1618;
+  --focus-ring: #34d399;
   color-scheme: dark;
 }
 
@@ -61,7 +70,7 @@
     color: var(--ink-primary);
     font-family: var(--font-sans);
     scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
+    scroll-padding-top: 4.5rem;
     scroll-padding-bottom: 6rem;
     -webkit-text-size-adjust: 100%;
   }
@@ -79,7 +88,7 @@
   h1,
   h2,
   h3 {
-    letter-spacing: -0.015em;
+    letter-spacing: -0.028em;
   }
 
   /* Antislop R-39: pointer cursor once in base layer for enabled interactive controls */
@@ -113,6 +122,7 @@
 
 .font-display {
   font-family: var(--font-display);
+  letter-spacing: -0.028em;
 }
 
 .font-data {
@@ -120,13 +130,36 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Tactile stationery workbench button (ENERGY 2, MOTION 1) */
+.tech-badge {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.kbd-cap {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1;
+  padding: 0.22rem 0.42rem;
+  border-radius: 0.35rem;
+  border: 1px solid var(--border-subtle);
+  background-color: var(--bg-recess);
+  color: var(--ink-muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tactile buttons (ENERGY 2, MOTION 1) */
 .btn-primary {
   background-color: var(--accent);
   color: var(--accent-ink);
   border: 1px solid var(--accent);
-  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--ink-primary) 26%, transparent);
-  transition: background-color 140ms ease, transform 100ms ease, box-shadow 100ms ease;
+  box-shadow: 0 2px 0 0 color-mix(in srgb, var(--ink-primary) 24%, transparent);
+  transition: background-color 120ms ease, transform 90ms ease, box-shadow 90ms ease;
 }
 
 .btn-primary:hover:not(:disabled) {
@@ -135,7 +168,7 @@
 
 .btn-primary:active:not(:disabled) {
   transform: translateY(1px);
-  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--ink-primary) 26%, transparent);
+  box-shadow: 0 1px 0 0 color-mix(in srgb, var(--ink-primary) 24%, transparent);
 }
 
 .btn-primary:disabled {
@@ -146,13 +179,13 @@
 .btn-secondary {
   background-color: var(--bg-card);
   color: var(--ink-primary);
-  border: 1px solid var(--border-control);
-  transition: background-color 140ms ease, border-color 140ms ease;
+  border: 1px solid var(--border-subtle);
+  transition: background-color 120ms ease, border-color 120ms ease;
 }
 
 .btn-secondary:hover:not(:disabled) {
   background-color: var(--bg-recess);
-  border-color: var(--ink-primary);
+  border-color: var(--border-control);
 }
 
 .btn-secondary:active:not(:disabled) {
@@ -180,9 +213,42 @@
   left: 0.75rem;
 }
 
-/* Range input styling for Compress Image slider */
+/* Range input styling for sliders */
 input[type='range'].izikit-range {
   accent-color: var(--accent);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-checkerboard {
+  background-color: #f1f5f9;
+  background-image:
+    linear-gradient(45deg, #cbd5e1 25%, transparent 25%),
+    linear-gradient(-45deg, #cbd5e1 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #cbd5e1 75%),
+    linear-gradient(-45deg, transparent 75%, #cbd5e1 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0,
+    0 8px,
+    8px -8px,
+    -8px 0;
+}
+
+html.dark .bg-checkerboard {
+  background-color: #161b22;
+  background-image:
+    linear-gradient(45deg, #252c38 25%, transparent 25%),
+    linear-gradient(-45deg, #252c38 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #252c38 75%),
+    linear-gradient(-45deg, transparent 75%, #252c38 75%);
 }
 
 @media (prefers-reduced-motion: reduce) {

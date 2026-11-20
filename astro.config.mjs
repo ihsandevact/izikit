@@ -29,12 +29,12 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'izikit - Alat Dokumen & Gambar Lokal',
+        name: 'izikit - Alat PDF & Gambar Lokal',
         short_name: 'izikit',
         description:
-          'Alat PDF dan gambar yang berjalan 100% di browser Anda tanpa login dan tanpa unggah file ke server.',
-        theme_color: '#F7F4EE',
-        background_color: '#F7F4EE',
+          'Kit utilitas PDF dan gambar yang berjalan 100% lokal di browser Anda tanpa login dan tanpa unggah file ke server.',
+        theme_color: '#0D0F12',
+        background_color: '#0D0F12',
         display: 'standalone',
         start_url: '/',
         icons: [
@@ -47,8 +47,33 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{html,js,css,svg,woff,woff2,json}'],
+        cacheId: 'izikit-v3',
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+        skipWaiting: true,
+        globPatterns: ['**/*.{js,css,svg,woff2,json}'],
+        globIgnores: ['**/ort*.js'],
         navigateFallback: null,
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'izikit-pages-v4',
+              networkTimeoutSeconds: 3,
+              fetchOptions: {
+                cache: 'no-cache',
+              },
+            },
+          },
+          {
+            urlPattern: /\/_astro\/ort.*\.js$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'izikit-onnx-runtime-v3',
+            },
+          },
+        ],
       },
       devOptions: {
         enabled: false,

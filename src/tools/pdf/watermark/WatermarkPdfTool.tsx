@@ -96,6 +96,8 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
   const [file, setFile] = useState<File | null>(null);
   const [pageCount, setPageCount] = useState<number | null>(null);
   const [inspecting, setInspecting] = useState(false);
+  const [firstPagePreviewUrl, setFirstPagePreviewUrl] = useState<string | null>(null);
+  const previewAbortRef = useRef<AbortController | null>(null);
 
   // Watermark config
   const [wmEnabled, setWmEnabled] = useState(true);
@@ -248,20 +250,40 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
         return;
       }
 
+      previewAbortRef.current?.abort();
       setFile(selected);
       setPageCount(null);
+      setFirstPagePreviewUrl(null);
       setInspecting(true);
       const stem = selected.name.replace(/\.pdf$/i, '') || 'izikit-document';
       setOutputName(`${stem}-watermarked.pdf`);
 
-      const buffer = await selected.arrayBuffer();
+      const rawBuffer = await selected.arrayBuffer();
+      const previewBuffer = rawBuffer.slice(0);
       const inspected = await runWorkerTask<WatermarkWorkerRequest, WatermarkInspectResponse>(
         createWatermarkWorker,
-        { action: 'inspect', buffer },
-        { transfer: [buffer] },
+        { action: 'inspect', buffer: rawBuffer },
+        { transfer: [rawBuffer] },
       );
       setPageCount(inspected.pageCount);
       setRangeSpec(inspected.pageCount > 1 ? `1-${inspected.pageCount}` : '1');
+
+      const previewController = new AbortController();
+      previewAbortRef.current = previewController;
+      void import('../rotate-reorder/thumbnails')
+        .then(({ renderPdfThumbnails }) =>
+          renderPdfThumbnails(
+            previewBuffer,
+            (_, dataUrl) => {
+              setFirstPagePreviewUrl(dataUrl);
+            },
+            previewController.signal,
+            1,
+          ),
+        )
+        .catch(() => {
+          // Graceful fallback to simulated A4 preview
+        });
     } catch (err) {
       const code = (err as Error & { code?: string }).code;
       setFile(null);
@@ -277,8 +299,10 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
 
   const resetAll = () => {
     abortRef.current?.abort();
+    previewAbortRef.current?.abort();
     setFile(null);
     setPageCount(null);
+    setFirstPagePreviewUrl(null);
     setInspecting(false);
     setErrors([]);
     setOutput(null);
@@ -541,7 +565,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                               >
                                 <span
                                   aria-hidden="true"
-                                  className="h-5 w-5 rounded-full border border-black/15"
+                                  className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                                   style={{ backgroundColor: swatch.hex }}
                                 />
                               </button>
@@ -572,7 +596,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                             setWmOpacity(Number(e.target.value));
                             setOutput(null);
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
 
@@ -594,7 +618,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                             setWmFontSize(Number(e.target.value));
                             setOutput(null);
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
 
@@ -616,7 +640,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                             setWmRotation(Number(e.target.value));
                             setOutput(null);
                           }}
-                          className="h-9 w-full accent-[var(--accent)]"
+                          className="izikit-range h-11 w-full"
                         />
                       </div>
                     </div>
@@ -808,7 +832,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                             >
                               <span
                                 aria-hidden="true"
-                                className="h-5 w-5 rounded-full border border-black/15"
+                                className="h-5 w-5 rounded-full border border-[var(--border-control)]"
                                 style={{ backgroundColor: swatch.hex }}
                               />
                             </button>
@@ -901,7 +925,7 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
                     type="button"
                     onClick={handleApply}
                     disabled={isProcessing || inspecting || !pageCount || Boolean(validationIssue)}
-                    className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                    className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
                   >
                     {copy.applyButton}
                   </button>
@@ -909,10 +933,10 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
               </div>
             </fieldset>
 
-            {/* Live Simulated A4 Sheet Preview */}
+            {/* Live PDF Page-1 Preview (shown first on mobile) */}
             <aside
               aria-label={copy.previewHeading}
-              className="space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:sticky lg:top-20"
+              className="order-first space-y-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:order-none lg:sticky lg:top-20"
             >
               <h3 className="m-0 text-sm font-semibold text-[var(--ink-primary)]">
                 {copy.previewHeading}
@@ -920,22 +944,30 @@ export default function WatermarkPdfTool({ locale }: WatermarkPdfToolProps) {
 
               <div
                 aria-hidden="true"
-                className="relative mx-auto aspect-[210/297] w-full max-w-[230px] overflow-hidden rounded-md border border-[var(--border-control)] bg-white shadow-xs"
+                className="relative mx-auto aspect-[210/297] w-full max-w-[260px] overflow-hidden rounded-md border border-[var(--border-control)] bg-white shadow-xs"
               >
-                {/* Faint simulated document lines */}
-                <div className="space-y-2.5 p-5 opacity-25">
-                  <div className="h-2.5 w-2/3 rounded bg-neutral-400" />
-                  <div className="h-1.5 w-full rounded bg-neutral-300" />
-                  <div className="h-1.5 w-11/12 rounded bg-neutral-300" />
-                  <div className="h-1.5 w-4/5 rounded bg-neutral-300" />
-                  <div className="pt-2" />
-                  <div className="h-1.5 w-full rounded bg-neutral-300" />
-                  <div className="h-1.5 w-10/12 rounded bg-neutral-300" />
-                  <div className="h-1.5 w-9/12 rounded bg-neutral-300" />
-                  <div className="pt-2" />
-                  <div className="h-1.5 w-full rounded bg-neutral-300" />
-                  <div className="h-1.5 w-3/4 rounded bg-neutral-300" />
-                </div>
+                {firstPagePreviewUrl ? (
+                  <img
+                    src={firstPagePreviewUrl}
+                    alt=""
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  /* Faint simulated document lines fallback */
+                  <div className="space-y-2.5 p-5 opacity-25">
+                    <div className="h-2.5 w-2/3 rounded bg-neutral-400" />
+                    <div className="h-1.5 w-full rounded bg-neutral-300" />
+                    <div className="h-1.5 w-11/12 rounded bg-neutral-300" />
+                    <div className="h-1.5 w-4/5 rounded bg-neutral-300" />
+                    <div className="pt-2" />
+                    <div className="h-1.5 w-full rounded bg-neutral-300" />
+                    <div className="h-1.5 w-10/12 rounded bg-neutral-300" />
+                    <div className="h-1.5 w-9/12 rounded bg-neutral-300" />
+                    <div className="pt-2" />
+                    <div className="h-1.5 w-full rounded bg-neutral-300" />
+                    <div className="h-1.5 w-3/4 rounded bg-neutral-300" />
+                  </div>
+                )}
 
                 {/* Live Watermark Overlay */}
                 {wmEnabled && wmText.trim() && (

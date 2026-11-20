@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -36,10 +37,30 @@ export default function Dropzone({
   const dragDepthRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
 
+  const onFilesSelectedRef = useRef(onFilesSelected);
+  onFilesSelectedRef.current = onFilesSelected;
+
+  useEffect(() => {
+    const inputEl = inputRef.current;
+    if (!inputEl || disabled) return;
+    const preHydrationFiles = inputEl.files;
+    if (!preHydrationFiles || preHydrationFiles.length === 0) return;
+
+    const files = Array.from(preHydrationFiles);
+    Promise.resolve(onFilesSelectedRef.current(multiple ? files : files.slice(0, 1))).finally(
+      () => {
+        try {
+          inputEl.value = '';
+        } catch {
+          // Ignore readonly input errors in synthetic environments
+        }
+      },
+    );
+  }, [disabled, multiple]);
+
   const handleContainerClick = (event: MouseEvent<HTMLDivElement>) => {
     if (disabled) return;
     const target = event.target as HTMLElement | null;
-    // Avoid double-opening when clicking the native <label> or <input> directly
     if (target?.closest('label, input, button, a')) {
       return;
     }
@@ -50,7 +71,6 @@ export default function Dropzone({
   };
 
   const handleInputClick = (event: MouseEvent<HTMLInputElement>) => {
-    // Clear previous selection before opening picker so picking the same file again fires onChange
     event.currentTarget.value = '';
   };
 
@@ -113,7 +133,7 @@ export default function Dropzone({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         className={`flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed px-4 py-3 transition-colors ${
-          disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'
+          disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:border-[var(--accent)]'
         } ${
           isDragging
             ? 'border-[var(--accent)] bg-[var(--accent-tint)]'
@@ -131,13 +151,13 @@ export default function Dropzone({
           onChange={handleInputChange}
           className="peer sr-only"
         />
-        <p className="m-0 text-sm text-[var(--ink-muted)]">
+        <p className="font-data m-0 text-xs font-medium text-[var(--ink-muted)]">
           {isDragging ? activeLabel : formatsHint}
         </p>
         <label
           htmlFor={inputId}
           aria-disabled={disabled || undefined}
-          className={`btn-secondary inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-medium peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--focus-ring)] ${
+          className={`btn-secondary inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--focus-ring)] ${
             disabled ? 'pointer-events-none opacity-50' : ''
           }`}
         >
@@ -155,7 +175,7 @@ export default function Dropzone({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors sm:px-8 sm:py-10 ${
+      className={`rounded-xl border-2 border-dashed px-4 py-6 text-center transition-colors sm:px-8 sm:py-9 ${
         disabled ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:border-[var(--accent)]'
       } ${
         isDragging
@@ -175,22 +195,24 @@ export default function Dropzone({
         className="peer sr-only"
       />
 
-      <div className="mx-auto flex max-w-md flex-col items-center gap-4">
+      <div className="mx-auto flex max-w-md flex-col items-center gap-3.5">
         <div className="flex h-12 w-12 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-primary)]">
           <UploadTrayIcon className="h-6 w-6" />
         </div>
 
         <div className="space-y-1.5">
-          <p className="m-0 text-base font-semibold text-[var(--ink-primary)]">
+          <p className="m-0 text-base font-bold text-[var(--ink-primary)]">
             {isDragging ? activeLabel : idleLabel}
           </p>
-          <p className="m-0 text-sm text-[var(--ink-muted)]">{formatsHint}</p>
+          <p className="font-data m-0 inline-block rounded border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 py-0.5 text-xs font-medium text-[var(--ink-muted)]">
+            {formatsHint}
+          </p>
         </div>
 
         <label
           htmlFor={inputId}
           aria-disabled={disabled || undefined}
-          className={`btn-primary inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-semibold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--focus-ring)] ${
+          className={`btn-primary inline-flex min-h-11 items-center gap-2 rounded-lg px-5 text-sm font-bold peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--focus-ring)] ${
             disabled ? 'pointer-events-none opacity-50' : ''
           }`}
         >

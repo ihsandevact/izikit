@@ -57,6 +57,7 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
   const paintingRef = useRef(false);
 
   const [hasMask, setHasMask] = useState(false);
+  const [previewTab, setPreviewTab] = useState<'result' | 'original'>('result');
   const [brushMode, setBrushMode] = useState<RefineBrushMode>('none');
   const [brushRadius, setBrushRadius] = useState(20);
   const [backdropColor, setBackdropColor] = useState<string>('transparent');
@@ -151,6 +152,8 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
 
     setErrors([]);
     setHasMask(false);
+    setPreviewTab('result');
+    setBrushMode('none');
     setResultBlob(null);
 
     try {
@@ -189,6 +192,8 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     initialMaskRef.current = null;
     currentMaskRef.current = null;
     setHasMask(false);
+    setPreviewTab('result');
+    setBrushMode('none');
     setResultBlob(null);
     setErrors([]);
     setIsProcessing(false);
@@ -242,6 +247,7 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
       initialMaskRef.current = new Uint8ClampedArray(mask);
       currentMaskRef.current = new Uint8ClampedArray(mask);
       setHasMask(true);
+      setPreviewTab('result');
       redrawComposedCanvas(mask, backdropColor, outputFormat, { width, height });
     } catch {
       setErrors([copy.errors.generic]);
@@ -271,6 +277,7 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
       initialMaskRef.current = new Uint8ClampedArray(mask);
       currentMaskRef.current = new Uint8ClampedArray(mask);
       setHasMask(true);
+      setPreviewTab('result');
       redrawComposedCanvas(mask, backdropColor, outputFormat, { width, height });
       refreshCacheStats();
     } catch {
@@ -312,6 +319,30 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     redrawComposedCanvas(restored, backdropColor, outputFormat, imageSize);
   };
 
+  const handleSampleColorFromImage = (e: React.MouseEvent<HTMLImageElement>) => {
+    if (engine !== 'color-key' || !sourceRgbaRef.current || !imageSize) return;
+    const rect = e.currentTarget.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const px = Math.min(
+      imageSize.width - 1,
+      Math.max(0, Math.floor(((e.clientX - rect.left) / rect.width) * imageSize.width)),
+    );
+    const py = Math.min(
+      imageSize.height - 1,
+      Math.max(0, Math.floor(((e.clientY - rect.top) / rect.height) * imageSize.height)),
+    );
+    const offset = (py * imageSize.width + px) * 4;
+    const rgba = sourceRgbaRef.current;
+    setKeyColorHex(
+      rgb255ToHex({
+        r: rgba[offset] ?? 255,
+        g: rgba[offset + 1] ?? 255,
+        b: rgba[offset + 2] ?? 255,
+      }),
+    );
+  };
+
   const handleDownload = () => {
     if (!resultBlob) return;
     const ext =
@@ -325,8 +356,11 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     { value: '#FFFFFF', label: copy.bgWhite },
     { value: '#DB1514', label: copy.bgPassportRed },
     { value: '#00529C', label: copy.bgPassportBlue },
-    { value: '#181615', label: copy.bgDark },
+    { value: '#111317', label: copy.bgDark },
   ];
+
+  const showingOriginal = !hasMask || previewTab === 'original';
+  const canPickColorFromPreview = engine === 'color-key' && showingOriginal && !isProcessing;
 
   return (
     <div className="space-y-5">
@@ -370,358 +404,459 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
             </button>
           </div>
 
-          {/* Engine Selector + Parameters */}
-          <fieldset
-            disabled={isProcessing}
-            className="m-0 space-y-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4"
-          >
-            <legend className="px-1 text-sm font-semibold text-[var(--ink-primary)]">
-              {copy.engineHeading}
-            </legend>
+          {/* 2-Column Workbench: Unified Preview Stage + Controls */}
+          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_340px] lg:items-start">
+            {/* Left Column: Unified Preview Stage & Download */}
+            <div className="min-w-0 space-y-5">
+              <div
+                className={`space-y-3.5 rounded-xl border p-4 sm:p-5 ${
+                  hasMask
+                    ? 'border-[var(--success)] bg-[var(--success-tint)]'
+                    : 'border-[var(--border-subtle)] bg-[var(--bg-paper)]'
+                }`}
+              >
+                <div className="flex flex-wrap items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2">
+                    <h3 className="m-0 text-sm font-semibold text-[var(--ink-primary)] sm:text-base">
+                      {hasMask ? copy.resultReadyTitle : copy.previewHeading}
+                    </h3>
+                    {imageSize && (
+                      <span className="font-data rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2 py-0.5 text-[11px] text-[var(--ink-muted)]">
+                        {imageSize.width}×{imageSize.height}
+                      </span>
+                    )}
+                  </div>
 
-            <div className="grid gap-3 md:grid-cols-2">
-              {(
-                [
-                  {
-                    value: 'ai-onnx' as const,
-                    title: copy.engineAiTitle,
-                    description: copy.engineAiDesc,
-                  },
-                  {
-                    value: 'color-key' as const,
-                    title: copy.engineColorTitle,
-                    description: copy.engineColorDesc,
-                  },
-                ]
-              ).map((opt) => {
-                const selected = engine === opt.value;
-                return (
-                  <label
-                    key={opt.value}
-                    className={`flex flex-col gap-1 rounded-lg border p-3.5 transition-colors ${
-                      selected
-                        ? 'border-[var(--accent)] bg-[var(--accent-tint)]'
-                        : 'border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-[var(--border-control)]'
-                    }`}
-                  >
-                    <span className="flex items-center gap-2 text-sm font-semibold text-[var(--ink-primary)]">
+                  {hasMask && (
+                    <div
+                      role="group"
+                      aria-label={copy.previewHeading}
+                      className="inline-flex rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-0.5"
+                    >
+                      <button
+                        type="button"
+                        aria-pressed={previewTab === 'result'}
+                        onClick={() => setPreviewTab('result')}
+                        className={`min-h-11 rounded-md px-3.5 text-xs font-medium transition-colors ${
+                          previewTab === 'result'
+                            ? 'bg-[var(--accent)] font-semibold text-[var(--accent-ink)]'
+                            : 'text-[var(--ink-muted)] hover:text-[var(--ink-primary)]'
+                        }`}
+                      >
+                        {copy.previewTabResult}
+                      </button>
+                      <button
+                        type="button"
+                        aria-pressed={previewTab === 'original'}
+                        onClick={() => setPreviewTab('original')}
+                        className={`min-h-11 rounded-md px-3.5 text-xs font-medium transition-colors ${
+                          previewTab === 'original'
+                            ? 'bg-[var(--accent)] font-semibold text-[var(--accent-ink)]'
+                            : 'text-[var(--ink-muted)] hover:text-[var(--ink-primary)]'
+                        }`}
+                      >
+                        {copy.previewTabOriginal}
+                      </button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Refine Brush Toolbar (when viewing cutout result) */}
+                {hasMask && previewTab === 'result' && (
+                  <div className="space-y-2.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {(
+                        [
+                          { mode: 'none' as const, label: copy.brushNone },
+                          { mode: 'erase' as const, label: copy.brushErase },
+                          { mode: 'restore' as const, label: copy.brushRestore },
+                        ]
+                      ).map((btn) => {
+                        const active = brushMode === btn.mode;
+                        return (
+                          <button
+                            key={btn.mode}
+                            type="button"
+                            aria-pressed={active}
+                            onClick={() => setBrushMode(btn.mode)}
+                            className={`inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-medium transition-colors ${
+                              active
+                                ? 'border-[var(--accent)] bg-[var(--accent)] font-semibold text-[var(--accent-ink)]'
+                                : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-primary)] hover:border-[var(--border-control)]'
+                            }`}
+                          >
+                            {btn.label}
+                          </button>
+                        );
+                      })}
+
+                      <button
+                        type="button"
+                        onClick={handleResetMask}
+                        className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium"
+                      >
+                        {copy.resetMaskButton}
+                      </button>
+                    </div>
+
+                    {brushMode !== 'none' && (
+                      <div className="flex flex-wrap items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-2.5">
+                        <label
+                          htmlFor={brushSizeId}
+                          className="text-xs font-medium text-[var(--ink-primary)]"
+                        >
+                          {copy.brushSizeLabel}:{' '}
+                          <span className="font-data">{brushRadius} px</span>
+                        </label>
+                        <input
+                          id={brushSizeId}
+                          type="range"
+                          min={4}
+                          max={80}
+                          step={2}
+                          value={brushRadius}
+                          onChange={(e) => setBrushRadius(Number(e.target.value))}
+                          className="izikit-range h-11 w-40 sm:w-48"
+                        />
+                        <span className="text-xs text-[var(--ink-muted)]">{copy.refineHint}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* Unified Checkerboard Stage */}
+                <div className="bg-checkerboard relative flex min-h-[260px] items-center justify-center overflow-hidden rounded-lg border border-[var(--border-control)] p-3 sm:min-h-[360px]">
+                  {previewUrl && showingOriginal && (
+                    <img
+                      src={previewUrl}
+                      alt={file.name}
+                      onClick={canPickColorFromPreview ? handleSampleColorFromImage : undefined}
+                      className={`mx-auto block max-h-[420px] max-w-full rounded object-contain sm:max-h-[520px] ${
+                        canPickColorFromPreview ? 'cursor-crosshair' : ''
+                      }`}
+                    />
+                  )}
+
+                  {hasMask && (
+                    <canvas
+                      ref={resultCanvasRef}
+                      onPointerDown={(e) => {
+                        if (brushMode === 'none') return;
+                        e.currentTarget.setPointerCapture(e.pointerId);
+                        paintingRef.current = true;
+                        applyBrushAtEvent(e);
+                      }}
+                      onPointerMove={(e) => {
+                        if (!paintingRef.current) return;
+                        applyBrushAtEvent(e);
+                      }}
+                      onPointerUp={() => {
+                        paintingRef.current = false;
+                      }}
+                      onPointerCancel={() => {
+                        paintingRef.current = false;
+                      }}
+                      className={`${
+                        previewTab === 'result' ? 'block' : 'hidden'
+                      } mx-auto max-h-[420px] max-w-full touch-none rounded object-contain sm:max-h-[520px] ${
+                        brushMode === 'none' ? 'cursor-default' : 'cursor-crosshair'
+                      }`}
+                    />
+                  )}
+
+                  {isProcessing && (
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/35 backdrop-blur-[1px]"
+                    >
+                      <span className="font-data rounded-full border border-[var(--border-subtle)] bg-[var(--bg-paper)] px-3.5 py-1.5 text-xs font-medium text-[var(--ink-primary)] shadow-sm">
+                        {dict.shared.processingTitle}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Contextual Preview Hint */}
+                {showingOriginal && (
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--ink-muted)]">
+                    <p className="m-0">
+                      {engine === 'color-key' ? copy.eyedropperHint : copy.previewReadyHint}
+                    </p>
+                    {engine === 'color-key' && (
+                      <span className="font-data inline-flex items-center gap-1.5 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2 py-1 text-[11px] text-[var(--ink-primary)]">
+                        <span
+                          aria-hidden="true"
+                          className="h-3.5 w-3.5 rounded-full border border-[var(--border-control)]"
+                          style={{ backgroundColor: keyColorHex }}
+                        />
+                        {keyColorHex}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Download Bar (inside ready card when cutout exists) */}
+                {hasMask && (
+                  <div className="grid gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 sm:grid-cols-[130px_1fr_auto] sm:items-end">
+                    <div className="space-y-1">
+                      <label
+                        htmlFor={formatId}
+                        className="block text-xs font-medium text-[var(--ink-primary)]"
+                      >
+                        {dict.shared.outputFormatLabel}
+                      </label>
+                      <select
+                        id={formatId}
+                        value={outputFormat}
+                        onChange={(e) => setOutputFormat(e.target.value as RemoveBgOutputFormat)}
+                        className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-paper)] px-3 text-sm text-[var(--ink-primary)]"
+                      >
+                        <option value="image/png">PNG</option>
+                        <option value="image/webp">WebP</option>
+                        <option value="image/jpeg">JPEG</option>
+                      </select>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label
+                        htmlFor={outputNameId}
+                        className="block text-xs font-medium text-[var(--ink-primary)]"
+                      >
+                        {copy.outputNameLabel}
+                      </label>
                       <input
-                        type="radio"
-                        name="remove-bg-engine"
-                        value={opt.value}
-                        checked={selected}
-                        onChange={() => setEngine(opt.value)}
-                        className="h-4 w-4 accent-[var(--accent)]"
+                        id={outputNameId}
+                        type="text"
+                        value={outputName}
+                        onChange={(e) => setOutputName(e.target.value)}
+                        className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-paper)] px-3 text-sm text-[var(--ink-primary)]"
                       />
-                      <span>{opt.title}</span>
-                    </span>
-                    <span className="pl-6 text-xs leading-relaxed text-[var(--ink-muted)]">
-                      {opt.description}
-                    </span>
-                  </label>
-                );
-              })}
-            </div>
+                    </div>
 
-            {engine === 'ai-onnx' ? (
-              <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-2.5">
-                <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
-                  {cacheStats.totalBytes > 0
-                    ? `${copy.cacheStatusReadyPrefix} (${formatBytes(cacheStats.totalBytes)})`
-                    : copy.cacheStatusEmpty}
-                </p>
-                {cacheStats.totalBytes > 0 && (
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      await clearCachedModels();
-                      refreshCacheStats();
-                    }}
-                    className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium"
-                  >
-                    {copy.clearCacheButton}
-                  </button>
+                    <button
+                      type="button"
+                      onClick={handleDownload}
+                      disabled={!resultBlob}
+                      className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
+                    >
+                      <DownloadIcon className="h-4 w-4" />
+                      <span>{copy.downloadButton}</span>
+                    </button>
+                  </div>
                 )}
               </div>
-            ) : (
-              <div className="grid gap-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:grid-cols-3">
-                <div className="space-y-1.5">
-                  <label
-                    htmlFor={keyColorId}
-                    className="block text-xs font-medium text-[var(--ink-primary)]"
-                  >
-                    {copy.keyColorLabel}
-                  </label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      id={keyColorId}
-                      type="color"
-                      value={keyColorHex}
-                      onChange={(e) => setKeyColorHex(e.target.value.toUpperCase())}
-                      className="h-11 w-14 cursor-pointer rounded border border-[var(--border-control)] bg-[var(--bg-paper)] p-1"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (sourceRgbaRef.current && imageSize) {
-                          const detected = detectCornerKeyColor(
-                            sourceRgbaRef.current,
-                            imageSize.width,
-                            imageSize.height,
-                          );
-                          setKeyColorHex(rgb255ToHex(detected));
-                        }
-                      }}
-                      className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium"
-                    >
-                      {copy.autoDetectColorButton}
-                    </button>
-                  </div>
-                </div>
 
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <label htmlFor={toleranceId} className="font-medium text-[var(--ink-primary)]">
-                      {copy.toleranceLabel}
-                    </label>
-                    <span className="font-data text-[var(--ink-muted)]">{tolerance}</span>
-                  </div>
-                  <input
-                    id={toleranceId}
-                    type="range"
-                    min={2}
-                    max={85}
-                    step={1}
-                    value={tolerance}
-                    onChange={(e) => setTolerance(Number(e.target.value))}
-                    className="h-11 w-full accent-[var(--accent)]"
-                  />
-                </div>
+              {hasMask && (
+                <SupportCard
+                  locale={locale}
+                  heading={dict.shared.supportHeading}
+                  body={dict.shared.supportBody}
+                  aboutCta={dict.shared.supportAboutCta}
+                  dismissLabel={dict.shared.supportDismiss}
+                />
+              )}
+            </div>
 
-                <div className="space-y-1">
-                  <div className="flex justify-between text-xs">
-                    <label htmlFor={featherId} className="font-medium text-[var(--ink-primary)]">
-                      {copy.featherLabel}
-                    </label>
-                    <span className="font-data text-[var(--ink-muted)]">{feather}</span>
-                  </div>
-                  <input
-                    id={featherId}
-                    type="range"
-                    min={0}
-                    max={40}
-                    step={1}
-                    value={feather}
-                    onChange={(e) => setFeather(Number(e.target.value))}
-                    className="h-11 w-full accent-[var(--accent)]"
-                  />
-                </div>
-              </div>
-            )}
+            {/* Right Column: Engine Selector, Parameters & Backdrop Controls */}
+            <fieldset
+              disabled={isProcessing}
+              className="m-0 space-y-4 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4"
+            >
+              <legend className="px-1 text-sm font-semibold text-[var(--ink-primary)]">
+                {copy.engineHeading}
+              </legend>
 
-            {/* Backdrop Color Presets (available before and after processing) */}
-            <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
-              <span className="block text-sm font-medium text-[var(--ink-primary)]">
-                {copy.backdropHeading}
-              </span>
-              <div className="flex flex-wrap gap-2">
-                {backdropOptions.map((bg) => {
-                  const active = backdropColor === bg.value;
+              <div className="space-y-2.5">
+                {(
+                  [
+                    {
+                      value: 'ai-onnx' as const,
+                      title: copy.engineAiTitle,
+                      description: copy.engineAiDesc,
+                    },
+                    {
+                      value: 'color-key' as const,
+                      title: copy.engineColorTitle,
+                      description: copy.engineColorDesc,
+                    },
+                  ]
+                ).map((opt) => {
+                  const selected = engine === opt.value;
                   return (
-                    <button
-                      key={bg.value}
-                      type="button"
-                      aria-pressed={active}
-                      onClick={() => {
-                        setBackdropColor(bg.value);
-                        if (bg.value === 'transparent' && outputFormat === 'image/jpeg') {
-                          setOutputFormat('image/png');
-                        }
-                      }}
-                      className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 text-xs font-medium transition-colors ${
-                        active
-                          ? 'border-[var(--accent)] bg-[var(--accent-tint)] font-semibold text-[var(--ink-primary)]'
-                          : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-muted)] hover:border-[var(--border-control)]'
+                    <label
+                      key={opt.value}
+                      className={`flex cursor-pointer flex-col gap-1 rounded-lg border p-3 transition-colors ${
+                        selected
+                          ? 'border-[var(--accent)] bg-[var(--accent-tint)]'
+                          : 'border-[var(--border-subtle)] bg-[var(--bg-card)] hover:border-[var(--border-control)]'
                       }`}
                     >
-                      <span
-                        aria-hidden="true"
-                        className="h-4 w-4 rounded-full border border-black/20"
-                        style={
-                          bg.value === 'transparent'
-                            ? {
-                                backgroundImage:
-                                  'linear-gradient(45deg, #ccc 25%, transparent 25%), linear-gradient(-45deg, #ccc 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #ccc 75%), linear-gradient(-45deg, transparent 75%, #ccc 75%)',
-                                backgroundSize: '8px 8px',
-                              }
-                            : { backgroundColor: bg.value }
-                        }
-                      />
-                      <span>{bg.label}</span>
-                    </button>
+                      <span className="flex items-center gap-2 text-sm font-semibold text-[var(--ink-primary)]">
+                        <input
+                          type="radio"
+                          name="remove-bg-engine"
+                          value={opt.value}
+                          checked={selected}
+                          onChange={() => setEngine(opt.value)}
+                          className="h-4 w-4 shrink-0 accent-[var(--accent)]"
+                        />
+                        <span>{opt.title}</span>
+                      </span>
+                      <span className="pl-6 text-xs leading-relaxed text-[var(--ink-muted)]">
+                        {opt.description}
+                      </span>
+                    </label>
                   );
                 })}
               </div>
-            </div>
 
-            <div className="flex justify-end border-t border-[var(--border-subtle)] pt-4">
-              <button
-                type="button"
-                onClick={engine === 'ai-onnx' ? handleRunAiRemoval : handleRunColorKey}
-                disabled={isProcessing}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
-              >
-                {engine === 'ai-onnx' ? copy.runAiButton : copy.runColorButton}
-              </button>
-            </div>
-          </fieldset>
-
-          {/* Interactive Refine Brush & Output Canvas */}
-          {hasMask && (
-            <div className="space-y-4 rounded-xl border border-[var(--success)] bg-[var(--success-tint)] p-4 sm:p-5">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <h3 className="m-0 text-base font-semibold text-[var(--ink-primary)]">
-                  {copy.resultReadyTitle}
-                </h3>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  {(
-                    [
-                      { mode: 'none' as const, label: copy.brushNone },
-                      { mode: 'erase' as const, label: copy.brushErase },
-                      { mode: 'restore' as const, label: copy.brushRestore },
-                    ]
-                  ).map((btn) => {
-                    const active = brushMode === btn.mode;
-                    return (
-                      <button
-                        key={btn.mode}
-                        type="button"
-                        aria-pressed={active}
-                        onClick={() => setBrushMode(btn.mode)}
-                        className={`inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-medium ${
-                          active
-                            ? 'border-[var(--accent)] bg-[var(--accent)] font-semibold text-[var(--accent-ink)]'
-                            : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-primary)]'
-                        }`}
-                      >
-                        {btn.label}
-                      </button>
-                    );
-                  })}
-
-                  <button
-                    type="button"
-                    onClick={handleResetMask}
-                    className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium"
-                  >
-                    {copy.resetMaskButton}
-                  </button>
+              {engine === 'ai-onnx' ? (
+                <div className="flex flex-wrap items-center justify-between gap-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2.5">
+                  <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
+                    {cacheStats.totalBytes > 0
+                      ? `${copy.cacheStatusReadyPrefix} (${formatBytes(cacheStats.totalBytes)})`
+                      : copy.cacheStatusEmpty}
+                  </p>
+                  {cacheStats.totalBytes > 0 && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await clearCachedModels();
+                        refreshCacheStats();
+                      }}
+                      className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3 text-xs font-medium"
+                    >
+                      {copy.clearCacheButton}
+                    </button>
+                  )}
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-3.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5">
+                  <div className="space-y-1.5">
+                    <label
+                      htmlFor={keyColorId}
+                      className="block text-xs font-medium text-[var(--ink-primary)]"
+                    >
+                      {copy.keyColorLabel}
+                    </label>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <input
+                        id={keyColorId}
+                        type="color"
+                        value={keyColorHex}
+                        onChange={(e) => setKeyColorHex(e.target.value.toUpperCase())}
+                        className="h-11 w-14 cursor-pointer rounded border border-[var(--border-control)] bg-[var(--bg-paper)] p-1"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (sourceRgbaRef.current && imageSize) {
+                            const detected = detectCornerKeyColor(
+                              sourceRgbaRef.current,
+                              imageSize.width,
+                              imageSize.height,
+                            );
+                            setKeyColorHex(rgb255ToHex(detected));
+                          }
+                        }}
+                        className="btn-secondary inline-flex min-h-11 flex-1 items-center justify-center rounded-lg px-3 text-xs font-medium"
+                      >
+                        {copy.autoDetectColorButton}
+                      </button>
+                    </div>
+                  </div>
 
-              {brushMode !== 'none' && (
-                <div className="flex flex-wrap items-center gap-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-2.5">
-                  <label htmlFor={brushSizeId} className="text-xs font-medium text-[var(--ink-primary)]">
-                    {copy.brushSizeLabel}: <span className="font-data">{brushRadius} px</span>
-                  </label>
-                  <input
-                    id={brushSizeId}
-                    type="range"
-                    min={4}
-                    max={80}
-                    step={2}
-                    value={brushRadius}
-                    onChange={(e) => setBrushRadius(Number(e.target.value))}
-                    className="h-9 w-48 accent-[var(--accent)]"
-                  />
-                  <span className="text-xs text-[var(--ink-muted)]">{copy.refineHint}</span>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <label htmlFor={toleranceId} className="font-medium text-[var(--ink-primary)]">
+                        {copy.toleranceLabel}
+                      </label>
+                      <span className="font-data text-[var(--ink-muted)]">{tolerance}</span>
+                    </div>
+                    <input
+                      id={toleranceId}
+                      type="range"
+                      min={2}
+                      max={85}
+                      step={1}
+                      value={tolerance}
+                      onChange={(e) => setTolerance(Number(e.target.value))}
+                      className="izikit-range h-11 w-full"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <label htmlFor={featherId} className="font-medium text-[var(--ink-primary)]">
+                        {copy.featherLabel}
+                      </label>
+                      <span className="font-data text-[var(--ink-muted)]">{feather}</span>
+                    </div>
+                    <input
+                      id={featherId}
+                      type="range"
+                      min={0}
+                      max={40}
+                      step={1}
+                      value={feather}
+                      onChange={(e) => setFeather(Number(e.target.value))}
+                      className="izikit-range h-11 w-full"
+                    />
+                  </div>
                 </div>
               )}
 
-              <div
-                className="overflow-hidden rounded-lg border border-[var(--border-control)] p-2"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(45deg, #d8d3c8 25%, transparent 25%), linear-gradient(-45deg, #d8d3c8 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #d8d3c8 75%), linear-gradient(-45deg, transparent 75%, #d8d3c8 75%)',
-                  backgroundSize: '16px 16px',
-                  backgroundColor: '#eee9df',
-                }}
-              >
-                <canvas
-                  ref={resultCanvasRef}
-                  onPointerDown={(e) => {
-                    if (brushMode === 'none') return;
-                    e.currentTarget.setPointerCapture(e.pointerId);
-                    paintingRef.current = true;
-                    applyBrushAtEvent(e);
-                  }}
-                  onPointerMove={(e) => {
-                    if (!paintingRef.current) return;
-                    applyBrushAtEvent(e);
-                  }}
-                  onPointerUp={() => {
-                    paintingRef.current = false;
-                  }}
-                  onPointerCancel={() => {
-                    paintingRef.current = false;
-                  }}
-                  className={`mx-auto block max-h-96 max-w-full rounded object-contain touch-none ${
-                    brushMode === 'none' ? 'cursor-default' : 'cursor-crosshair'
-                  }`}
-                />
+              {/* Backdrop Color Presets */}
+              <div className="space-y-2 border-t border-[var(--border-subtle)] pt-4">
+                <span className="block text-sm font-medium text-[var(--ink-primary)]">
+                  {copy.backdropHeading}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {backdropOptions.map((bg) => {
+                    const active = backdropColor === bg.value;
+                    return (
+                      <button
+                        key={bg.value}
+                        type="button"
+                        aria-pressed={active}
+                        onClick={() => {
+                          setBackdropColor(bg.value);
+                          if (bg.value === 'transparent' && outputFormat === 'image/jpeg') {
+                            setOutputFormat('image/png');
+                          }
+                        }}
+                        className={`inline-flex min-h-11 items-center gap-2 rounded-lg border px-3 text-xs font-medium transition-colors ${
+                          active
+                            ? 'border-[var(--accent)] bg-[var(--accent-tint)] font-semibold text-[var(--ink-primary)]'
+                            : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-muted)] hover:border-[var(--border-control)]'
+                        }`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`h-4 w-4 shrink-0 rounded-full border border-[var(--border-control)] ${
+                            bg.value === 'transparent' ? 'bg-checkerboard' : ''
+                          }`}
+                          style={bg.value === 'transparent' ? undefined : { backgroundColor: bg.value }}
+                        />
+                        <span>{bg.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
-              <div className="grid gap-4 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
-                <div className="space-y-1">
-                  <label htmlFor={formatId} className="block text-xs font-medium text-[var(--ink-primary)]">
-                    {dict.shared.outputFormatLabel}
-                  </label>
-                  <select
-                    id={formatId}
-                    value={outputFormat}
-                    onChange={(e) => setOutputFormat(e.target.value as RemoveBgOutputFormat)}
-                    className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-paper)] px-3 text-sm text-[var(--ink-primary)]"
-                  >
-                    <option value="image/png">PNG</option>
-                    <option value="image/webp">WebP</option>
-                    <option value="image/jpeg">JPEG</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label htmlFor={outputNameId} className="block text-xs font-medium text-[var(--ink-primary)]">
-                    {copy.outputNameLabel}
-                  </label>
-                  <input
-                    id={outputNameId}
-                    type="text"
-                    value={outputName}
-                    onChange={(e) => setOutputName(e.target.value)}
-                    className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-paper)] px-3 text-sm text-[var(--ink-primary)]"
-                  />
-                </div>
-
+              <div className="border-t border-[var(--border-subtle)] pt-4">
                 <button
                   type="button"
-                  onClick={handleDownload}
-                  disabled={!resultBlob}
-                  className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
+                  onClick={engine === 'ai-onnx' ? handleRunAiRemoval : handleRunColorKey}
+                  disabled={isProcessing}
+                  className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold"
                 >
-                  <DownloadIcon className="h-4 w-4" />
-                  <span>{copy.downloadButton}</span>
+                  {engine === 'ai-onnx' ? copy.runAiButton : copy.runColorButton}
                 </button>
               </div>
-
-              <SupportCard
-                locale={locale}
-                heading={dict.shared.supportHeading}
-                body={dict.shared.supportBody}
-                aboutCta={dict.shared.supportAboutCta}
-                dismissLabel={dict.shared.supportDismiss}
-              />
-            </div>
-          )}
+            </fieldset>
+          </div>
         </div>
       )}
 

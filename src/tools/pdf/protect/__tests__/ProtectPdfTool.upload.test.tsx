@@ -47,7 +47,7 @@ describe('ProtectPdfTool upload, auto-detection, and password validation', () =>
 
     await waitFor(() => {
       expect(screen.getByText('kontrak.pdf')).toBeTruthy();
-      expect(screen.getByText(/PDF Tanpa Sandi/i)).toBeTruthy();
+      expect(screen.getByText(/Tanpa Sandi/i)).toBeTruthy();
     });
 
     const protectBtn = screen.getByRole('button', {
@@ -56,7 +56,7 @@ describe('ProtectPdfTool upload, auto-detection, and password validation', () =>
     expect(protectBtn.disabled).toBe(true);
 
     const passInput = screen.getByLabelText(/Kata sandi buka dokumen/i);
-    const confirmInput = screen.getByLabelText(/Ulangi kata sandi/i);
+    const confirmInput = screen.getByLabelText(/Ketik ulang kata sandi/i);
 
     fireEvent.change(passInput, { target: { value: 'rahasia123' } });
     fireEvent.change(confirmInput, { target: { value: 'berbeda' } });
@@ -75,7 +75,7 @@ describe('ProtectPdfTool upload, auto-detection, and password validation', () =>
     fireEvent.change(input, { target: { files: [lockedFile] } });
 
     await waitFor(() => {
-      expect(screen.getByText(/PDF Terkunci/i)).toBeTruthy();
+      expect(screen.getByText(/Terkunci Sandi/i)).toBeTruthy();
       expect(screen.getByRole('button', { name: /Buka Sandi PDF/i })).toBeTruthy();
     });
   });

@@ -417,7 +417,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                 </span>
               </div>
 
-              <div className="flex min-h-64 items-center justify-center overflow-hidden rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3">
+              <div className="bg-checkerboard flex min-h-[280px] items-center justify-center overflow-hidden rounded-lg border border-[var(--border-control)] p-6 sm:min-h-[360px]">
                 <div
                   className="relative inline-block max-w-full transition-transform duration-150"
                   style={{
@@ -429,7 +429,11 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
                     alt={file.name}
                     width={sourceDims.width}
                     height={sourceDims.height}
-                    className="block max-h-52 max-w-52 w-auto object-contain sm:max-h-64 sm:max-w-64"
+                    className={`block w-auto rounded object-contain ${
+                      rotation === 90 || rotation === 270
+                        ? 'max-h-[240px] max-w-[240px] sm:max-h-[300px] sm:max-w-[300px]'
+                        : 'max-h-[340px] max-w-full sm:max-h-[420px]'
+                    }`}
                   />
                   {overlayStyle && (
                     <div
@@ -743,20 +747,20 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
       {output && !isProcessing && (
         <div className="space-y-4 rounded-xl border border-[var(--success)] bg-[var(--success-tint)] p-4 sm:p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3.5">
               <img
                 src={output.url}
                 alt={output.filename}
-                width={56}
-                height={56}
-                className="h-14 w-14 shrink-0 rounded border border-[var(--border-subtle)] bg-[var(--bg-card)] object-contain"
+                width={80}
+                height={80}
+                className="bg-checkerboard h-20 w-20 shrink-0 rounded-lg border border-[var(--border-control)] object-contain"
               />
               <div className="space-y-0.5">
                 <h3 className="m-0 text-base font-semibold text-[var(--ink-primary)]">
                   {copy.resultReadyTitle}
                 </h3>
                 <p className="font-data m-0 text-xs text-[var(--ink-muted)]">
-                  {output.filename} · {output.width}x{output.height} px ·{' '}
+                  {output.filename} · {output.width}×{output.height} px ·{' '}
                   {formatBytes(output.blob.size)}
                 </p>
               </div>
@@ -765,7 +769,7 @@ export default function ResizeCropImageTool({ locale }: ResizeCropImageToolProps
             <button
               type="button"
               onClick={() => downloadBlob(output.blob, output.filename)}
-              className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
+              className="btn-primary inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold sm:w-auto"
             >
               <DownloadIcon className="h-4 w-4" />
               <span>{copy.downloadButton}</span>

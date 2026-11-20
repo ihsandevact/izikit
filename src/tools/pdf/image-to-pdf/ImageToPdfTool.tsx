@@ -421,7 +421,7 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
                 type="button"
                 onClick={handleGenerate}
                 disabled={isBuilding || items.length === 0}
-                className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
               >
                 {copy.convertButton} ({items.length})
               </button>

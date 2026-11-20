@@ -387,7 +387,7 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
               type="button"
               onClick={handleMerge}
               disabled={isMerging || anyInspecting || items.length < 2}
-              className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+              className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
             >
               {copy.mergeButton} {items.length} {copy.filesUnit}
             </button>

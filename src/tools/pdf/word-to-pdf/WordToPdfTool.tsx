@@ -367,7 +367,7 @@ export default function WordToPdfTool({ locale }: WordToPdfToolProps) {
                   type="button"
                   onClick={handleConvert}
                   disabled={isProcessing || inspecting || !summary}
-                  className="btn-primary inline-flex min-h-11 items-center justify-center rounded-lg px-6 text-sm font-semibold"
+                  className="btn-primary inline-flex min-h-11 w-full items-center justify-center rounded-lg px-6 text-sm font-semibold sm:w-auto"
                 >
                   {copy.convertButton}
                 </button>
@@ -378,7 +378,7 @@ export default function WordToPdfTool({ locale }: WordToPdfToolProps) {
             {summary && (
               <aside
                 aria-label={copy.summaryHeading}
-                className="space-y-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4"
+                className="space-y-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-4 lg:sticky lg:top-20"
               >
                 <h3 className="m-0 text-sm font-semibold text-[var(--ink-primary)]">
                   {copy.summaryHeading}
@@ -425,7 +425,7 @@ export default function WordToPdfTool({ locale }: WordToPdfToolProps) {
                           key={idx}
                           className="rounded border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 py-1.5 text-xs"
                         >
-                          <span className="font-data mr-1.5 text-[10px] font-bold tracking-wide text-[var(--accent)] uppercase">
+                          <span className="font-data mr-1.5 text-xs font-bold tracking-wide text-[var(--accent)] uppercase">
                             {item.kind}
                           </span>
                           <span
