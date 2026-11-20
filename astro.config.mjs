@@ -18,12 +18,17 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
+      filter: (page) => !page.endsWith('/404') && !page.endsWith('/404/'),
       i18n: {
         defaultLocale: 'id',
         locales: {
-          id: 'id-ID',
-          en: 'en-US',
+          id: 'id',
+          en: 'en',
         },
+      },
+      serialize(item) {
+        item.lastmod = new Date().toISOString();
+        return item;
       },
     }),
     AstroPWA({
@@ -33,16 +38,34 @@ export default defineConfig({
         short_name: 'izikit',
         description:
           'Kit utilitas PDF dan gambar yang berjalan 100% lokal di browser Anda tanpa login dan tanpa unggah file ke server.',
-        theme_color: '#0D0F12',
-        background_color: '#0D0F12',
+        theme_color: '#0B1020',
+        background_color: '#0B1020',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '/favicon.svg',
+            src: '/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any',
+          },
+          {
+            src: '/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          },
+          {
+            src: '/izikit-icon.svg',
             sizes: 'any',
             type: 'image/svg+xml',
-            purpose: 'any maskable',
+            purpose: 'any',
+          },
+          {
+            src: '/izikit-app-icon.svg',
+            sizes: '512x512',
+            type: 'image/svg+xml',
+            purpose: 'maskable',
           },
         ],
       },
@@ -52,7 +75,7 @@ export default defineConfig({
         clientsClaim: true,
         skipWaiting: true,
         globPatterns: ['**/*.{js,css,svg,woff2,json}'],
-        globIgnores: ['**/ort*.js'],
+        globIgnores: ['**/ort*.js', '**/heic-to*.js'],
         navigateFallback: null,
         runtimeCaching: [
           {
@@ -71,6 +94,20 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'izikit-onnx-runtime-v3',
+            },
+          },
+          {
+            urlPattern: /\/_astro\/avif_.*\.wasm$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'izikit-avif-wasm-v1',
+            },
+          },
+          {
+            urlPattern: /\/_astro\/heic-to.*\.js$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'izikit-heic-decoder-v1',
             },
           },
         ],

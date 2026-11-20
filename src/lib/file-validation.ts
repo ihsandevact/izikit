@@ -3,11 +3,19 @@ import { formatBytes } from './format';
 import { createClientId } from './id';
 
 export type SupportedImageMime = 'image/jpeg' | 'image/png' | 'image/webp';
+export type ConvertibleImageMime = SupportedImageMime | 'image/avif';
+export type ConvertibleInputMime = ConvertibleImageMime | 'image/heic';
 
 export interface ValidatedImageFile {
   id: string;
   file: File;
   mime: SupportedImageMime;
+}
+
+export interface ValidatedConvertibleImageFile {
+  id: string;
+  file: File;
+  mime: ConvertibleInputMime;
 }
 
 export interface ValidatedPdfFile {
@@ -114,6 +122,80 @@ export function detectImageMimeFromBytes(bytes: Uint8Array): SupportedImageMime 
   return null;
 }
 
+function readAsciiFourCC(bytes: Uint8Array, offset: number): string {
+  return String.fromCharCode(
+    bytes[offset],
+    bytes[offset + 1],
+    bytes[offset + 2],
+    bytes[offset + 3],
+  );
+}
+
+/**
+ * Inspect ISO BMFF ftyp box magic bytes to detect AVIF images reliably.
+ * Handles both direct 'avif'/'avis' major brands and 'mif1' with 'avif' compatible brand.
+ */
+export function isAvifBytes(bytes: Uint8Array): boolean {
+  if (bytes.length < 12) return false;
+  if (readAsciiFourCC(bytes, 4) !== 'ftyp') return false;
+
+  const boxSize =
+    ((bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]) >>> 0;
+  const majorBrand = readAsciiFourCC(bytes, 8);
+  if (majorBrand === 'avif' || majorBrand === 'avis') {
+    return true;
+  }
+
+  const end = Math.min(bytes.length, boxSize >= 16 ? boxSize : bytes.length);
+  for (let offset = 16; offset + 4 <= end; offset += 4) {
+    const brand = readAsciiFourCC(bytes, offset);
+    if (brand === 'avif' || brand === 'avis') {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const HEIC_BRANDS = new Set(['heic', 'heix', 'hevc', 'hevx', 'heim', 'heis', 'hevm', 'hevs']);
+
+/**
+ * Inspect ISO BMFF ftyp box magic bytes to detect HEIC/HEIF images reliably.
+ * Must be checked after isAvifBytes so mif1+avif files are classified as AVIF.
+ */
+export function isHeicBytes(bytes: Uint8Array): boolean {
+  if (bytes.length < 12) return false;
+  if (readAsciiFourCC(bytes, 4) !== 'ftyp') return false;
+
+  const boxSize =
+    ((bytes[0] << 24) | (bytes[1] << 16) | (bytes[2] << 8) | bytes[3]) >>> 0;
+  const majorBrand = readAsciiFourCC(bytes, 8);
+  if (HEIC_BRANDS.has(majorBrand)) {
+    return true;
+  }
+
+  const end = Math.min(bytes.length, boxSize >= 16 ? boxSize : bytes.length);
+  for (let offset = 16; offset + 4 <= end; offset += 4) {
+    const brand = readAsciiFourCC(bytes, offset);
+    if (HEIC_BRANDS.has(brand)) {
+      return true;
+    }
+  }
+
+  // Fallback for generic mif1 HEIF containers (not AVIF)
+  return majorBrand === 'mif1' && !isAvifBytes(bytes);
+}
+
+export function detectConvertibleImageMimeFromBytes(
+  bytes: Uint8Array,
+): ConvertibleInputMime | null {
+  const standard = detectImageMimeFromBytes(bytes);
+  if (standard) return standard;
+  if (isAvifBytes(bytes)) return 'image/avif';
+  if (isHeicBytes(bytes)) return 'image/heic';
+  return null;
+}
+
 function readBlobWithFileReader(blob: Blob): Promise<ArrayBuffer> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -143,7 +225,7 @@ export async function readFileHeaderBytes(file: File, byteCount = 1024): Promise
   return new Uint8Array(buffer);
 }
 
-export function mimeToExtension(mime: SupportedImageMime): string {
+export function mimeToExtension(mime: ConvertibleInputMime): string {
   switch (mime) {
     case 'image/jpeg':
       return 'jpg';
@@ -151,6 +233,10 @@ export function mimeToExtension(mime: SupportedImageMime): string {
       return 'png';
     case 'image/webp':
       return 'webp';
+    case 'image/avif':
+      return 'avif';
+    case 'image/heic':
+      return 'heic';
   }
 }
 
@@ -179,6 +265,73 @@ export async function validateImageFiles(
         id: `${file.name}-${file.size}-${createClientId()}`,
         file,
         mime,
+      });
+    } catch {
+      errors.push(`${messages.generic} (${file.name})`);
+    }
+  }
+
+  return { accepted, errors };
+}
+
+export async function validateConvertibleImageFiles(
+  incomingFiles: readonly File[],
+  messages: ImageValidationMessages,
+): Promise<{ accepted: ValidatedConvertibleImageFile[]; errors: string[] }> {
+  const errors: string[] = [];
+  const accepted: ValidatedConvertibleImageFile[] = [];
+
+  for (const file of incomingFiles) {
+    if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
+      errors.push(`${messages.tooLarge} ${file.name} (${formatBytes(file.size)})`);
+      continue;
+    }
+
+    try {
+      const header = await readFileHeaderBytes(file, 64);
+      const mime = detectConvertibleImageMimeFromBytes(header);
+      if (!mime) {
+        errors.push(`${messages.notImage} ${file.name}`);
+        continue;
+      }
+
+      accepted.push({
+        id: `${file.name}-${file.size}-${createClientId()}`,
+        file,
+        mime,
+      });
+    } catch {
+      errors.push(`${messages.generic} (${file.name})`);
+    }
+  }
+
+  return { accepted, errors };
+}
+
+export async function validateHeicFiles(
+  incomingFiles: readonly File[],
+  messages: ImageValidationMessages,
+): Promise<{ accepted: ValidatedConvertibleImageFile[]; errors: string[] }> {
+  const errors: string[] = [];
+  const accepted: ValidatedConvertibleImageFile[] = [];
+
+  for (const file of incomingFiles) {
+    if (file.size > SITE_CONFIG.limits.imageSoftMaxBytes) {
+      errors.push(`${messages.tooLarge} ${file.name} (${formatBytes(file.size)})`);
+      continue;
+    }
+
+    try {
+      const header = await readFileHeaderBytes(file, 64);
+      if (!isHeicBytes(header)) {
+        errors.push(`${messages.notImage} ${file.name}`);
+        continue;
+      }
+
+      accepted.push({
+        id: `${file.name}-${file.size}-${createClientId()}`,
+        file,
+        mime: 'image/heic',
       });
     } catch {
       errors.push(`${messages.generic} (${file.name})`);

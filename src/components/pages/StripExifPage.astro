@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import StripExifTool from '@/tools/image/strip-exif/StripExifTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/strip-exif" toolKey="strip-exif">
+  <StripExifTool client:load locale={locale} />
+</ToolPageLayout>

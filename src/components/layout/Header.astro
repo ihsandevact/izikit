@@ -25,15 +25,17 @@ const imageTools = liveTools.filter((tool) => tool.category === 'image');
 const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(/^\/+|\/+$/g, '')}`;
 ---
 
-<header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]">
+<header class="sticky top-0 z-40 border-b border-[var(--border-subtle)] bg-[var(--bg-paper)]/90 backdrop-blur-md">
   <div class="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-2.5 sm:px-6 sm:py-3">
     {/* Brand Mark */}
     <a
       href={homeHref}
-      class="group inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg text-[var(--ink-primary)] no-underline"
+      class="group inline-flex min-h-10 shrink-0 items-center gap-2.5 rounded-lg text-[var(--ink-primary)] no-underline"
     >
       <BrandMarkIcon className="h-7 w-7 shrink-0" />
-      <span class="font-display text-lg font-extrabold tracking-tight">izikit</span>
+      <span class="font-display text-[19px] font-extrabold tracking-tight">
+        izi<span class="text-[var(--kit)]">kit</span>
+      </span>
     </a>
 
     {/* Right-aligned Minimalist Utility Bar */}
@@ -43,17 +45,25 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
           href={allToolsHref}
           aria-current={normalizedCurrent === '/tools' ? 'page' : undefined}
           class:list={[
-            'inline-flex min-h-10 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
+            'inline-flex min-h-9 items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
             normalizedCurrent === '/tools'
               ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)]'
               : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',
           ]}
         >
-          <svg viewBox="0 0 18 18" fill="none" class="h-3.5 w-3.5 shrink-0" aria-hidden="true">
-            <rect x="2.5" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
-            <rect x="10.5" y="2.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
-            <rect x="2.5" y="10.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
-            <rect x="10.5" y="10.5" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.5" />
+          <svg
+            viewBox="0 0 18 18"
+            fill="none"
+            class:list={[
+              'h-3.5 w-3.5 shrink-0',
+              normalizedCurrent === '/tools' ? 'text-[var(--link)]' : 'text-current',
+            ]}
+            aria-hidden="true"
+          >
+            <rect x="2.5" y="2.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5" />
+            <rect x="10.5" y="2.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5" />
+            <rect x="2.5" y="10.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5" />
+            <rect x="10.5" y="10.5" width="5" height="5" rx="1.2" stroke="currentColor" stroke-width="1.5" />
           </svg>
           <span>{dict.nav.tools}</span>
         </a>
@@ -62,7 +72,7 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
           href={aboutHref}
           aria-current={normalizedCurrent === '/about' ? 'page' : undefined}
           class:list={[
-            'inline-flex min-h-10 items-center whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
+            'inline-flex min-h-9 items-center whitespace-nowrap rounded-lg px-2.5 text-xs font-medium no-underline transition-colors sm:text-[13px]',
             normalizedCurrent === '/about'
               ? 'bg-[var(--bg-recess)] font-semibold text-[var(--ink-primary)]'
               : 'text-[var(--ink-muted)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]',

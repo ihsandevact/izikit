@@ -62,4 +62,34 @@ describe('convert.logic', () => {
       }),
     ).toThrowError(expect.objectContaining({ code: 'EMPTY_BATCH' }));
   });
+
+  it('supports converting to AVIF and from AVIF to JPEG with background fill', () => {
+    const toAvif = buildConversionPlan(
+      [{ id: 'a1', name: 'poster.png', mime: 'image/png' }],
+      { targetFormat: 'image/avif', quality: 80, jpegBackground: '#FFFFFF' },
+    );
+    expect(toAvif[0]).toEqual({
+      id: 'a1',
+      inputMime: 'image/png',
+      outputMime: 'image/avif',
+      outputFilename: 'poster.avif',
+      qualityRatio: 0.8,
+      needsBackgroundFill: false,
+      backgroundColor: '#FFFFFF',
+    });
+
+    const fromAvifToJpg = buildConversionPlan(
+      [{ id: 'a2', name: 'hero.avif', mime: 'image/avif' }],
+      { targetFormat: 'image/jpeg', quality: 90, jpegBackground: '#000000' },
+    );
+    expect(fromAvifToJpg[0]).toEqual({
+      id: 'a2',
+      inputMime: 'image/avif',
+      outputMime: 'image/jpeg',
+      outputFilename: 'hero.jpg',
+      qualityRatio: 0.9,
+      needsBackgroundFill: true,
+      backgroundColor: '#000000',
+    });
+  });
 });

@@ -2,6 +2,7 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ToolShell from '@/components/shared/ToolShell.astro';
 import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import { buildToolPageJsonLd } from '@/lib/seo-schema';
 
 export type ToolDictionaryKey = keyof ReturnType<typeof getDictionary>['tools'];
 
@@ -16,21 +17,7 @@ const dict = getDictionary(locale);
 const toolMeta = dict.tools[toolKey];
 const seo = getSeoUrls(route, locale);
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebApplication',
-  name: `${toolMeta.name} - izikit`,
-  url: seo.canonical,
-  applicationCategory: 'UtilitiesApplication',
-  operatingSystem: 'Any',
-  inLanguage: dict.langTag,
-  description: toolMeta.seoDescription,
-  offers: {
-    '@type': 'Offer',
-    price: '0',
-    priceCurrency: 'USD',
-  },
-};
+const jsonLd = buildToolPageJsonLd(locale, seo, dict, toolMeta);
 ---
 
 <BaseLayout
@@ -42,10 +29,13 @@ const jsonLd = {
 >
   <ToolShell
     locale={locale}
+    toolId={toolKey}
     toolName={toolMeta.name}
     toolDescription={toolMeta.shortDescription}
     guideTitle={toolMeta.guideTitle}
     guideItems={toolMeta.guideItems}
+    howToSteps={toolMeta.howToSteps}
+    faqs={toolMeta.faqs}
   >
     <slot />
   </ToolShell>

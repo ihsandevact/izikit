@@ -4,7 +4,8 @@ export const idDictionary = {
   ogLocale: 'id_ID',
   site: {
     tagline: 'Kit utilitas PDF dan gambar 100% gratis, tanpa login, langsung di browser.',
-    privacyNote: '100% Gratis · Tanpa Login · 100% Lokal',
+    privacyNote: '100% Gratis · Tanpa Login · Privasi Aman',
+    trakteerCta: 'Traktir kopi di Trakteer',
     skipToContent: 'Lewati ke konten utama',
     menuLabel: 'Menu',
     closeMenu: 'Tutup menu',
@@ -27,31 +28,35 @@ export const idDictionary = {
     about: 'Tentang & Privasi',
   },
   home: {
-    seoTitle: 'izikit: Alat PDF & Gambar 100% Gratis, Tanpa Login & Tanpa Upload',
+    seoTitle: 'izikit — Alat PDF & Gambar Gratis, Tanpa Login & Upload',
     seoDescription:
-      'Kelola PDF dan foto 100% gratis tanpa login dan tanpa batas kuota harian. Gabung, kompres, edit PDF, ubah Word ke PDF, dan hapus background pasfoto langsung di browser tanpa unggah ke server.',
-    heroPromptStrong: 'Cari atau pilih tool gratis',
-    heroPromptMuted: 'Langsung jalan di browser tanpa login dan tanpa upload file.',
+      '19 alat PDF & gambar 100% gratis tanpa login dan tanpa upload ke server. Gabung, kompres, edit PDF, ubah Word ke PDF, hapus background pasfoto, dan konversi HEIC langsung di browser.',
+    heroPromptStrong: 'Butuh Tool Gratis Apa Hari Ini?',
+    heroPromptPrefix: 'Butuh Tool ',
+    heroPromptHighlight: 'Gratis',
+    heroPromptSuffix: ' Apa Hari\u00A0Ini?',
+    heroPromptMuted: 'Langsung jalan di browser tanpa login dan tanpa upload file ke server.',
     headline: 'Kelola PDF dan foto 100% gratis. Tanpa login, langsung di browser.',
     subheadline:
-      'Gabung, kompres, dan tanda tangani PDF atau hapus latar pasfoto sepuasnya tanpa daftar akun dan tanpa kuota harian. Semua diproses langsung di perangkat Anda, bukan di server.',
+      'Gabung, kompres, dan tanda tangani PDF atau hapus latar pasfoto sepuasnya tanpa daftar akun dan tanpa kuota harian. Semua diproses langsung di perangkat kamu, bukan di server.',
     searchLabel: 'Cari alat gratis di izikit',
     searchPlaceholder: 'Cari tool... (pdf, pasfoto, word)',
     catalogSearchPlaceholder: 'Cari tool... (pdf, pasfoto, word)',
     clearSearch: 'Bersihkan pencarian',
     recentHeading: 'TERAKHIR DIPAKAI',
     popularHeading: 'POPULER',
+    categoriesHeading: 'KATEGORI',
     keyNavigate: 'pilih',
     keyOpen: 'buka',
     keyClear: 'hapus',
-    launcherFooterRight: '15 tools · 100% gratis · tanpa upload',
+    launcherFooterRight: '19 tools · 100% gratis · tanpa upload',
     catalogTitle: 'Semua tools',
     catalogSubtitle:
       'Dokumen, PDF, gambar, studio pasfoto, hingga utilitas kerja harian. 100% gratis, tanpa login, dan semuanya jalan di perangkatmu.',
     catalogPrivacyBadge: 'File tidak pernah di-upload ke server',
     filterAll: 'Semua',
-    filterPdf: 'PDF (9)',
-    filterImage: 'Gambar (6)',
+    filterPdf: 'PDF (10)',
+    filterImage: 'Gambar (9)',
     badges: {
       new: 'BARU',
       ai: 'AI LOKAL',
@@ -74,45 +79,88 @@ export const idDictionary = {
         title: 'Studio Foto & Visual',
         hint: 'Hapus latar foto otomatis dengan AI lokal, ganti warna pasfoto, watermark, atau kolase.',
       },
+      'daily-utilities': {
+        title: 'Utilitas Kerja Harian',
+        hint: 'QR Code, konversi data CSV/Excel/JSON, hingga utilitas media ringan di browser.',
+      },
     },
     popularSectionTitle: 'Sering Dipakai',
     popularSectionHint: 'Peluncur cepat 4 alat harian utama.',
     activeSectionTitle: 'Meja kerja dokumen & gambar',
-    activeSectionHint: 'Pilih alat sesuai tugas Anda.',
+    activeSectionHint: 'Pilih alat sesuai tugas kamu.',
     pdfSectionTitle: 'Dokumen PDF',
     pdfSectionHint: 'Gabung, pisah, kompres, beri tanda tangan, kunci sandi, atau konversi Word ke PDF.',
     imageSectionTitle: 'Gambar & Foto',
     imageSectionHint: 'Kecilkan ukuran file, hapus latar pasfoto, potong, watermark, atau susun kolase.',
-    upcomingSectionTitle: 'Antrean berikutnya',
-    upcomingSectionHint: 'Segera hadir pada pembaruan berikutnya.',
-    comingSoonBadge: 'Segera hadir',
+    upcomingSectionTitle: 'Segera hadir',
+    upcomingSectionHint: 'Fitur baru yang akan segera hadir.',
+    comingSoonBadge: 'SOON',
+    phasePrefix: 'FASE',
     openToolCta: 'Buka alat',
     emptySearchTitle: 'Alat tidak ditemukan',
     emptySearchBody: 'Coba kata kunci lain seperti pdf, kompres, pasfoto, atau reset filter kategori.',
     resetFilters: 'Reset pencarian',
-    howItWorksTitle: 'Privasi lokal yang bisa Anda buktikan sendiri',
+    howItWorksTitle: 'Privasi lokal yang bisa kamu buktikan sendiri',
     howItWorksLead:
-      'izikit memproses dokumen dan gambar langsung di dalam browser Anda. Tidak ada server penerima file, tidak ada penyimpanan cloud, dan aplikasi tetap bisa dipakai offline setelah dimuat.',
+      'izikit memproses dokumen dan gambar langsung di dalam browser kamu. Tidak ada server penerima file, tidak ada penyimpanan cloud, dan aplikasi tetap bisa dipakai offline setelah dimuat.',
     verifyHeading: 'Cara cek di DevTools (F12)',
     verifySteps: [
       'Buka DevTools browser (tombol F12), lalu buka tab Network.',
-      'Pilih file PDF atau foto dan jalankan alat apa pun. Anda bisa melihat tidak ada satu byte pun file yang dikirim keluar.',
+      'Pilih file PDF atau foto dan jalankan alat apa pun. Kamu bisa melihat tidak ada satu byte pun file yang dikirim keluar.',
+    ],
+    faqTitle: 'Pertanyaan Umum tentang izikit',
+    faqs: [
+      {
+        q: 'Apakah semua alat PDF dan gambar di izikit benar-benar gratis tanpa login?',
+        a: 'Ya, seluruh 19 alat PDF dan gambar di izikit 100% gratis tanpa perlu membuat akun, tanpa watermark paksa, dan tanpa batas kuota harian.',
+      },
+      {
+        q: 'Apakah dokumen dan foto saya aman? Apakah file diunggah ke server?',
+        a: 'File kamu tidak pernah diunggah ke server mana pun. Semua proses berjalan 100% secara lokal di dalam browser perangkat kamu menggunakan WebAssembly dan Web Worker.',
+      },
+      {
+        q: 'Apakah izikit bisa digunakan secara offline?',
+        a: 'Ya. izikit mendukung PWA (Progressive Web App), sehingga setelah halaman dimuat sekali, sebagian besar alat tetap dapat dipakai meski koneksi internet terputus.',
+      },
+      {
+        q: 'Format file apa saja yang didukung izikit?',
+        a: 'izikit mendukung dokumen PDF, Microsoft Word (.docx), serta berbagai format gambar seperti JPG, PNG, WebP, AVIF, hingga foto iPhone HEIC/HEIF.',
+      },
     ],
   },
   tools: {
     'merge-pdf': {
       name: 'Gabung PDF',
       cta: 'Gabung PDF',
-      shortDescription: 'Satukan beberapa file PDF menjadi satu dokumen sesuai urutan yang Anda atur.',
+      shortDescription: 'Satukan beberapa file PDF menjadi satu dokumen sesuai urutan yang kamu atur.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Gabung PDF Lokal di Browser Tanpa Upload | izikit',
+      seoTitle: 'Gabung PDF Gratis Online Tanpa Upload | izikit',
       seoDescription:
-        'Satukan beberapa file PDF menjadi satu dokumen langsung di browser Anda. Atur urutan file dengan mudah, gratis, tanpa login, dan tanpa unggah ke server.',
+        'Gabungkan beberapa file PDF menjadi satu dokumen secara gratis langsung di browser tanpa upload ke server. Atur urutan file dengan mudah dan tanpa batas kuota.',
       guideTitle: 'Tips menggabungkan PDF',
       guideItems: [
         'Atur urutan dokumen dengan menyeret baris atau menekan tombol panah Naik dan Turun.',
         'Jika ada PDF yang terkunci kata sandi, buka dulu kuncinya lewat alat Kunci & Buka Sandi PDF sebelum digabung.',
         'Jaga total ukuran gabungan di bawah 250 MB agar proses tetap ringan di laptop maupun ponsel.',
+      ],
+      howToSteps: [
+        'Pilih atau tarik beberapa file PDF ke area unggah di atas.',
+        'Atur urutan dokumen sesuai kebutuhan menggunakan tombol geser naik/turun atau drag-and-drop.',
+        'Klik tombol Gabung PDF lalu unduh satu file PDF gabungan secara instan.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah ada batas jumlah file PDF yang bisa digabung?',
+          a: 'Kamu bisa menggabungkan hingga 50 file PDF sekaligus dalam satu kali proses tanpa batas kuota harian, selama total ukuran masih nyaman untuk memori perangkatmu (disarankan di bawah 250 MB).',
+        },
+        {
+          q: 'Apakah file PDF saya diunggah ke server saat digabungkan?',
+          a: 'Tidak. Seluruh proses penggabungan PDF berjalan 100% lokal di browser perangkat kamu sehingga dokumen rahasia seperti kontrak, CV, atau berkas lamaran tetap aman.',
+        },
+        {
+          q: 'Apakah kualitas teks dan gambar di dalam PDF berkurang setelah digabung?',
+          a: 'Tidak sama sekali. izikit menyatukan halaman PDF secara langsung tanpa mengompres ulang teks maupun gambar aslinya.',
+        },
       ],
     },
     'compress-image': {
@@ -120,14 +168,33 @@ export const idDictionary = {
       cta: 'Kompres foto',
       shortDescription: 'Kecilkan ukuran file JPG, PNG, dan WebP sekaligus lengkap dengan perbandingan hasil.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Kompres Gambar JPG, PNG, WebP Lokal di Browser | izikit',
+      seoTitle: 'Kompres Gambar JPG, PNG, WebP Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Kecilkan ukuran file foto JPG, PNG, dan WebP secara massal langsung di browser tanpa unggah ke server. Atur kualitas, batas dimensi, dan unduh satuan atau ZIP.',
+        'Kecilkan ukuran foto JPG, PNG, dan WebP secara massal gratis langsung di browser tanpa upload ke server. Atur kualitas, lebar maksimal, dan unduh satuan atau ZIP.',
       guideTitle: 'Cara memilih format hasil kompresi',
       guideItems: [
         'Format WebP menghasilkan ukuran file paling ramping dengan detail yang tetap tajam untuk web dan dokumen.',
         'Format PNG cocok untuk tangkapan layar (screenshot) atau logo karena menjaga garis teks tetap tegas.',
-        'Jika hasil kompresi ternyata lebih besar dari file asli pada format yang sama, izikit otomatis mempertahankan file asli Anda.',
+        'Jika hasil kompresi ternyata lebih besar dari file asli pada format yang sama, izikit otomatis mempertahankan file asli kamu.',
+      ],
+      howToSteps: [
+        'Pilih atau jatuhkan satu maupun banyak foto JPG, PNG, atau WebP sekaligus.',
+        'Sesuaikan tingkat kualitas kompresi, format hasil, dan batas dimensi jika diperlukan.',
+        'Klik Kompres foto, cek perbandingan ukuran sebelum/sesudah, lalu unduh satuan atau ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah bisa mengompres banyak foto sekaligus?',
+          a: 'Ya, kamu bisa memasukkan puluhan gambar JPG, PNG, dan WebP sekaligus dalam satu batch lalu mengunduh semuanya dalam satu arsip ZIP.',
+        },
+        {
+          q: 'Bagaimana cara mengecilkan ukuran foto agar di bawah 200 KB atau 500 KB?',
+          a: 'Turunkan slider kualitas ke kisaran 70–80% atau aktifkan batas lebar maksimal (misalnya 1280px atau 1600px) agar ukuran file turun drastis dengan visual tetap tajam.',
+        },
+        {
+          q: 'Apakah foto pribadi saya dikirim ke server saat dikompres?',
+          a: 'Tidak. Proses kompresi dijalankan sepenuhnya di browser kamu tanpa satu byte pun foto keluar dari perangkat.',
+        },
       ],
     },
     'split-pdf': {
@@ -135,14 +202,33 @@ export const idDictionary = {
       cta: 'Pisah halaman',
       shortDescription: 'Ambil halaman tertentu atau pecah PDF menjadi beberapa file terpisah.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Pisah & Ekstrak Halaman PDF Lokal di Browser Tanpa Upload | izikit',
+      seoTitle: 'Pisah & Potong Halaman PDF Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Pisahkan halaman PDF berdasarkan rentang kustom atau ekstrak halaman terpilih menjadi file PDF baru langsung di browser tanpa unggah ke server.',
+        'Pisahkan halaman PDF berdasarkan rentang kustom atau ekstrak halaman tertentu jadi file PDF baru secara gratis di browser tanpa upload ke server.',
       guideTitle: 'Format penulisan rentang halaman',
       guideItems: [
         'Gunakan tanda hubung untuk rentang dan koma untuk memisahkan bagian, misalnya: 1-3, 5, 8-10.',
-        'Pilih Ekstrak ke 1 PDF jika Anda hanya ingin mengambil beberapa halaman penting menjadi satu file baru.',
-        'Jika hasil pemisahan terdiri dari banyak file, Anda bisa mengunduhnya satu per satu atau sekaligus dalam satu file ZIP.',
+        'Pilih Ekstrak ke 1 PDF jika kamu hanya ingin mengambil beberapa halaman penting menjadi satu file baru.',
+        'Jika hasil pemisahan terdiri dari banyak file, kamu bisa mengunduhnya satu per satu atau sekaligus dalam satu file ZIP.',
+      ],
+      howToSteps: [
+        'Masukkan file PDF yang ingin dipisahkan halamannya.',
+        'Pilih mode pemisahan (rentang halaman, ekstrak ke 1 PDF, atau pecah per halaman) lalu ketik nomor halamannya.',
+        'Klik Pisah halaman dan unduh hasilnya secara satuan atau dalam satu file ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Bagaimana cara mengambil hanya halaman 2 sampai 5 dari sebuah PDF?',
+          a: 'Pilih mode Ekstrak ke 1 PDF lalu ketik 2-5 pada kolom rentang halaman. izikit akan membuat satu file PDF baru berisi halaman 2–5 saja.',
+        },
+        {
+          q: 'Apakah bisa memecah setiap halaman PDF menjadi file terpisah?',
+          a: 'Bisa. Pilih mode pecah semua halaman untuk menghasilkan file PDF individual per halaman, lengkap dengan opsi unduh sekaligus dalam ZIP.',
+        },
+        {
+          q: 'Apakah memisah PDF di izikit mengubah file asli saya?',
+          a: 'Tidak. File asli di perangkat kamu tetap utuh; izikit hanya membuat salinan PDF baru sesuai halaman yang kamu pilih.',
+        },
       ],
     },
     'rotate-reorder-pdf': {
@@ -150,14 +236,33 @@ export const idDictionary = {
       cta: 'Atur halaman',
       shortDescription: 'Lihat thumbnail tiap halaman, putar posisi yang miring, hapus, atau ubah urutannya.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Putar, Hapus & Urutkan Halaman PDF Lokal di Browser | izikit',
+      seoTitle: 'Putar, Hapus & Urutkan Halaman PDF Gratis | izikit',
       seoDescription:
-        'Lihat pratinjau halaman PDF, putar halaman 90 atau 180 derajat, hapus halaman yang tidak perlu, dan susun ulang urutan halaman langsung di browser tanpa unggah.',
+        'Lihat pratinjau halaman PDF, putar halaman 90/180 derajat, hapus halaman kosong, dan susun ulang urutan halaman PDF gratis di browser tanpa upload.',
       guideTitle: 'Tips menyusun & memutar halaman PDF',
       guideItems: [
         'Klik tombol -90° atau +90° pada kartu halaman untuk meluruskan hasil scan yang terbalik.',
         'Seret kartu halaman atau gunakan tombol panah untuk memindahkan urutan, dan klik ikon hapus untuk membuang halaman kosong.',
-        'File PDF asli Anda tidak berubah; izikit menyimpan susunan baru sebagai file PDF terpisah.',
+        'File PDF asli kamu tidak berubah; izikit menyimpan susunan baru sebagai file PDF terpisah.',
+      ],
+      howToSteps: [
+        'Unggah file PDF untuk menampilkan pratinjau thumbnail seluruh halaman secara instan.',
+        'Putar halaman yang miring (-90°/+90°), seret untuk mengubah urutan, atau hapus halaman yang tidak dibutuhkan.',
+        'Klik simpan/terapkan untuk mengunduh PDF dengan susunan halaman terbaru.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah hasil putaran halaman PDF tersimpan permanen?',
+          a: 'Ya. Rotasi halaman ditulis langsung ke struktur PDF hasil unduhan sehingga tetap tegak saat dibuka di aplikasi pembaca PDF mana pun.',
+        },
+        {
+          q: 'Bisakah saya menghapus satu halaman kosong di tengah PDF?',
+          a: 'Bisa. Cukup klik ikon hapus pada thumbnail halaman yang ingin dibuang, lalu simpan PDF baru tanpa halaman tersebut.',
+        },
+        {
+          q: 'Apakah dokumen scan sensitif aman diatur di sini?',
+          a: 'Ya, seluruh pratinjau dan penyusunan halaman berjalan lokal di browser tanpa mengirim dokumen ke internet.',
+        },
       ],
     },
     'image-to-pdf': {
@@ -165,14 +270,68 @@ export const idDictionary = {
       cta: 'Jadikan PDF',
       shortDescription: 'Susun satu atau banyak foto JPG, PNG, dan WebP menjadi satu dokumen PDF rapi.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Ubah Gambar JPG, PNG, WebP ke PDF Lokal di Browser | izikit',
+      seoTitle: 'Ubah Gambar JPG, PNG ke PDF Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Konversi kumpulan foto JPG, PNG, dan WebP menjadi satu file PDF langsung di browser tanpa unggah ke server. Pilih ukuran kertas A4, Letter, atau sesuai ukuran foto.',
+        'Konversi satu atau banyak foto JPG, PNG, dan WebP menjadi satu dokumen PDF rapi secara gratis di browser tanpa upload. Mendukung kertas A4, Letter, dan Fit.',
       guideTitle: 'Memilih ukuran kertas & orientasi',
       guideItems: [
         'Pilih orientasi Otomatis agar foto mendatar masuk ke halaman landscape dan foto tegak masuk ke halaman portrait.',
         'Gunakan ukuran kertas Sesuai Gambar (Fit) jika ingin halaman PDF mengikuti proporsi asli foto tanpa sisa tepi putih.',
         'Pilih ukuran A4 atau Letter dengan margin tipis bila dokumen PDF akan dicetak di kertas standar.',
+      ],
+      howToSteps: [
+        'Pilih satu atau banyak foto JPG, PNG, atau WebP lalu atur urutan halamannya.',
+        'Tentukan ukuran kertas (A4, Letter, atau Sesuai Gambar), orientasi, dan margin.',
+        'Klik Jadikan PDF untuk menggabungkan semua foto menjadi satu dokumen PDF siap unduh.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah bisa menggabungkan foto KTP, ijazah, dan dokumen lain ke satu PDF?',
+          a: 'Ya, sangat cocok untuk pemberkasan lamaran kerja, kampus, atau CPNS. Karena diproses 100% lokal di browser, foto dokumen pribadi kamu tidak pernah diunggah ke server.',
+        },
+        {
+          q: 'Ukuran kertas apa yang paling pas untuk dicetak?',
+          a: 'Pilih ukuran A4 dengan orientasi Otomatis dan margin tipis agar hasil cetakan rapi di kertas standar Indonesia.',
+        },
+        {
+          q: 'Apakah urutan foto bisa diatur sebelum dijadikan PDF?',
+          a: 'Bisa. Kamu dapat menggeser urutan foto naik atau turun sebelum menekan tombol Jadikan PDF.',
+        },
+      ],
+    },
+    'pdf-to-image': {
+      name: 'PDF ke Gambar',
+      cta: 'Ubah ke gambar',
+      shortDescription:
+        'Ubah tiap halaman PDF menjadi gambar JPG, PNG, atau WebP tajam siap unduh satuan atau ZIP.',
+      categoryLabel: 'Dokumen PDF',
+      seoTitle: 'Ubah PDF ke Gambar JPG, PNG, WebP Gratis | izikit',
+      seoDescription:
+        'Konversi halaman PDF ke gambar JPG, PNG, atau WebP tajam hingga 300 DPI gratis di browser tanpa upload. Bisa pilih rentang halaman dan unduh ZIP.',
+      guideTitle: 'Tips mengubah PDF ke gambar',
+      guideItems: [
+        'Pilih 150 DPI untuk kirim cepat lewat chat, 200 DPI untuk bacaan tajam di layar, atau 300 DPI untuk kebutuhan cetak.',
+        'Gunakan mode Rentang halaman (misalnya 1-3, 5) bila kamu hanya butuh mengekspor halaman tertentu.',
+        'Format WebP menghasilkan ukuran file paling hemat, sementara PNG menjaga ketajaman teks dan diagram.',
+      ],
+      howToSteps: [
+        'Masukkan file PDF yang ingin diubah menjadi gambar.',
+        'Pilih format hasil (JPG, PNG, atau WebP), resolusi DPI, serta semua atau rentang halaman tertentu.',
+        'Klik Ubah ke gambar lalu unduh tiap halaman atau semua sekaligus dalam file ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Resolusi DPI mana yang sebaiknya saya pilih?',
+          a: 'Gunakan 150 DPI untuk ukuran ringan saat dikirim lewat WhatsApp, 200 DPI untuk presentasi atau bacaan tajam, dan 300 DPI untuk hasil cetak resolusi tinggi.',
+        },
+        {
+          q: 'Bisakah saya hanya mengekspor halaman tertentu dari PDF ke JPG?',
+          a: 'Bisa. Aktifkan opsi rentang halaman lalu ketik halaman yang diinginkan (misalnya 1-3, 5) agar proses lebih cepat.',
+        },
+        {
+          q: 'Apakah hasil konversi diberi watermark?',
+          a: 'Tidak. Semua gambar hasil ekspor 100% bersih tanpa watermark dan gratis tanpa login.',
+        },
       ],
     },
     'resize-crop-image': {
@@ -180,29 +339,67 @@ export const idDictionary = {
       cta: 'Potong & resize',
       shortDescription: 'Potong area foto dengan rasio presisi, putar, balik, dan ubah dimensi piksel.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Resize, Crop, Putar & Balik Gambar Lokal di Browser | izikit',
+      seoTitle: 'Resize & Crop Gambar Online Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Ubah ukuran gambar berdasarkan piksel atau persentase, potong rasio 1:1 / 16:9 / 4:3, putar, dan balik foto langsung di browser tanpa unggah ke server.',
+        'Ubah ukuran dimensi gambar berdasarkan piksel atau persen, potong rasio 1:1, 4:3, 16:9, putar, dan balik foto gratis di browser tanpa upload ke server.',
       guideTitle: 'Tips potong & ubah ukuran gambar',
       guideItems: [
         'Biarkan opsi Kunci rasio aspek aktif saat mengubah lebar atau tinggi agar foto tidak tampak gepeng.',
         'Gunakan tombol preset 1:1, 16:9, 4:3, atau 3:2 untuk memotong area tengah secara cepat.',
         'Jika hanya ingin mengecilkan resolusi foto tanpa memotong bagian tepi, biarkan area potong pada mode Utuh / Bebas.',
       ],
+      howToSteps: [
+        'Pilih foto JPG, PNG, atau WebP dari perangkat kamu.',
+        'Atur area potong (crop) sesuai rasio preset atau bebas, lalu masukkan lebar/tinggi piksel yang diinginkan.',
+        'Klik proses dan unduh foto dengan dimensi baru secara instan.',
+      ],
+      faqs: [
+        {
+          q: 'Bagaimana cara mengubah ukuran foto tanpa membuatnya gepeng?',
+          a: 'Pastikan opsi Kunci rasio aspek tetap aktif. Saat kamu mengubah lebar, tinggi gambar akan menyesuaikan secara proporsional otomatis.',
+        },
+        {
+          q: 'Apakah bisa memotong foto untuk rasio media sosial seperti 1:1 atau 16:9?',
+          a: 'Ya, tersedia tombol preset 1:1 (kotak), 4:3, 3:2, dan 16:9 (widescreen) serta opsi putar dan balik gambar.',
+        },
+        {
+          q: 'Apakah foto yang di-resize tetap menjaga latar transparan PNG?',
+          a: 'Ya, jika kamu memilih format hasil PNG atau WebP, area transparan pada gambar tetap terjaga utuh.',
+        },
+      ],
     },
     'convert-image': {
       name: 'Konversi Format Gambar',
       cta: 'Ubah format',
-      shortDescription: 'Ubah format gambar antara JPG, PNG, dan WebP secara massal.',
+      shortDescription: 'Ubah format gambar antara JPG, PNG, WebP, dan AVIF secara massal.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Konversi Format Gambar JPG, PNG, WebP Massal di Browser | izikit',
+      seoTitle: 'Konversi Gambar JPG, PNG, WebP, AVIF Gratis | izikit',
       seoDescription:
-        'Ubah format gambar antara JPG, PNG, dan WebP secara massal langsung di browser tanpa unggah ke server. Atur kualitas hasil, warna latar JPEG, dan unduh ZIP.',
-      guideTitle: 'Perbedaan format JPG, PNG, dan WebP',
+        'Ubah format gambar antara JPG, PNG, WebP, dan AVIF secara massal gratis di browser tanpa upload ke server. Atur kualitas, warna latar, dan unduh ZIP.',
+      guideTitle: 'Perbedaan format JPG, PNG, WebP, dan AVIF',
       guideItems: [
-        'PNG dan WebP mendukung latar belakang transparan. Saat mengubah gambar transparan ke JPEG, pilih warna latar putih atau hitam.',
-        'WebP cocok untuk website dan pengiriman chat karena ukurannya jauh lebih hemat dibanding PNG maupun JPEG.',
-        'Anda bisa memasukkan puluhan gambar sekaligus lalu mengunduh seluruh hasil konversinya dalam satu arsip ZIP.',
+        'PNG, WebP, dan AVIF mendukung latar belakang transparan. Saat mengubah gambar transparan ke JPEG, pilih warna latar putih atau hitam.',
+        'AVIF dan WebP cocok untuk website karena ukurannya jauh lebih hemat dibanding PNG maupun JPEG dengan kualitas tajam.',
+        'Kamu bisa memasukkan puluhan gambar sekaligus lalu mengunduhnya satu per satu atau sekaligus dalam satu arsip ZIP.',
+      ],
+      howToSteps: [
+        'Pilih satu atau banyak gambar (JPG, PNG, WebP, AVIF, atau HEIC) sekaligus.',
+        'Tentukan format tujuan (JPG, PNG, WebP, atau AVIF) serta tingkat kualitas dan warna latar jika diperlukan.',
+        'Klik Ubah format lalu unduh hasil satuan atau sekaligus dalam satu ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Kapan sebaiknya memilih WebP atau AVIF dibanding JPG?',
+          a: 'Pilih WebP atau AVIF untuk gambar website atau aplikasi karena ukuran filenya bisa 30–60% lebih kecil dari JPG dengan ketajaman setara.',
+        },
+        {
+          q: 'Apa yang terjadi jika PNG transparan diubah ke JPG?',
+          a: 'Karena format JPG tidak mendukung transparansi, kamu bisa memilih warna latar pengganti (putih atau hitam) agar hasil tetap bersih.',
+        },
+        {
+          q: 'Apakah bisa mengonversi banyak file gambar sekaligus?',
+          a: 'Ya, izikit mendukung konversi massal (batch) hingga puluhan gambar sekaligus langsung di browser tanpa upload.',
+        },
       ],
     },
     'watermark-pdf': {
@@ -211,14 +408,33 @@ export const idDictionary = {
       shortDescription:
         'Tambahkan stempel teks diagonal/berulang serta nomor halaman otomatis pada PDF.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Tambah Watermark Teks & Nomor Halaman PDF Lokal di Browser | izikit',
+      seoTitle: 'Tambah Watermark & Nomor Halaman PDF Gratis | izikit',
       seoDescription:
-        'Tambahkan watermark teks (CONFIDENTIAL, DRAFT, dll.) dengan kontrol opasitas, rotasi, dan posisi serta penomoran halaman otomatis pada PDF langsung di browser tanpa unggah.',
+        'Pasang watermark teks (CONFIDENTIAL, DRAFT, dll.) dan nomor halaman otomatis pada PDF secara gratis di browser tanpa upload. Atur opasitas dan rotasi.',
       guideTitle: 'Tips memberi watermark & nomor halaman',
       guideItems: [
-        'Anda bisa memasang watermark teks saja, nomor halaman saja, atau keduanya sekaligus dalam satu kali proses.',
+        'Kamu bisa memasang watermark teks saja, nomor halaman saja, atau keduanya sekaligus dalam satu kali proses.',
         'Centang opsi Lewati halaman pertama bila halaman 1 adalah sampul dokumen sehingga nomor dimulai pada halaman 2.',
         'Gunakan huruf Latin, angka, dan tanda baca standar pada teks watermark agar terbaca di semua aplikasi pembaca PDF.',
+      ],
+      howToSteps: [
+        'Masukkan file PDF yang ingin diberi watermark teks atau nomor halaman.',
+        'Atur teks watermark, opasitas, sudut rotasi, dan posisi penomoran halaman sesuai kebutuhan.',
+        'Klik Beri watermark lalu unduh file PDF yang sudah terpasang stempel.',
+      ],
+      faqs: [
+        {
+          q: 'Bisakah hanya menambahkan nomor halaman tanpa watermark teks?',
+          a: 'Bisa. Kamu dapat menonaktifkan watermark teks dan hanya mengaktifkan penomoran halaman otomatis pada posisi bawah atau atas halaman.',
+        },
+        {
+          q: 'Bagaimana agar halaman sampul (cover) tidak ikut diberi nomor halaman?',
+          a: 'Cukup centang opsi Lewati halaman pertama sehingga nomor halaman baru dimulai dari halaman kedua.',
+        },
+        {
+          q: 'Apakah dokumen rahasia aman diberi watermark di izikit?',
+          a: 'Aman, karena seluruh proses pemasangan watermark dan nomor halaman terjadi lokal di browser tanpa mengirim file ke server.',
+        },
       ],
     },
     'compress-pdf': {
@@ -227,14 +443,33 @@ export const idDictionary = {
       shortDescription:
         'Kecilkan ukuran file PDF dan seragamkan ukuran halaman ke A4 atau Letter.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Kompres & Ubah Ukuran Halaman PDF Lokal di Browser | izikit',
+      seoTitle: 'Kompres & Kecilkan Ukuran PDF Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Kecilkan ukuran file PDF langsung di browser tanpa unggah ke server. Pilih mode struktur lossless (teks tetap tajam) atau kompresi kuat untuk PDF hasil scan, serta resize ke A4/Letter.',
+        'Kecilkan ukuran file PDF gratis langsung di browser tanpa upload ke server. Tersedia mode lossless (teks tajam) dan kompresi kuat untuk PDF scan, plus resize A4.',
       guideTitle: 'Memilih mode Optimasi Struktur vs Kompresi Kuat',
       guideItems: [
         'Mode Optimasi Struktur (Lossless) membersihkan data berlebih tanpa menurunkan kualitas. Seluruh teks tetap tajam dan bisa di-copy.',
         'Mode Kompresi Kuat dikhususkan untuk PDF hasil scan atau penuh foto besar. Halaman diubah menjadi gambar terkompresi sehingga ukuran turun drastis.',
         'Jika ukuran PDF sudah optimal pada mode Lossless, izikit otomatis menjaga file asli agar ukurannya tidak bertambah.',
+      ],
+      howToSteps: [
+        'Pilih file PDF yang ukurannya ingin diperkecil.',
+        'Pilih mode Optimasi Struktur (teks tetap bisa diseleksi) atau Kompresi Kuat (untuk PDF scan berat) serta opsi resize A4/Letter.',
+        'Klik Kompres PDF, lihat persentase penghematan ukuran, lalu unduh hasilnya.',
+      ],
+      faqs: [
+        {
+          q: 'Apa perbedaan mode Optimasi Struktur dan Kompresi Kuat?',
+          a: 'Optimasi Struktur (Lossless) merapikan objek internal PDF tanpa merusak teks sehingga teks tetap bisa di-copy. Kompresi Kuat merender ulang halaman scan berfoto besar agar ukuran turun drastis.',
+        },
+        {
+          q: 'Apakah bisa mengecilkan PDF untuk syarat upload CPNS atau lamaran kerja?',
+          a: 'Ya. Gunakan mode Kompresi Kuat dengan preset kualitas sedang/rendah untuk menekan ukuran PDF hasil scan agar lolos batas ukuran portal pendaftaran.',
+        },
+        {
+          q: 'Apakah file PDF saya diunggah ke server saat dikompres?',
+          a: 'Tidak. Seluruh kompresi berjalan di browser kamu sehingga berkas pribadi tidak pernah meninggalkan perangkat.',
+        },
       ],
     },
     'watermark-image': {
@@ -243,14 +478,33 @@ export const idDictionary = {
       shortDescription:
         'Tempelkan teks hak cipta atau logo PNG transparan ke banyak foto sekaligus.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Tambah Watermark Teks & Logo pada Gambar Massal Lokal | izikit',
+      seoTitle: 'Tambah Watermark Teks & Logo Foto Gratis Massal | izikit',
       seoDescription:
-        'Beri watermark teks atau tempel logo transparan pada satu atau banyak foto JPG, PNG, dan WebP langsung di browser tanpa unggah ke server. Mendukung pola berulang dan unduh ZIP.',
+        'Pasang watermark teks hak cipta atau logo PNG transparan pada banyak foto JPG, PNG, WebP sekaligus secara gratis di browser tanpa upload. Mendukung ZIP.',
       guideTitle: 'Tips watermark foto seragam',
       guideItems: [
         'Ukuran teks dan logo menyesuaikan lebar masing-masing foto secara otomatis, sehingga hasil tetap proporsional meski ukuran foto berbeda-beda.',
         'Gunakan file logo PNG atau WebP berlatar transparan agar logo menyatu bersih tanpa kotak putih di belakangnya.',
         'Aktifkan bayangan halus saat memakai teks terang di atas foto yang cerah agar watermark tetap mudah dibaca.',
+      ],
+      howToSteps: [
+        'Pilih satu atau banyak foto yang ingin diberi watermark.',
+        'Pilih mode teks atau unggah logo PNG transparan, lalu atur posisi, pola berulang, ukuran, dan opasitas.',
+        'Klik Tempel watermark lalu unduh foto satuan atau sekaligus dalam file ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Bisakah memberi watermark pada foto KTP untuk verifikasi online?',
+          a: 'Ya, sangat cocok untuk menaruh teks seperti "HANYA UNTUK VERIFIKASI ..." secara diagonal/berulang di atas foto KTP karena 100% diproses lokal tanpa upload ke server.',
+        },
+        {
+          q: 'Apakah bisa menempel logo PNG transparan ke banyak foto produk sekaligus?',
+          a: 'Bisa. Cukup masukkan semua foto produk dalam satu batch, unggah file logo PNG transparan, dan unduh hasilnya sekaligus dalam ZIP.',
+        },
+        {
+          q: 'Apakah ukuran watermark otomatis menyesuaikan resolusi foto?',
+          a: 'Ya, skala teks dan logo dihitung proporsional terhadap lebar tiap foto agar terlihat konsisten.',
+        },
       ],
     },
     'collage-image': {
@@ -259,30 +513,173 @@ export const idDictionary = {
       shortDescription:
         'Gabungkan beberapa foto ke dalam satu kanvas grid dengan pengaturan rasio, jarak, dan sudut.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Pembuat Kolase & Grid Foto Lokal di Browser Tanpa Upload | izikit',
+      seoTitle: 'Buat Kolase & Grid Foto Online Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Gabungkan 2 hingga 9+ foto ke dalam satu gambar kolase grid (1:1, 4:5, 16:9, A4) dengan kontrol jarak, bingkai, sudut membulat, dan warna latar langsung di browser tanpa unggah.',
+        'Gabungkan 2 hingga 9+ foto ke dalam satu gambar kolase grid (1:1, 4:5, 16:9, A4) dengan kontrol jarak, sudut membulat, dan warna latar gratis di browser.',
       guideTitle: 'Tips menyusun kolase foto',
       guideItems: [
         'Pilih mode Cover agar setiap foto mengisi penuh kotak grid secara rapi, atau Contain agar seluruh foto tampil utuh tanpa terpotong.',
         'Gunakan tombol Naik dan Turun pada daftar file untuk menukar posisi foto di dalam kotak grid.',
-        'Pilih format hasil PNG atau WebP jika Anda ingin latar belakang kolase transparan.',
+        'Pilih format hasil PNG atau WebP jika kamu ingin latar belakang kolase transparan.',
+      ],
+      howToSteps: [
+        'Pilih 2 atau lebih foto yang ingin digabungkan menjadi satu kolase.',
+        'Pilih jumlah kolom, rasio kanvas (1:1, 4:5, 16:9, A4), jarak antar foto, sudut membulat, dan warna latar.',
+        'Klik Susun kolase dan unduh gambar kolase siap pakai.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah ada watermark di hasil kolase foto?',
+          a: 'Tidak ada. Hasil kolase 100% bersih tanpa watermark, gratis, dan tanpa perlu login.',
+        },
+        {
+          q: 'Bagaimana agar foto tidak terpotong di dalam grid kolase?',
+          a: 'Ubah mode penyesuaian foto dari Cover ke Contain agar seluruh bagian foto tampil utuh di dalam kotaknya.',
+        },
+        {
+          q: 'Rasio kanvas apa yang cocok untuk Instagram atau cetak?',
+          a: 'Gunakan rasio 1:1 atau 4:5 untuk feed Instagram, 16:9 untuk presentasi/YouTube, dan A4 jika kolase ingin dicetak.',
+        },
+      ],
+    },
+    'blur-redact-image': {
+      name: 'Sensor & Blur Foto',
+      cta: 'Sensor foto',
+      shortDescription:
+        'Samarkan KTP, wajah, plat nomor, atau data sensitif dengan mode mozaik, blur, atau blok hitam.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'Sensor, Blur & Pixelate Foto (KTP, Wajah) Gratis | izikit',
+      seoDescription:
+        'Blur, mozaik (pixelate), atau tutup area sensitif seperti NIK KTP, alamat resi, wajah, dan plat nomor pada foto gratis di browser tanpa upload ke server.',
+      guideTitle: 'Tips menyensor data sensitif di foto',
+      guideItems: [
+        'Untuk data paling sensitif seperti NIK, nomor rekening, atau barcode, gunakan mode Blok Solid agar mustahil dipulihkan.',
+        'Gunakan mode Mozaik atau Blur untuk menyamarkan wajah dan plat nomor kendaraan dengan tampilan lebih natural.',
+        'Semua piksel sensor dibakar permanen ke gambar hasil unduhan dan seluruh proses berjalan 100% di perangkat kamu.',
+      ],
+      howToSteps: [
+        'Pilih foto yang memuat bagian sensitif seperti NIK KTP, wajah, alamat resi, atau plat nomor.',
+        'Pilih mode sensor (Blok Solid, Mozaik/Pixelate, atau Blur) lalu seret kotak di atas area yang ingin disamarkan.',
+        'Klik simpan/unduh untuk mendapatkan foto baru dengan sensor permanen.',
+      ],
+      faqs: [
+        {
+          q: 'Mode sensor mana yang paling aman untuk menyembunyikan NIK KTP atau nomor rekening?',
+          a: 'Gunakan mode Blok Solid karena seluruh piksel asli diganti warna padat permanen sehingga mustahil ditebak atau dipulihkan kembali.',
+        },
+        {
+          q: 'Apakah foto KTP atau resi saya aman disensor di sini?',
+          a: 'Sangat aman. Foto tidak pernah dikirim ke server mana pun karena seluruh penyensoran berjalan langsung di memori browser kamu.',
+        },
+        {
+          q: 'Bisakah saya menyensor lebih dari satu area dalam satu foto?',
+          a: 'Ya, kamu bisa menggambar beberapa kotak sensor sekaligus dan membatalkan (undo) kotak terakhir jika kurang pas.',
+        },
+      ],
+    },
+    'strip-exif': {
+      name: 'Hapus EXIF & Metadata Foto',
+      cta: 'Hapus metadata',
+      shortDescription:
+        'Bersihkan koordinat GPS, model HP, dan info kamera dari foto secara massal sebelum dibagikan.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'Hapus EXIF, GPS & Metadata Foto Gratis Tanpa Upload | izikit',
+      seoDescription:
+        'Hapus data EXIF, koordinat lokasi GPS, model HP/kamera, XMP, dan IPTC dari foto JPG, PNG, WebP secara lossless gratis di browser tanpa upload.',
+      guideTitle: 'Mengapa perlu menghapus metadata EXIF foto?',
+      guideItems: [
+        'Foto dari kamera HP sering menyimpan lokasi GPS rumah atau kantor, model perangkat, dan jam pengambilan foto.',
+        'Untuk JPEG dan PNG, izikit menghapus segmen metadata langsung secara biner (lossless) tanpa menurunkan ketajaman foto.',
+        'Kamu bisa membersihkan banyak foto sekaligus lalu mengunduhnya satuan atau dalam satu arsip ZIP.',
+      ],
+      howToSteps: [
+        'Masukkan satu atau banyak foto JPG, PNG, atau WebP yang ingin dibersihkan metadatanya.',
+        'Lihat ringkasan metadata EXIF/GPS yang terdeteksi pada file.',
+        'Klik Hapus metadata lalu unduh foto bersih secara satuan atau dalam arsip ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah menghapus EXIF menurunkan kualitas gambar?',
+          a: 'Tidak. Untuk file JPEG dan PNG, izikit membuang blok metadata secara biner (lossless) tanpa mengompres ulang piksel gambar.',
+        },
+        {
+          q: 'Data privasi apa saja yang dihapus oleh alat ini?',
+          a: 'Koordinat lokasi GPS, merek/model HP dan kamera, tanggal pengambilan, pengaturan lensa, serta blok metadata XMP dan IPTC.',
+        },
+        {
+          q: 'Apakah bisa membersihkan metadata banyak foto sekaligus?',
+          a: 'Ya, kamu dapat memasukkan puluhan foto sekaligus dan mengunduh semuanya dalam satu file ZIP.',
+        },
+      ],
+    },
+    'heic-to-jpg': {
+      name: 'Konversi HEIC (iPhone) ke JPG',
+      cta: 'Ubah HEIC ke JPG',
+      shortDescription:
+        'Ubah foto HEIC/HEIF dari iPhone ke JPG, PNG, WebP, atau AVIF secara massal langsung di browser.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'Ubah HEIC iPhone ke JPG Gratis Tanpa Upload | izikit',
+      seoDescription:
+        'Konversi foto HEIC/HEIF dari iPhone menjadi JPG, PNG, WebP, atau AVIF secara massal gratis di browser tanpa upload. Cocok untuk berkas kampus & CPNS.',
+      guideTitle: 'Tips mengonversi foto HEIC dari iPhone',
+      guideItems: [
+        'Format HEIC bawaan iPhone sering ditolak oleh portal unggah berkas; ubah ke JPEG (kualitas 85–90%) agar diterima di semua situs.',
+        'Semua foto didekode 100% di perangkat kamu menggunakan decoder WebAssembly lokal tanpa dikirim ke server mana pun.',
+        'Kamu bisa memasukkan puluhan foto HEIC sekaligus lalu mengunduhnya satuan atau sekaligus dalam satu file ZIP.',
+      ],
+      howToSteps: [
+        'Pilih satu atau banyak file foto .HEIC / .HEIF dari iPhone atau iPad kamu.',
+        'Pilih format hasil (JPG, PNG, WebP, atau AVIF) serta tingkat kualitas yang diinginkan.',
+        'Klik Ubah HEIC ke JPG lalu unduh hasilnya satuan atau dalam satu arsip ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Kenapa foto dari iPhone berformat HEIC sering ditolak saat upload formulir?',
+          a: 'Banyak portal kampus, lamaran kerja, dan instansi hanya menerima format JPG atau PNG. Mengubah HEIC ke JPG dengan kualitas 85–90% memastikan foto diterima di semua sistem.',
+        },
+        {
+          q: 'Apakah foto iPhone saya diunggah ke server saat dikonversi?',
+          a: 'Tidak. Dekode file HEIC dijalankan 100% di perangkat kamu menggunakan WebAssembly lokal sehingga privasi foto pribadi tetap terjaga.',
+        },
+        {
+          q: 'Bisakah mengubah banyak file HEIC ke JPG sekaligus?',
+          a: 'Bisa. Kamu dapat memilih banyak file HEIC sekaligus dan mengunduh seluruh hasil konversi dalam satu file ZIP.',
+        },
       ],
     },
     'protect-pdf': {
       name: 'Kunci & Buka Sandi PDF',
       cta: 'Kunci / buka PDF',
       shortDescription:
-        'Pasang kata sandi enkripsi AES-256 pada PDF atau hapus sandi dari dokumen milik Anda.',
+        'Pasang kata sandi enkripsi AES-256 pada PDF atau hapus sandi dari dokumen milik kamu.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Kunci & Buka Kata Sandi PDF (AES-256) Lokal di Browser | izikit',
+      seoTitle: 'Kunci & Buka Password PDF (AES-256) Gratis | izikit',
       seoDescription:
-        'Tambahkan proteksi kata sandi AES-256 dengan pengaturan izin cetak/salin, atau buka sandi file PDF milik Anda langsung di browser tanpa mengunggah file maupun kata sandi.',
+        'Pasang kata sandi enkripsi AES-256 dengan izin cetak/salin, atau buka sandi PDF milik kamu secara gratis langsung di browser tanpa upload file maupun sandi.',
       guideTitle: 'Hal penting saat mengunci & membuka PDF',
       guideItems: [
-        'Dokumen dan kata sandi Anda diproses 100% di dalam browser. Tidak ada kata sandi yang dikirim lewat jaringan.',
-        'Catat kata sandi yang Anda buat. Karena izikit tidak memiliki server, kata sandi yang terlupa tidak dapat dipulihkan.',
-        'Untuk membuka PDF yang terkunci, Anda tetap perlu memasukkan kata sandi dokumen tersebut yang sah.',
+        'Dokumen dan kata sandi kamu diproses 100% di dalam browser. Tidak ada kata sandi yang dikirim lewat jaringan.',
+        'Catat kata sandi yang kamu buat. Karena izikit tidak memiliki server, kata sandi yang terlupa tidak dapat dipulihkan.',
+        'Untuk membuka PDF yang terkunci, kamu tetap perlu memasukkan kata sandi dokumen tersebut yang sah.',
+      ],
+      howToSteps: [
+        'Pilih mode Kunci PDF (pasang sandi) atau Buka PDF (hapus sandi), lalu masukkan file PDF kamu.',
+        'Masukkan kata sandi dokumen dan atur izin cetak/salin bila sedang mengunci PDF.',
+        'Klik proses dan unduh file PDF yang telah terenkripsi atau terbuka kuncinya.',
+      ],
+      faqs: [
+        {
+          q: 'Seberapa kuat enkripsi password PDF di izikit?',
+          a: 'izikit menggunakan enkripsi standar AES-256 bit sehingga dokumen hanya dapat dibuka dengan kata sandi yang tepat.',
+        },
+        {
+          q: 'Apakah password yang saya ketik aman?',
+          a: 'Ya. Baik file PDF maupun kata sandi diproses sepenuhnya di browser lokal kamu dan tidak pernah dikirim ke server mana pun.',
+        },
+        {
+          q: 'Bisakah membuka PDF yang saya lupa kata sandinya?',
+          a: 'Tidak. Alat Buka PDF dirancang untuk menghapus proteksi sandi dari dokumen yang kata sandinya sudah kamu ketahui agar lebih praktis dibagikan atau dicetak.',
+        },
       ],
     },
     'edit-pdf': {
@@ -291,14 +688,33 @@ export const idDictionary = {
       shortDescription:
         'Bubuhkan teks, sorotan stabilo, tanda tangan, dan blok penutup data sensitif (redact) di PDF.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Edit, Anotasi, Tanda Tangan & Redact PDF Lokal di Browser | izikit',
+      seoTitle: 'Edit, Tanda Tangan & Redact PDF Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Tambahkan teks, stabilo highlight, tanda tangan digital (gambar langsung atau unggah PNG), serta tutup informasi sensitif (redact) pada halaman PDF langsung di browser tanpa unggah.',
+        'Tambahkan teks, stabilo highlight, tanda tangan digital (gambar atau PNG), dan blok redact permanen di PDF secara gratis di browser tanpa upload.',
       guideTitle: 'Cara memakai anotasi, tanda tangan & redact',
       guideItems: [
         'Pilih alat di bar atas, lalu klik atau seret langsung pada gambar halaman PDF untuk menaruh teks, stabilo, atau tanda tangan.',
         'Saat menutup data rahasia dengan Redact, biarkan opsi Ratakan halaman ter-redact tetap aktif agar teks asli di bawah kotak hitam benar-benar terhapus permanen.',
         'Halaman lain yang tidak diberi redact tetap disimpan sebagai teks vektor tajam.',
+      ],
+      howToSteps: [
+        'Buka file PDF yang ingin diisi teks, ditandatangani, atau disensor.',
+        'Pilih alat Teks, Stabilo, Tanda Tangan (coret langsung atau unggah PNG), atau Redact, lalu tempatkan di halaman.',
+        'Klik simpan untuk mengunduh PDF yang sudah diedit secara instan.',
+      ],
+      faqs: [
+        {
+          q: 'Bagaimana cara menaruh tanda tangan di PDF lewat HP atau laptop?',
+          a: 'Pilih alat Tanda Tangan, lalu gores tanda tangan langsung di layar/trackpad atau unggah gambar tanda tangan PNG transparan, kemudian geser ke posisi yang diinginkan.',
+        },
+        {
+          q: 'Apakah blok Redact benar-benar menghapus teks rahasia di bawahnya?',
+          a: 'Ya, selama opsi Ratakan halaman ter-redact aktif, teks asli di bawah kotak hitam dibuang permanen sehingga tidak bisa disalin ulang.',
+        },
+        {
+          q: 'Apakah dokumen kontrak yang saya tandatangani dikirim ke server?',
+          a: 'Tidak. Seluruh proses pengeditan dan penandatanganan berjalan 100% lokal di browser perangkat kamu.',
+        },
       ],
     },
     'remove-bg': {
@@ -307,14 +723,33 @@ export const idDictionary = {
       shortDescription:
         'Hapus latar foto otomatis dengan AI lokal atau mode warna polos, lengkap dengan latar merah/biru pasfoto.',
       categoryLabel: 'Gambar',
-      seoTitle: 'Hapus Background Foto & Ganti Latar Pasfoto Lokal di Browser | izikit',
+      seoTitle: 'Hapus Background Foto & Pasfoto Merah/Biru Gratis | izikit',
       seoDescription:
-        'Hapus latar belakang foto otomatis di browser memakai model AI lokal atau mode warna polos instan, rapikan dengan kuas, dan ganti latar merah/biru pasfoto tanpa unggah ke server.',
+        'Hapus latar belakang foto otomatis dengan AI lokal, rapikan tepi dengan kuas, dan ganti latar merah/biru pasfoto gratis di browser tanpa upload ke server.',
       guideTitle: 'Tips hapus background & ganti latar pasfoto',
       guideItems: [
         'Mode AI Otomatis mengunduh model sekitar 40 MB saat pertama kali dipakai, lalu menyimpannya di browser agar pemakaian berikutnya langsung berjalan tanpa unduh ulang.',
         'Mode Warna Polos bekerja instan tanpa unduhan tambahan, cocok untuk foto berlatar satu warna atau tanda tangan di kertas putih.',
         'Gunakan Kuas Hapus dan Kuas Pulihkan untuk merapikan tepi rambut atau bahu, lalu pilih latar Transparan, Putih, Merah Pasfoto (#DB1514), atau Biru Pasfoto (#00529C).',
+      ],
+      howToSteps: [
+        'Pilih foto wajah, produk, atau tanda tangan dari perangkat kamu.',
+        'Jalankan mode AI Otomatis atau Warna Polos, lalu rapikan tepi memakai Kuas Hapus/Pulihkan bila perlu.',
+        'Pilih latar Transparan, Putih, Merah Pasfoto, atau Biru Pasfoto, lalu unduh hasilnya.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah tersedia warna merah dan biru standar untuk pasfoto CPNS atau ijazah?',
+          a: 'Ya, tersedia preset warna Merah Pasfoto (#DB1514) dan Biru Pasfoto (#00529C) selain latar Transparan, Putih, dan warna kustom.',
+        },
+        {
+          q: 'Apakah foto wajah saya diunggah ke server AI pihak ketiga?',
+          a: 'Tidak. Model AI berjalan langsung di dalam browser perangkat kamu (ONNX/WebAssembly), sehingga foto tidak pernah keluar dari perangkat.',
+        },
+        {
+          q: 'Apakah hasil hapus background resolusinya diturunkan atau diberi watermark?',
+          a: 'Tidak. Kamu mendapatkan hasil resolusi penuh tanpa watermark dan gratis tanpa perlu login.',
+        },
       ],
     },
     'word-to-pdf': {
@@ -323,25 +758,47 @@ export const idDictionary = {
       shortDescription:
         'Ubah dokumen Microsoft Word (.docx) menjadi PDF tajam lengkap dengan heading, tabel, dan gambar.',
       categoryLabel: 'Dokumen PDF',
-      seoTitle: 'Konversi Word (.docx) ke PDF Lokal di Browser Tanpa Upload | izikit',
+      seoTitle: 'Ubah Word (.docx) ke PDF Gratis Tanpa Upload | izikit',
       seoDescription:
-        'Ubah dokumen Microsoft Word (.docx) menjadi file PDF yang tajam langsung di browser tanpa unggah ke server. Mendukung heading, daftar, tabel, gambar, dan kertas A4/Letter.',
+        'Konversi dokumen Microsoft Word (.docx) menjadi file PDF teks vektor tajam secara gratis di browser tanpa upload. Mendukung tabel, gambar, dan A4/Letter.',
       guideTitle: 'Format Word (.docx) yang didukung',
       guideItems: [
         'Menghasilkan PDF dengan teks asli yang tetap tajam, bisa diseleksi, dan bisa dicari (bukan hasil tangkapan gambar).',
         'Mendukung heading, paragraf rata kiri/tengah/kanan, huruf tebal & miring, daftar butir/angka, tabel, serta gambar PNG/JPG di dalam dokumen.',
         'Elemen dekoratif kompleks seperti kotak teks melayang (floating shapes) atau kolom koran ganda akan dirapikan menjadi alur paragraf standar.',
       ],
+      howToSteps: [
+        'Pilih file dokumen Microsoft Word berformat .docx dari perangkat kamu.',
+        'Atur ukuran kertas (A4 atau Letter), jenis font, spasi baris, dan opsi nomor halaman.',
+        'Klik Konversi ke PDF lalu unduh file PDF dengan teks vektor tajam.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah teks di file PDF hasil konversi Word bisa di-copy dan dicari?',
+          a: 'Ya. izikit menghasilkan PDF vektor asli (bukan gambar scan), sehingga semua teks tetap tajam, bisa diseleksi, dan bisa dicari.',
+        },
+        {
+          q: 'Apakah file Word lama berformat .doc didukung?',
+          a: 'Saat ini izikit mendukung format .docx standar Microsoft Word modern, Google Docs, dan LibreOffice.',
+        },
+        {
+          q: 'Apakah dokumen tugas atau kontrak Word saya dikirim ke server?',
+          a: 'Tidak. Proses pembacaan .docx hingga pembuatan PDF berlangsung 100% lokal di browser perangkat kamu.',
+        },
+      ],
     },
   },
   shared: {
-    localBadge: 'Diproses lokal di perangkat Anda',
-    backToAllTools: 'Semua Alat',
+    localBadge: 'Diproses lokal di perangkat kamu',
+    homeBreadcrumb: 'Beranda',
+    backToAllTools: 'Semua tools',
+    howToTitlePrefix: 'Cara menggunakan',
+    faqTitlePrefix: 'Pertanyaan umum tentang',
     dropzoneIdle: 'Tarik dan lepas file ke sini, atau klik untuk memilih dari perangkat',
     dropzoneActive: 'Lepaskan file di sini',
     dropzoneSelectButton: 'Pilih File',
     dropzoneAddMore: 'Tambah file',
-    processingTitle: 'Memproses di perangkat Anda...',
+    processingTitle: 'Memproses di perangkat kamu...',
     cancelAction: 'Batalkan',
     dismissError: 'Tutup',
     clearAll: 'Hapus semua',
@@ -353,11 +810,130 @@ export const idDictionary = {
     buildingZip: 'Menyiapkan file ZIP...',
     outputFormatLabel: 'Format hasil',
     outputFormatOriginal: 'Ikuti format asli',
-    supportHeading: 'Alat ini membantu pekerjaan Anda?',
+    supportHeading: 'Alat ini membantu pekerjaan kamu?',
     supportBody:
-      'izikit gratis dipakai tanpa batas kuota dan tanpa unggah file ke server. Anda bisa ikut mendukung biaya domain serta pengembangan alat baru.',
-    supportAboutCta: 'Info dukungan & privasi',
+      'izikit gratis dipakai tanpa batas kuota dan tanpa unggah file ke server. Kamu bisa ikut mendukung biaya domain serta pengembangan alat baru.',
+    supportAboutCta: 'Traktir kopi di Trakteer',
     supportDismiss: 'Tutup',
+    relatedToolsTitle: 'Tools terkait',
+    relatedToolsHint: 'Lanjutkan alur kerjamu dengan alat lain yang sering dipakai bersamaan.',
+  },
+  upcomingTools: {
+    'passport-photo-grid': {
+      name: 'Cetak Pasfoto Grid (4R / A4)',
+      shortDescription: 'Susun banyak pasfoto 2×3, 3×4, atau 4×6 ke satu lembar kertas 4R atau A4 siap cetak 300 DPI.',
+    },
+    'signature-to-png': {
+      name: 'Tanda Tangan ke PNG Transparan',
+      shortDescription: 'Ubah foto tanda tangan di kertas putih atau goresan layar jadi PNG transparan bersih.',
+    },
+    'svg-favicon-generator': {
+      name: 'SVG ke PNG & Favicon Generator',
+      shortDescription: 'Hasilkan favicon.ico multi-ukuran, apple-touch-icon, dan ikon PWA dari satu file SVG atau PNG.',
+    },
+    'extract-pdf-images': {
+      name: 'Ekstrak Gambar dari PDF',
+      shortDescription: 'Ambil semua foto dan gambar asli yang tertanam di dalam dokumen PDF lalu unduh sebagai ZIP.',
+    },
+    'qr-code-generator': {
+      name: 'QR Code Generator',
+      shortDescription: 'Buat QR Code Link, WhatsApp, WiFi, atau vCard dengan warna custom & logo tanpa masa kedaluwarsa.',
+    },
+    'data-converter': {
+      name: 'CSV ↔ Excel & JSON Formatter',
+      shortDescription: 'Konversi cepat CSV, Excel (.xlsx), dan JSON sekaligus rapikan serta validasi struktur data.',
+    },
+    'compare-pdf': {
+      name: 'Bandingkan 2 PDF (PDF Diff)',
+      shortDescription: 'Sorot perbedaan visual dan teks antar dua versi dokumen atau kontrak secara berdampingan.',
+    },
+    'ocr-text': {
+      name: 'OCR Gambar & PDF Scan ke Teks',
+      shortDescription: 'Ekstrak teks dari hasil scan dokumen, struk, atau foto catatan langsung di browser.',
+    },
+    'media-trim-gif': {
+      name: 'Potong Media & MP4 ke GIF',
+      shortDescription: 'Potong klip video/audio pendek atau ubah rekaman MP4 menjadi animasi GIF ringan di browser.',
+    },
+  },
+  stripExif: {
+    formatsHint: 'JPG, PNG, WebP (bisa banyak sekaligus) • Maks. 30 MB per file',
+    photosUnit: 'foto siap diperiksa & dibersihkan',
+    losslessNote: 'JPEG & PNG dibersihkan secara lossless tanpa menurunkan kualitas gambar.',
+    cleanButton: 'Bersihkan Metadata',
+    processingButton: 'Membersihkan...',
+    resultReadyTitle: 'Metadata foto sudah dibersihkan',
+    badgeGps: 'GPS TERDETEKSI',
+    badgeCleaned: 'METADATA BERSIH',
+    badgeAlreadyClean: 'Tidak ada EXIF/GPS terdeteksi',
+    downloadSingle: 'Unduh',
+    downloadAllSingle: 'Unduh Satu per Satu',
+    downloadZip: 'Unduh Semua (.zip)',
+    downloadZipSingle: 'Unduh (.zip)',
+    errors: {
+      notImage: 'Format file tidak didukung (gunakan JPG, PNG, atau WebP):',
+      tooLarge: 'Ukuran foto melebihi batas 30 MB:',
+      generic: 'Gagal membersihkan metadata foto. Periksa file kamu lalu coba lagi.',
+    },
+  },
+  blurRedactImage: {
+    formatsHint: 'JPG, PNG, WebP (1 foto) • Maks. 30 MB',
+    regionsUnit: 'area sensor',
+    changeFile: 'Ganti foto',
+    modeHeading: 'Mode sensor',
+    modePixelate: 'Mozaik (Pixelate)',
+    modeBlur: 'Blur Halus',
+    modeSolid: 'Blok Solid',
+    undoButton: 'Undo',
+    clearRegionsButton: 'Hapus semua',
+    intensityLabel: 'Kekuatan sensor',
+    solidColorLabel: 'Warna blok penutup',
+    colorBlack: 'Hitam',
+    colorWhite: 'Putih',
+    outputFormatLabel: 'Format unduhan',
+    dragHint: 'Klik & seret di atas foto (atau usap di layar sentuh) untuk menandai area yang ingin disensor.',
+    emptyRegionsHint: 'Belum ada area sensor — seret di atas foto untuk mulai menyensor.',
+    regionsReady: 'area sensor siap diekspor',
+    downloadButton: 'Unduh Foto Hasil Sensor',
+    errors: {
+      notImage: 'Format file tidak didukung (gunakan JPG, PNG, atau WebP):',
+      tooLarge: 'Ukuran foto melebihi batas 30 MB:',
+      generic: 'Gagal memproses foto. Periksa file kamu lalu coba lagi.',
+    },
+  },
+  pdfToImage: {
+    formatsHint: 'PDF (1 dokumen) • Maks. 100 MB',
+    inspectingLabel: 'Membaca jumlah halaman PDF...',
+    pagesUnit: 'halaman',
+    pageLabel: 'Halaman',
+    changeFile: 'Ganti PDF',
+    settingsHeading: 'Pengaturan ekspor gambar',
+    formatLabel: 'Format gambar',
+    dpiLabel: 'Resolusi (DPI)',
+    dpi150: '150 DPI (Ringan · Chat)',
+    dpi200: '200 DPI (Standar Tajam)',
+    dpi300: '300 DPI (Kualitas Cetak)',
+    qualityLabel: 'Kualitas gambar',
+    modeAllPages: 'Semua halaman',
+    modeRangePages: 'Pilih rentang halaman',
+    rangeLabel: 'Rentang halaman (pisahkan dengan koma)',
+    rangePlaceholder: 'Contoh: 1-3, 5, 8',
+    convertButton: 'Ubah ke Gambar',
+    progressRendering: 'Merender halaman',
+    resultReadyTitle: 'Gambar halaman PDF siap diunduh',
+    downloadSingle: 'Unduh',
+    downloadAllSingle: 'Unduh Satu per Satu',
+    downloadZip: 'Unduh Semua (.zip)',
+    downloadZipSingle: 'Unduh (.zip)',
+    errors: {
+      notPdf: 'File bukan dokumen PDF yang valid:',
+      tooLarge: 'Ukuran PDF melebihi batas 100 MB:',
+      encrypted: 'PDF ini terkunci kata sandi. Buka dulu sandinya di tool Kunci & Buka Sandi PDF.',
+      corrupt: 'File PDF rusak atau tidak dapat dibaca.',
+      invalidRange: 'Format rentang halaman tidak valid. Contoh yang benar: 1-3, 5.',
+      outOfRange: 'Nomor halaman melebihi jumlah halaman dokumen ini.',
+      generic: 'Gagal mengubah PDF menjadi gambar. Coba turunkan DPI atau periksa file kamu.',
+    },
   },
   mergePdf: {
     formatsHint: 'PDF • Maks. 100 MB per file (total 250 MB)',
@@ -415,7 +991,7 @@ export const idDictionary = {
       tooLarge: 'Ukuran file melebihi batas 100 MB:',
       invalidRange: 'Rentang halaman tidak valid. Gunakan angka halaman seperti 1-3, 5.',
       outOfRange: 'Nomor halaman melebihi jumlah halaman dokumen',
-      generic: 'Gagal memisahkan PDF. Periksa kembali file Anda lalu coba lagi.',
+      generic: 'Gagal memisahkan PDF. Periksa kembali file kamu lalu coba lagi.',
     },
   },
   rotateReorderPdf: {
@@ -507,7 +1083,8 @@ export const idDictionary = {
     },
   },
   convertImage: {
-    formatsHint: 'JPG, PNG, WebP (bisa banyak sekaligus) • Maks. 30 MB per file',
+    formatsHint: 'JPG, PNG, WebP, AVIF, HEIC (bisa banyak sekaligus) • Maks. 30 MB per file',
+    heicFormatsHint: 'HEIC / HEIF dari iPhone (bisa banyak sekaligus) • Maks. 30 MB per file',
     settingsHeading: 'Pengaturan konversi',
     targetFormatLabel: 'Ubah ke format',
     qualityLabel: 'Kualitas gambar',
@@ -516,13 +1093,17 @@ export const idDictionary = {
     bgBlack: 'Hitam (#000000)',
     convertButton: 'Konversi',
     progressConverting: 'Mengonversi gambar',
+    progressDecodingHeic: 'Mendekode foto HEIC',
     resultReadyTitle: 'Hasil konversi siap diunduh',
     downloadSingle: 'Unduh',
+    downloadAllSingle: 'Unduh Satu per Satu',
     downloadZip: 'Unduh Semua (.zip)',
+    downloadZipSingle: 'Unduh (.zip)',
     errors: {
-      notImage: 'Format file tidak didukung (gunakan JPG, PNG, atau WebP):',
+      notImage: 'Format file tidak didukung (gunakan JPG, PNG, WebP, AVIF, atau HEIC):',
+      notHeic: 'File bukan foto HEIC/HEIF yang valid:',
       tooLarge: 'Ukuran gambar melebihi batas 30 MB:',
-      generic: 'Gagal mengonversi gambar. Periksa file Anda lalu coba lagi.',
+      generic: 'Gagal mengonversi gambar. Periksa file kamu lalu coba lagi.',
     },
   },
   compressImage: {
@@ -632,7 +1213,7 @@ export const idDictionary = {
         'Teks memuat simbol atau emoji yang tidak didukung font standar PDF. Gunakan huruf Latin, angka, dan tanda baca umum.',
       invalidRange: 'Rentang halaman tidak valid. Gunakan angka seperti 1-3, 5.',
       outOfRange: 'Nomor halaman melebihi jumlah halaman PDF',
-      generic: 'Gagal memproses PDF. Periksa pengaturan Anda lalu coba lagi.',
+      generic: 'Gagal memproses PDF. Periksa pengaturan kamu lalu coba lagi.',
     },
   },
   compressPdf: {
@@ -676,7 +1257,7 @@ export const idDictionary = {
       encrypted: 'PDF ini terkunci kata sandi. Buka dulu di alat Kunci & Buka Sandi PDF:',
       corrupt: 'File PDF rusak atau tidak dapat dibaca:',
       tooLarge: 'Ukuran file melebihi batas 100 MB:',
-      generic: 'Gagal mengompres PDF. Coba pilih DPI lebih rendah atau periksa file Anda.',
+      generic: 'Gagal mengompres PDF. Coba pilih DPI lebih rendah atau periksa file kamu.',
     },
   },
   watermarkImage: {
@@ -687,7 +1268,7 @@ export const idDictionary = {
     kindText: 'Teks',
     kindLogo: 'Logo / Gambar',
     textLabel: 'Teks watermark',
-    textPlaceholder: '© Nama Brand Anda',
+    textPlaceholder: '© Nama Brand Kamu',
     fontScaleLabel: 'Ukuran teks (% lebar foto)',
     colorLabel: 'Warna teks',
     textShadowLabel: 'Beri bayangan halus agar tetap terbaca di latar terang',
@@ -780,7 +1361,7 @@ export const idDictionary = {
     modeProtectTitle: 'Kunci PDF dengan Sandi (AES-256)',
     modeProtectDesc: 'Pasang kata sandi untuk membuka dokumen serta batasi izin cetak atau salin.',
     modeUnlockTitle: 'Buka Sandi PDF',
-    modeUnlockDesc: 'Hapus kata sandi dari dokumen PDF milik Anda agar bisa langsung dibuka.',
+    modeUnlockDesc: 'Hapus kata sandi dari dokumen PDF milik kamu agar bisa langsung dibuka.',
     passwordLabel: 'Kata sandi buka dokumen',
     passwordPlaceholder: 'Buat kata sandi',
     confirmPasswordLabel: 'Ketik ulang kata sandi',
@@ -811,7 +1392,7 @@ export const idDictionary = {
       wrongPassword: 'Kata sandi salah. Periksa huruf besar/kecil lalu coba lagi.',
       emptyPassword: 'Masukkan kata sandi terlebih dahulu.',
       passwordMismatch: 'Ketik ulang kata sandi belum sama.',
-      generic: 'Gagal memproses PDF. Periksa kembali file dan kata sandi Anda.',
+      generic: 'Gagal memproses PDF. Periksa kembali file dan kata sandi kamu.',
     },
   },
   editPdf: {
@@ -886,7 +1467,7 @@ export const idDictionary = {
       unsupportedCharacters:
         'Teks memuat simbol atau emoji yang tidak didukung font standar PDF. Gunakan huruf Latin, angka, dan tanda baca umum.',
       invalidImage: 'Format gambar tidak didukung (gunakan PNG, JPG, atau WebP).',
-      generic: 'Gagal menyimpan PDF. Periksa kembali tambahan Anda lalu coba lagi.',
+      generic: 'Gagal menyimpan PDF. Periksa kembali tambahan kamu lalu coba lagi.',
     },
   },
   removeBg: {
@@ -900,11 +1481,11 @@ export const idDictionary = {
     engineHeading: 'Metode penghapusan latar',
     engineAiTitle: 'AI Otomatis (Orang, Produk & Objek)',
     engineAiDesc:
-      'Memisahkan subjek foto secara otomatis di perangkat Anda. Mengunduh model ~40 MB saat pemakaian pertama lalu tersimpan untuk seterusnya.',
+      'Memisahkan subjek foto secara otomatis di perangkat kamu. Mengunduh model ~40 MB saat pemakaian pertama lalu tersimpan untuk seterusnya.',
     engineColorTitle: 'Warna Polos / Studio (Instan)',
     engineColorDesc:
       'Menghapus latar satu warna (putih, hijau, atau tanda tangan di kertas) seketika tanpa unduhan model.',
-    cacheStatusEmpty: 'Model AI belum diunduh (akan diunduh otomatis saat Anda menekan tombol AI).',
+    cacheStatusEmpty: 'Model AI belum diunduh (akan diunduh otomatis saat kamu menekan tombol AI).',
     cacheStatusReadyPrefix: 'Model AI sudah tersimpan di browser',
     clearCacheButton: 'Hapus data model',
     keyColorLabel: 'Warna latar yang dihapus',
@@ -927,7 +1508,7 @@ export const idDictionary = {
     bgPassportBlue: 'Biru Pasfoto (#00529C)',
     bgDark: 'Hitam (#111317)',
     outputNameLabel: 'Nama file hasil',
-    progressDownloadingModel: 'Mengunduh model AI ke browser Anda...',
+    progressDownloadingModel: 'Mengunduh model AI ke browser kamu...',
     progressRunningAi: 'Memisahkan objek dari latar belakang...',
     resultReadyTitle: 'Foto siap diunduh',
     downloadButton: 'Unduh Foto',
@@ -975,20 +1556,20 @@ export const idDictionary = {
       notDocx: 'File ini bukan dokumen Word .docx:',
       invalidDocx: 'File .docx rusak atau tidak dapat dibaca:',
       tooLarge: 'Ukuran file melebihi batas 50 MB:',
-      generic: 'Gagal mengubah dokumen .docx ke PDF. Periksa kembali file Anda.',
+      generic: 'Gagal mengubah dokumen .docx ke PDF. Periksa kembali file kamu.',
     },
   },
   about: {
     seoTitle: 'Tentang & Privasi Pemrosesan Lokal | izikit',
     seoDescription:
-      'Penjelasan cara izikit memproses PDF dan gambar 100% di browser tanpa server unggahan, daftar 15 alat lengkap, serta info dukungan proyek.',
+      'Penjelasan cara izikit memproses 19 alat PDF dan gambar 100% di browser tanpa server unggahan, keamanan privasi lokal, serta info dukungan proyek.',
     title: 'Tentang izikit & Privasi Tanpa Server',
     intro:
-      'izikit dibuat agar Anda bisa menggabungkan PDF, merapikan pasfoto, atau mengompres berkas kerja sehari-hari tanpa perlu mengunggah dokumen pribadi ke server orang lain.',
-    privacyTitle: 'Mengapa file Anda tetap aman di perangkat',
+      'izikit dibuat agar kamu bisa menggabungkan PDF, merapikan pasfoto, atau mengompres berkas kerja sehari-hari tanpa perlu mengunggah dokumen pribadi ke server orang lain.',
+    privacyTitle: 'Mengapa file kamu tetap aman di perangkat',
     privacyParagraphs: [
-      'Seluruh pemrosesan PDF dan gambar dijalankan langsung oleh browser di perangkat Anda menggunakan Web Worker dan WebAssembly. izikit tidak memiliki server penerima file dan tidak menyimpan salinan dokumen Anda.',
-      'Anda bisa membuktikannya kapan saja: buka DevTools (F12), pilih tab Network, lalu jalankan alat apa pun di izikit. Tidak ada satu byte pun dokumen Anda yang dikirim keluar.',
+      'Seluruh pemrosesan PDF dan gambar dijalankan langsung oleh browser di perangkat kamu menggunakan Web Worker dan WebAssembly. izikit tidak memiliki server penerima file dan tidak menyimpan salinan dokumen kamu.',
+      'Kamu bisa membuktikannya kapan saja: buka DevTools (F12), pilih tab Network, lalu jalankan alat apa pun di izikit. Tidak ada satu byte pun dokumen kamu yang dikirim keluar.',
     ],
     roadmapTitle: '15 Alat Lengkap (Fase 1 hingga Fase 4 Selesai)',
     roadmapPhases: [
@@ -1015,12 +1596,12 @@ export const idDictionary = {
     ],
     supportTitle: 'Dukung pengembangan izikit',
     supportParagraph:
-      'izikit dapat digunakan gratis tanpa batas kuota harian. Dukungan sukarela Anda membantu menutup biaya perpanjangan domain dan pemeliharaan aplikasi.',
+      'izikit dapat digunakan gratis tanpa batas kuota harian. Dukungan sukarela kamu membantu menutup biaya perpanjangan domain dan pemeliharaan aplikasi.',
     supportPendingNotice:
-      'Tautan Saweria / Trakteer / Ko-fi dapat diaktifkan dengan mengisi URL resmi Anda di src/config/site.ts.',
+      'Tautan Saweria / Trakteer / Ko-fi dapat diaktifkan dengan mengisi URL resmi kamu di src/config/site.ts.',
   },
   footer: {
-    localNote: 'Semua dokumen dan foto diproses langsung di perangkat Anda. Tanpa login, tanpa unggah server.',
+    localNote: 'Semua dokumen dan foto diproses langsung di perangkat kamu. Tanpa login, tanpa unggah server.',
     activeToolsTitle: 'Semua Alat',
     projectTitle: 'Proyek',
     languageTitle: 'Bahasa',

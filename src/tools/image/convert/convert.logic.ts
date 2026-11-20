@@ -1,4 +1,8 @@
-import { mimeToExtension, type SupportedImageMime } from '@/lib/file-validation';
+import {
+  mimeToExtension,
+  type ConvertibleImageMime,
+  type ConvertibleInputMime,
+} from '@/lib/file-validation';
 
 export type ConvertImageErrorCode = 'INVALID_QUALITY' | 'EMPTY_BATCH';
 
@@ -14,7 +18,7 @@ export class ConvertImageError extends Error {
 
 export function normalizeQuality(
   qualityPercent: number,
-  targetFormat: SupportedImageMime,
+  targetFormat: ConvertibleImageMime,
 ): number | undefined {
   if (targetFormat === 'image/png') {
     return undefined;
@@ -28,7 +32,7 @@ export function normalizeQuality(
 
 export function deduplicateOutputNames(
   inputNames: string[],
-  targetFormat: SupportedImageMime,
+  targetFormat: ConvertibleImageMime,
 ): string[] {
   const ext = mimeToExtension(targetFormat);
   const counts = new Map<string, number>();
@@ -45,19 +49,19 @@ export function deduplicateOutputNames(
 export interface ConvertPlanInputItem {
   id: string;
   name: string;
-  mime: SupportedImageMime;
+  mime: ConvertibleInputMime;
 }
 
 export interface ConvertPlanOptions {
-  targetFormat: SupportedImageMime;
+  targetFormat: ConvertibleImageMime;
   quality: number;
   jpegBackground: string;
 }
 
 export interface ConversionJob {
   id: string;
-  inputMime: SupportedImageMime;
-  outputMime: SupportedImageMime;
+  inputMime: ConvertibleInputMime;
+  outputMime: ConvertibleImageMime;
   outputFilename: string;
   qualityRatio: number | undefined;
   needsBackgroundFill: boolean;

@@ -37,7 +37,7 @@ export default function ThemeToggle({ labelToDark, labelToLight }: ThemeTogglePr
       aria-label={label}
       aria-pressed={isDark}
       title={label}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-[var(--ink-muted)] transition-colors hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-muted)] transition-colors hover:border-[var(--border-control)] hover:bg-[var(--bg-recess)] hover:text-[var(--ink-primary)]"
     >
       {mounted && isDark ? <SunIcon className="h-4 w-4" /> : <MoonIcon className="h-4 w-4" />}
     </button>

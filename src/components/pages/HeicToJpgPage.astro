@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import ConvertImageTool from '@/tools/image/convert/ConvertImageTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/heic-to-jpg" toolKey="heic-to-jpg">
+  <ConvertImageTool client:load locale={locale} mode="heic" defaultTargetFormat="image/jpeg" />
+</ToolPageLayout>

@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
-import { getActiveSupportChannels } from '@/config/site';
+import { getDictionary, getLocalizedPath, getSeoUrls, type Locale } from '@/i18n';
+import { SITE_CONFIG } from '@/config/site';
+import { CoffeeIcon } from '@/components/shared/icons';
+import { buildAboutJsonLd } from '@/lib/seo-schema';
 
 interface Props {
   locale: Locale;
@@ -9,7 +11,8 @@ interface Props {
 
 const { locale } = Astro.props;
 const dict = getDictionary(locale);
-const activeChannels = getActiveSupportChannels();
+const seo = getSeoUrls('/about', locale);
+const jsonLd = buildAboutJsonLd(locale, seo, dict);
 ---
 
 <BaseLayout
@@ -17,6 +20,7 @@ const activeChannels = getActiveSupportChannels();
   currentRoute="/about"
   title={dict.about.seoTitle}
   description={dict.about.seoDescription}
+  jsonLd={jsonLd}
 >
   <article class="mx-auto max-w-3xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
     <header class="space-y-3 border-b border-[var(--border-subtle)] pb-6">
@@ -69,26 +73,17 @@ const activeChannels = getActiveSupportChannels();
         {dict.about.supportParagraph}
       </p>
 
-      {
-        activeChannels.length > 0 ? (
-          <div class="flex flex-wrap gap-2 pt-2">
-            {activeChannels.map((channel) => (
-              <a
-                href={channel.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn-primary inline-flex min-h-11 items-center rounded-lg px-4 text-sm font-semibold no-underline"
-              >
-                {channel.label}
-              </a>
-            ))}
-          </div>
-        ) : (
-          <p class="m-0 rounded-lg border border-dashed border-[var(--border-control)] bg-[var(--bg-recess)] p-3 text-xs leading-relaxed text-[var(--ink-muted)]">
-            {dict.about.supportPendingNotice}
-          </p>
-        )
-      }
+      <div class="flex flex-wrap gap-2 pt-2">
+        <a
+          href={SITE_CONFIG.supportUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-primary inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-semibold no-underline"
+        >
+          <CoffeeIcon className="h-4 w-4 shrink-0" />
+          <span>{dict.site.trakteerCta}</span>
+        </a>
+      </div>
 
       <div class="pt-2">
         <a

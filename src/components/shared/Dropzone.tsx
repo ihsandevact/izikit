@@ -200,11 +200,11 @@ export default function Dropzone({
           <UploadTrayIcon className="h-6 w-6" />
         </div>
 
-        <div className="space-y-1.5">
-          <p className="m-0 text-base font-bold text-[var(--ink-primary)]">
+        <div className="space-y-2">
+          <p className="m-0 text-base font-bold text-balance text-[var(--ink-primary)]">
             {isDragging ? activeLabel : idleLabel}
           </p>
-          <p className="font-data m-0 inline-block rounded border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 py-0.5 text-xs font-medium text-[var(--ink-muted)]">
+          <p className="font-data m-0 inline-block max-w-full rounded-md border border-[var(--border-subtle)] bg-[var(--bg-card)] px-2.5 py-1 text-[11px] font-medium text-pretty text-[var(--ink-muted)] sm:text-xs">
             {formatsHint}
           </p>
         </div>

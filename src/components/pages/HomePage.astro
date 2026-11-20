@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ToolDirectory from '@/components/home/ToolDirectory';
+import { getLiveTools } from '@/config/tools';
 import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import { buildHomeJsonLd } from '@/lib/seo-schema';
 
 interface Props {
   locale: Locale;
@@ -10,15 +12,9 @@ interface Props {
 const { locale } = Astro.props;
 const dict = getDictionary(locale);
 const seo = getSeoUrls('/', locale);
+const liveTools = getLiveTools();
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'izikit',
-  url: seo.canonical,
-  inLanguage: dict.langTag,
-  description: dict.home.seoDescription,
-};
+const jsonLd = buildHomeJsonLd(locale, seo, dict, liveTools, dict.home.faqs);
 ---
 
 <BaseLayout
@@ -28,7 +24,38 @@ const jsonLd = {
   description={dict.home.seoDescription}
   jsonLd={jsonLd}
 >
-  <section class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+  <section class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
     <ToolDirectory client:load locale={locale} mode="launcher" />
+
+    {/* Static SEO FAQ below the interactive launcher */}
+    <section
+      aria-labelledby="home-faq-heading"
+      class="mt-12 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:p-6"
+    >
+      <h2
+        id="home-faq-heading"
+        class="font-display m-0 mb-2 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+      >
+        {dict.home.faqTitle}
+      </h2>
+      <div class="divide-y divide-[var(--border-subtle)]">
+        {
+          dict.home.faqs.map((faq) => (
+            <details class="group py-3 first:pt-1 last:pb-1">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--link)]">
+                <span>{faq.q}</span>
+                <span
+                  aria-hidden="true"
+                  class="font-data shrink-0 text-base text-[var(--ink-muted)] transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="m-0 mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{faq.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
   </section>
 </BaseLayout>

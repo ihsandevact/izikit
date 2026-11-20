@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import PdfToImageTool from '@/tools/pdf/pdf-to-image/PdfToImageTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/pdf-to-image" toolKey="pdf-to-image">
+  <PdfToImageTool client:load locale={locale} />
+</ToolPageLayout>

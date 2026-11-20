@@ -3,64 +3,113 @@
 @import '@fontsource/plus-jakarta-sans/600.css';
 @import '@fontsource/plus-jakarta-sans/700.css';
 @import '@fontsource/plus-jakarta-sans/800.css';
-@import '@fontsource/ibm-plex-mono/400.css';
-@import '@fontsource/ibm-plex-mono/500.css';
-@import '@fontsource/ibm-plex-mono/600.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+@import '@fontsource/jetbrains-mono/600.css';
+@import '@fontsource/jetbrains-mono/700.css';
 @import 'tailwindcss';
 
 @theme {
   --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
 }
 
 :root {
-  --bg-paper: #f6f6f4;
-  --bg-canvas: #f6f6f4;
-  --bg-card: #ffffff;
-  --bg-recess: #ededeb;
-  --ink-primary: #111315;
-  --ink-muted: #575c66;
-  --border-subtle: #e2e2de;
-  --border-control: #8a909c;
-  --accent: #047857;
-  --accent-hover: #065f46;
+  /* Core Light Palette */
+  --bg: #f7f8ff;
+  --surface: #ffffff;
+  --surface2: #eef0ff;
+  --border: #e0e4f4;
+  --text: #0f172a;
+  --muted: #4b5873;
+  --link: #4338ca;
+  --hl: #b45309;
+  --kit: #4338ca;
+
+  /* Tool Grid Logo (Light) */
+  --logo-circle: #ffb020;
+  --logo-tr: #6366f1;
+  --logo-bl: #4338ca;
+  --logo-br: #818cf8;
+
+  /* Category Solid Icon Colors */
+  --cat-pdf-organize: #4f46e5;
+  --cat-pdf-edit: #6366f1;
+  --cat-image-optimize: #7c7ff5;
+  --cat-image-studio: #ffb020;
+  --cat-image-studio-ink: #0f172a;
+  --cat-daily-utilities: #14b8a6;
+
+  /* Semantic & Legacy Token Mapping */
+  --bg-paper: var(--bg);
+  --bg-canvas: var(--bg);
+  --bg-card: var(--surface);
+  --bg-recess: var(--surface2);
+  --ink-primary: var(--text);
+  --ink-muted: var(--muted);
+  --border-subtle: var(--border);
+  --border-control: #b8c1e0;
+  --accent: #4338ca;
+  --accent-hover: #3730a3;
   --accent-ink: #ffffff;
-  --accent-tint: #ecfdf5;
-  --accent-pill: #10b981;
-  --accent-pill-ink: #052e16;
-  --accent-row-bg: #ecfdf5;
-  --accent-row-border: #6ee7b7;
+  --accent-tint: #eef0ff;
+  --accent-glow: rgba(67, 56, 202, 0.16);
+  --accent-pill: #4f46e5;
+  --accent-pill-ink: #ffffff;
+  --accent-row-bg: #eef0ff;
+  --accent-row-border: #818cf8;
+  --hl-tint: rgba(180, 83, 9, 0.1);
   --success: #047857;
   --success-tint: #ecfdf5;
   --danger: #b91c1c;
   --danger-tint: #fef2f2;
-  --focus-ring: #047857;
+  --focus-ring: #4338ca;
   color-scheme: light;
 }
 
 .dark {
-  --bg-paper: #0c0e12;
-  --bg-canvas: #0c0e12;
-  --bg-card: #13161c;
-  --bg-recess: #1b1f27;
-  --ink-primary: #f3f4f6;
-  --ink-muted: #9ca3af;
-  --border-subtle: #232832;
-  --border-control: #5c6473;
-  --accent: #34d399;
-  --accent-hover: #6ee7b7;
-  --accent-ink: #052e16;
-  --accent-tint: #0f2920;
-  --accent-pill: #10b981;
-  --accent-pill-ink: #052e16;
-  --accent-row-bg: #0f241c;
-  --accent-row-border: #065f46;
+  /* Core Dark Palette (Default) */
+  --bg: #0b1020;
+  --surface: #121a2f;
+  --surface2: #1a2440;
+  --border: #243050;
+  --text: #eef1fb;
+  --muted: #9aa6c4;
+  --link: #a5b4fc;
+  --hl: #ffb020;
+  --kit: #ffb020;
+
+  /* Tool Grid Logo (Dark) */
+  --logo-circle: #ffb020;
+  --logo-tr: #818cf8;
+  --logo-bl: #6366f1;
+  --logo-br: #a5b4fc;
+
+  /* Semantic & Legacy Token Mapping */
+  --bg-paper: var(--bg);
+  --bg-canvas: var(--bg);
+  --bg-card: var(--surface);
+  --bg-recess: var(--surface2);
+  --ink-primary: var(--text);
+  --ink-muted: var(--muted);
+  --border-subtle: var(--border);
+  --border-control: #364770;
+  --accent: #6366f1;
+  --accent-hover: #818cf8;
+  --accent-ink: #ffffff;
+  --accent-tint: rgba(99, 102, 241, 0.13);
+  --accent-glow: rgba(99, 102, 241, 0.24);
+  --accent-pill: #6366f1;
+  --accent-pill-ink: #ffffff;
+  --accent-row-bg: rgba(99, 102, 241, 0.12);
+  --accent-row-border: #4f46e5;
+  --hl-tint: rgba(255, 176, 32, 0.14);
   --success: #34d399;
   --success-tint: #0f2920;
   --danger: #f87171;
   --danger-tint: #2d1618;
-  --focus-ring: #34d399;
+  --focus-ring: #818cf8;
   color-scheme: dark;
 }
 

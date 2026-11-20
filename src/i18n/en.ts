@@ -6,7 +6,8 @@ export const enDictionary: Dictionary = {
   ogLocale: 'en_US',
   site: {
     tagline: '100% free PDF and image utility kit with no login, right in your browser.',
-    privacyNote: '100% Free · No Login · 100% Local',
+    privacyNote: '100% Free · No Login · Privacy Safe',
+    trakteerCta: 'Buy me a coffee on Trakteer',
     skipToContent: 'Skip to main content',
     menuLabel: 'Menu',
     closeMenu: 'Close menu',
@@ -29,11 +30,14 @@ export const enDictionary: Dictionary = {
     about: 'About & Privacy',
   },
   home: {
-    seoTitle: 'izikit: 100% Free PDF & Image Tools, No Login & Zero Uploads',
+    seoTitle: 'izikit — Free PDF & Image Tools, No Login & Zero Upload',
     seoDescription:
-      '100% free PDF and image tools with no login and no daily limits. Merge, compress, and edit PDFs, convert Word to PDF, or remove ID photo backgrounds right in your browser with zero server uploads.',
-    heroPromptStrong: 'Find or pick a free tool',
-    heroPromptMuted: 'Runs right in your browser with no login and zero file uploads.',
+      '19 free PDF and image tools with no login and zero server uploads. Merge, compress, and edit PDFs, convert Word to PDF, remove ID photo backgrounds, and convert HEIC in your browser.',
+    heroPromptStrong: 'What free tool do you need today?',
+    heroPromptPrefix: 'What ',
+    heroPromptHighlight: 'free',
+    heroPromptSuffix: ' tool do you need\u00A0today?',
+    heroPromptMuted: 'Runs right in your browser with no login and no file uploads to any server.',
     headline: '100% free PDF and image tools. No login, right in your browser.',
     subheadline:
       'Merge, compress, and sign PDFs or remove ID photo backgrounds with no account wall and no daily limits. Everything runs on your own device, never on a server.',
@@ -43,17 +47,18 @@ export const enDictionary: Dictionary = {
     clearSearch: 'Clear search',
     recentHeading: 'RECENTLY USED',
     popularHeading: 'POPULAR',
+    categoriesHeading: 'CATEGORIES',
     keyNavigate: 'select',
     keyOpen: 'open',
     keyClear: 'clear',
-    launcherFooterRight: '15 tools · 100% free · zero upload',
+    launcherFooterRight: '19 tools · 100% free · zero upload',
     catalogTitle: 'All tools',
     catalogSubtitle:
       'Documents, PDFs, images, ID photo studio, and everyday utilities. 100% free, no account, and everything runs on your device.',
     catalogPrivacyBadge: 'Files are never uploaded to any server',
     filterAll: 'All',
-    filterPdf: 'PDF (9)',
-    filterImage: 'Image (6)',
+    filterPdf: 'PDF (10)',
+    filterImage: 'Image (9)',
     badges: {
       new: 'NEW',
       ai: 'LOCAL AI',
@@ -76,6 +81,10 @@ export const enDictionary: Dictionary = {
         title: 'Photo Studio & Visuals',
         hint: 'Remove backgrounds with local AI, swap ID photo colors, watermark, or build collages.',
       },
+      'daily-utilities': {
+        title: 'Daily Work Utilities',
+        hint: 'QR codes, CSV/Excel/JSON conversion, and lightweight browser media tools.',
+      },
     },
     popularSectionTitle: 'Most Used',
     popularSectionHint: 'Quick launch for the 4 core daily tools.',
@@ -85,9 +94,10 @@ export const enDictionary: Dictionary = {
     pdfSectionHint: 'Combine, split, shrink, sign, password-protect, or convert Word to PDF.',
     imageSectionTitle: 'Images & Photos',
     imageSectionHint: 'Shrink file sizes, remove ID photo backgrounds, crop, watermark, or build collages.',
-    upcomingSectionTitle: 'Next in queue',
-    upcomingSectionHint: 'Shipping in upcoming updates.',
-    comingSoonBadge: 'Coming soon',
+    upcomingSectionTitle: 'Coming soon',
+    upcomingSectionHint: 'New tools coming soon.',
+    comingSoonBadge: 'SOON',
+    phasePrefix: 'PHASE',
     openToolCta: 'Open tool',
     emptySearchTitle: 'No matching tools found',
     emptySearchBody: 'Try another keyword like pdf, compress, id photo, or reset the category filter.',
@@ -100,6 +110,25 @@ export const enDictionary: Dictionary = {
       'Open browser DevTools (F12) and switch to the Network tab.',
       'Drop a PDF or photo into any tool and run it. You will see zero bytes of your file leave your device.',
     ],
+    faqTitle: 'Frequently Asked Questions about izikit',
+    faqs: [
+      {
+        q: 'Are all PDF and image tools on izikit really free with no login?',
+        a: 'Yes. All 19 PDF and image tools on izikit are 100% free with no account sign-up, no forced watermarks, and no daily usage quotas.',
+      },
+      {
+        q: 'Are my documents and photos safe? Do you upload files to a server?',
+        a: 'Your files are never uploaded to any server. Every tool runs 100% locally inside your browser using WebAssembly and Web Workers.',
+      },
+      {
+        q: 'Does izikit work offline?',
+        a: 'Yes. izikit is a Progressive Web App (PWA), so once loaded in your browser, most tools continue working even without an internet connection.',
+      },
+      {
+        q: 'Which file formats does izikit support?',
+        a: 'izikit supports PDF documents, Microsoft Word (.docx), and popular image formats including JPG, PNG, WebP, AVIF, and iPhone HEIC/HEIF photos.',
+      },
+    ],
   },
   tools: {
     'merge-pdf': {
@@ -107,14 +136,33 @@ export const enDictionary: Dictionary = {
       cta: 'Merge PDFs',
       shortDescription: 'Combine multiple PDF files into one document in the exact order you set.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Merge PDF Locally in Browser Without Uploading | izikit',
+      seoTitle: 'Merge PDF Free Online Without Uploading | izikit',
       seoDescription:
-        'Combine multiple PDF files into one document directly in your browser. Reorder files easily, free, no sign-in, and zero server uploads.',
+        'Combine multiple PDF files into one document for free directly in your browser with zero uploads. Reorder files easily with no login and no daily limits.',
       guideTitle: 'Tips for merging PDFs',
       guideItems: [
         'Drag any row or use the Move Up and Move Down arrow buttons to arrange your document order.',
         'If a PDF is locked with a password, unlock it first in Protect & Unlock PDF before merging.',
         'Keep total batch size under 250 MB so merging stays snappy on laptops and phones.',
+      ],
+      howToSteps: [
+        'Select or drop two or more PDF files into the upload area above.',
+        'Arrange your document order using drag-and-drop or the Move Up / Move Down buttons.',
+        'Click Merge PDFs and download your combined PDF file immediately.',
+      ],
+      faqs: [
+        {
+          q: 'Is there a limit on how many PDF files I can merge?',
+          a: 'You can merge up to 50 PDF files in a single batch with no daily quota, as long as the total size fits comfortably in your device memory (recommended under 250 MB).',
+        },
+        {
+          q: 'Are my PDF files uploaded to a server during merging?',
+          a: 'No. Merging happens 100% locally inside your browser, keeping private contracts, resumes, and financial documents completely on your device.',
+        },
+        {
+          q: 'Does merging PDFs reduce text or image quality?',
+          a: 'Not at all. izikit combines original PDF pages directly without re-compressing your text or embedded images.',
+        },
       ],
     },
     'compress-image': {
@@ -122,14 +170,33 @@ export const enDictionary: Dictionary = {
       cta: 'Compress photos',
       shortDescription: 'Shrink JPG, PNG, and WebP file sizes in batch with a before/after comparison.',
       categoryLabel: 'Image',
-      seoTitle: 'Compress JPG, PNG, WebP Images Locally in Browser | izikit',
+      seoTitle: 'Compress JPG, PNG, WebP Images Free Online | izikit',
       seoDescription:
-        'Reduce JPG, PNG, and WebP photo file sizes in batch right inside your browser with zero uploads. Adjust quality, max width, and download individually or as ZIP.',
+        'Reduce JPG, PNG, and WebP photo file sizes in batch for free right inside your browser with zero uploads. Adjust quality, max width, and export as ZIP.',
       guideTitle: 'Choosing the best output format',
       guideItems: [
         'WebP delivers the smallest file size while keeping crisp detail for websites and digital documents.',
         'PNG works best for screenshots, logos, and flat graphics where sharp text edges matter.',
         'If compression ever produces a larger file in the same format, izikit automatically keeps your smaller original file.',
+      ],
+      howToSteps: [
+        'Drop one or many JPG, PNG, or WebP images into the workspace.',
+        'Choose your target quality, output format, and optional max width.',
+        'Click Compress photos, inspect the before/after savings, and download individually or as a ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Can I compress multiple photos at once?',
+          a: 'Yes. Drop dozens of JPG, PNG, or WebP photos in one batch and download every compressed image individually or together in a single ZIP archive.',
+        },
+        {
+          q: 'How do I shrink a photo under 200 KB or 500 KB?',
+          a: 'Set quality around 70–80% or enable a maximum width cap (such as 1280px or 1600px) to cut file size dramatically while keeping photos sharp.',
+        },
+        {
+          q: 'Are my photos uploaded to a cloud server?',
+          a: 'No. Every image is compressed locally inside your browser with zero server uploads.',
+        },
       ],
     },
     'split-pdf': {
@@ -137,14 +204,33 @@ export const enDictionary: Dictionary = {
       cta: 'Split pages',
       shortDescription: 'Extract specific page ranges or split a PDF into individual page files.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Split PDF Locally in Browser Without Uploading | izikit',
+      seoTitle: 'Split & Extract PDF Pages Free Without Uploading | izikit',
       seoDescription:
-        'Split PDF pages by custom page ranges or extract every page into individual PDF files right inside your browser with zero uploads.',
+        'Split PDF pages by custom page ranges or extract selected pages into a new PDF for free inside your browser with zero uploads and instant ZIP export.',
       guideTitle: 'How to write page ranges',
       guideItems: [
         'Use hyphens for ranges and commas to separate parts, for example: 1-3, 5, 8-10.',
         'Pick Extract into 1 PDF when you want to pull selected pages into a single new file.',
         'When splitting creates multiple PDFs, download them individually or grab everything at once as a ZIP.',
+      ],
+      howToSteps: [
+        'Drop the PDF document you want to split or extract pages from.',
+        'Pick your split mode (custom ranges, extract to 1 PDF, or every page) and enter the page numbers.',
+        'Click Split pages and download individual PDFs or a combined ZIP file.',
+      ],
+      faqs: [
+        {
+          q: 'How do I extract only pages 2 to 5 from a PDF?',
+          a: 'Choose Extract into 1 PDF and enter 2-5 in the page range field. izikit creates a new single PDF containing only pages 2 through 5.',
+        },
+        {
+          q: 'Can I split every page into its own separate PDF file?',
+          a: 'Yes. Select the split-all-pages mode to export one PDF per page and download them all at once in a ZIP archive.',
+        },
+        {
+          q: 'Does splitting modify my original PDF file?',
+          a: 'No. Your original file remains untouched on your device while izikit generates new output files.',
+        },
       ],
     },
     'rotate-reorder-pdf': {
@@ -152,14 +238,33 @@ export const enDictionary: Dictionary = {
       cta: 'Organize pages',
       shortDescription: 'Preview page thumbnails, fix sideways scans, delete pages, or rearrange order.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Rotate & Reorder PDF Pages Locally in Browser | izikit',
+      seoTitle: 'Rotate, Delete & Reorder PDF Pages Free Online | izikit',
       seoDescription:
-        'Preview PDF page thumbnails, rotate pages by 90 or 180 degrees, remove unwanted pages, and reorder pages directly in your browser with zero uploads.',
+        'Preview PDF page thumbnails, rotate pages 90 or 180 degrees, delete blank pages, and reorder PDF pages for free in your browser with zero uploads.',
       guideTitle: 'Tips for organizing PDF pages',
       guideItems: [
         'Click -90° or +90° on any page card to straighten upside-down or sideways scanned pages.',
         'Drag page cards or use the arrow buttons to reorder, and click the trash button to drop blank pages.',
         'Your original file stays untouched; izikit saves your updated layout as a new PDF.',
+      ],
+      howToSteps: [
+        'Drop your PDF file to render live thumbnail previews for every page.',
+        'Rotate sideways pages (-90°/+90°), drag cards to reorder, or delete unwanted pages.',
+        'Save and download your newly organized PDF document.',
+      ],
+      faqs: [
+        {
+          q: 'Are PDF page rotations saved permanently?',
+          a: 'Yes. Rotation angles are written directly into the exported PDF so pages stay upright in every PDF viewer.',
+        },
+        {
+          q: 'Can I remove blank or unwanted pages from a PDF?',
+          a: 'Yes. Click the delete icon on any page thumbnail to exclude it from the exported PDF.',
+        },
+        {
+          q: 'Is it safe to organize confidential scanned PDFs here?',
+          a: 'Yes. Thumbnails and page edits are processed 100% locally in your browser without uploading your document.',
+        },
       ],
     },
     'image-to-pdf': {
@@ -167,14 +272,68 @@ export const enDictionary: Dictionary = {
       cta: 'Create PDF',
       shortDescription: 'Turn one or more JPG, PNG, and WebP images into a clean PDF document.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Convert JPG, PNG, WebP Images to PDF Locally in Browser | izikit',
+      seoTitle: 'Convert JPG, PNG Images to PDF Free Online | izikit',
       seoDescription:
-        'Convert one or more JPG, PNG, and WebP photos into a single PDF directly in your browser with zero uploads. Choose A4, Letter, or Fit to Image.',
+        'Convert one or more JPG, PNG, and WebP photos into a single PDF for free directly in your browser with zero uploads. Supports A4, Letter, and Fit.',
       guideTitle: 'Choosing paper size & orientation',
       guideItems: [
         'Keep orientation on Auto so wide photos use landscape pages and tall photos use portrait pages.',
         'Select Fit to Image when you want each PDF page to match the exact photo proportions without white margins.',
         'Choose A4 or Letter with small margins if you plan to print the final PDF on standard paper.',
+      ],
+      howToSteps: [
+        'Add one or more JPG, PNG, or WebP photos and arrange their page order.',
+        'Select paper size (A4, US Letter, or Fit to Image), orientation, and margins.',
+        'Click Create PDF and download your ready-to-share PDF document.',
+      ],
+      faqs: [
+        {
+          q: 'Can I combine multiple photos of IDs or documents into one PDF?',
+          a: 'Yes. Because everything runs locally in your browser without server uploads, it is safe for private ID scans, certificates, and application forms.',
+        },
+        {
+          q: 'Which page size should I pick for printing?',
+          a: 'Choose A4 or US Letter with Auto orientation and thin margins for clean standard paper printing.',
+        },
+        {
+          q: 'Can I reorder images before creating the PDF?',
+          a: 'Yes. Use the Move Up and Move Down controls to set the exact sequence of pages.',
+        },
+      ],
+    },
+    'pdf-to-image': {
+      name: 'PDF to Image',
+      cta: 'Export images',
+      shortDescription:
+        'Render PDF pages into crisp JPG, PNG, or WebP images and download individually or as ZIP.',
+      categoryLabel: 'PDF Document',
+      seoTitle: 'Convert PDF to JPG, PNG, WebP Images Free | izikit',
+      seoDescription:
+        'Render PDF pages into crisp JPG, PNG, or WebP images up to 300 DPI for free in your browser with zero uploads. Pick page ranges and download as ZIP.',
+      guideTitle: 'Tips for converting PDF to images',
+      guideItems: [
+        'Choose 150 DPI for fast sharing, 200 DPI for sharp screen reading, or 300 DPI for high-resolution printing.',
+        'Switch to Page range (e.g. 1-3, 5) when you only need to export selected pages.',
+        'WebP produces the smallest files, while PNG preserves crisp text and vector diagrams.',
+      ],
+      howToSteps: [
+        'Drop the PDF file you want to convert into images.',
+        'Pick output format (JPG, PNG, or WebP), DPI resolution, and all pages or a custom range.',
+        'Click Export images and download pages individually or as a ZIP archive.',
+      ],
+      faqs: [
+        {
+          q: 'Which DPI setting should I choose?',
+          a: 'Use 150 DPI for lightweight messaging, 200 DPI for crisp slides and screen reading, or 300 DPI for high-resolution printing.',
+        },
+        {
+          q: 'Can I export only specific pages from a PDF to JPG?',
+          a: 'Yes. Switch to Page range mode and enter pages like 1-3, 5 to export only what you need.',
+        },
+        {
+          q: 'Are exported images watermarked?',
+          a: 'Never. Every exported image is 100% clean, watermark-free, and requires no sign-in.',
+        },
       ],
     },
     'resize-crop-image': {
@@ -182,29 +341,67 @@ export const enDictionary: Dictionary = {
       cta: 'Crop & resize',
       shortDescription: 'Crop photos to exact aspect ratios, rotate, flip, and resize pixel dimensions.',
       categoryLabel: 'Image',
-      seoTitle: 'Resize, Crop, Rotate & Flip Images Locally in Browser | izikit',
+      seoTitle: 'Resize & Crop Image Online Free Without Uploading | izikit',
       seoDescription:
-        'Resize images by pixels or percentage with aspect ratio lock, crop with 1:1 / 16:9 / 4:3 presets, rotate, and flip directly inside your browser with zero uploads.',
+        'Resize images by pixels or percentage with aspect ratio lock, crop to 1:1, 4:3, or 16:9 presets, rotate, and flip for free in your browser.',
       guideTitle: 'Tips for cropping & resizing',
       guideItems: [
         'Leave Lock aspect ratio checked while changing width or height so your photo never looks stretched.',
         'Use the 1:1, 16:9, 4:3, or 3:2 preset buttons for quick centered crops.',
         'If you only want to scale down resolution without trimming edges, keep the crop area on Full / Free.',
       ],
+      howToSteps: [
+        'Select a JPG, PNG, or WebP image from your device.',
+        'Adjust the crop box using aspect presets or freeform handles, then set target pixel width or height.',
+        'Apply changes and download your resized or cropped photo instantly.',
+      ],
+      faqs: [
+        {
+          q: 'How do I resize an image without distorting proportions?',
+          a: 'Keep Lock aspect ratio enabled so changing width automatically calculates the exact proportional height.',
+        },
+        {
+          q: 'Are social media crop presets included?',
+          a: 'Yes, you get one-click 1:1, 4:3, 3:2, and 16:9 crop presets alongside rotate and flip controls.',
+        },
+        {
+          q: 'Does resizing preserve PNG transparency?',
+          a: 'Yes. When exporting as PNG or WebP, transparent areas remain completely intact.',
+        },
+      ],
     },
     'convert-image': {
       name: 'Convert Image Format',
       cta: 'Convert format',
-      shortDescription: 'Batch convert images between JPG, PNG, and WebP formats.',
+      shortDescription: 'Batch convert images between JPG, PNG, WebP, and AVIF formats.',
       categoryLabel: 'Image',
-      seoTitle: 'Batch Convert JPG, PNG, WebP Images Locally in Browser | izikit',
+      seoTitle: 'Convert JPG, PNG, WebP, AVIF Images Free Online | izikit',
       seoDescription:
-        'Convert JPG, PNG, and WebP images in batches right inside your browser with zero uploads. Set output quality, transparency background for JPEG, and export as ZIP.',
-      guideTitle: 'Comparing JPG, PNG, and WebP',
+        'Batch convert JPG, PNG, WebP, and AVIF images for free directly inside your browser with zero uploads. Control quality, JPEG backdrop, and ZIP export.',
+      guideTitle: 'Comparing JPG, PNG, WebP, and AVIF',
       guideItems: [
-        'PNG and WebP support transparent backgrounds. When converting transparent images to JPEG, pick a white or black fill color.',
-        'WebP is ideal for web and messaging apps because it preserves transparency at a fraction of PNG file size.',
-        'Drop dozens of files at once and download all converted images together in a single ZIP archive.',
+        'PNG, WebP, and AVIF support transparent backgrounds. When converting transparent images to JPEG, pick a white or black fill color.',
+        'AVIF and WebP are ideal for the web because they deliver crisp quality at a fraction of PNG or JPEG file size.',
+        'Drop dozens of files at once and download each converted image individually or all together in a single ZIP archive.',
+      ],
+      howToSteps: [
+        'Drop one or many images (JPG, PNG, WebP, AVIF, or HEIC) into the converter.',
+        'Choose the target format (JPG, PNG, WebP, or AVIF), quality level, and optional background fill.',
+        'Click Convert format and download each file or a single ZIP archive.',
+      ],
+      faqs: [
+        {
+          q: 'When should I convert images to WebP or AVIF?',
+          a: 'WebP and AVIF are ideal for websites and apps because they cut image size by 30–60% compared to JPG or PNG while keeping crisp visual quality.',
+        },
+        {
+          q: 'What happens to transparency when converting PNG to JPG?',
+          a: 'Because JPG does not support alpha transparency, izikit lets you pick a clean white or black background fill color.',
+        },
+        {
+          q: 'Can I batch convert dozens of images at once?',
+          a: 'Yes. Batch conversion runs locally in your browser with zero file uploads and supports one-click ZIP download.',
+        },
       ],
     },
     'watermark-pdf': {
@@ -213,14 +410,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Add diagonal or tiled text watermarks and automatic page numbers to PDF documents.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Add Text Watermark & Page Numbers to PDF Locally in Browser | izikit',
+      seoTitle: 'Add Watermark & Page Numbers to PDF Free Online | izikit',
       seoDescription:
-        'Add custom text watermarks (CONFIDENTIAL, DRAFT, etc.) with opacity, rotation, and tiled layout plus automatic page numbering directly in your browser with zero uploads.',
+        'Add custom text watermarks (CONFIDENTIAL, DRAFT) and automatic page numbers to PDFs for free in your browser with zero uploads. Adjust opacity & angle.',
       guideTitle: 'Tips for watermarks & page numbers',
       guideItems: [
         'Apply a text watermark alone, page numbers alone, or both together in a single step.',
         'Check Skip first page when page 1 is a cover sheet so numbering starts cleanly on page 2.',
         'Use standard Latin letters, digits, and punctuation so your watermark renders reliably in every PDF viewer.',
+      ],
+      howToSteps: [
+        'Drop the PDF file you want to watermark or paginate.',
+        'Configure your watermark text, opacity, angle, and automatic page numbering position.',
+        'Click Stamp PDF and download the updated document immediately.',
+      ],
+      faqs: [
+        {
+          q: 'Can I add page numbers without a text watermark?',
+          a: 'Yes. Toggle off the text watermark and enable only automatic page numbering at the top or bottom of each page.',
+        },
+        {
+          q: 'How do I skip page numbering on the cover page?',
+          a: 'Check Skip first page so numbering starts cleanly on page 2 while leaving the cover untouched.',
+        },
+        {
+          q: 'Is it safe to watermark confidential PDFs here?',
+          a: 'Yes. Your PDF is stamped 100% locally inside your browser without being sent to any server.',
+        },
       ],
     },
     'compress-pdf': {
@@ -229,14 +445,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Shrink PDF file size and normalize page dimensions to A4 or US Letter.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Compress & Resize PDF Locally in Browser Without Uploading | izikit',
+      seoTitle: 'Compress & Shrink PDF Free Online Without Upload | izikit',
       seoDescription:
-        'Shrink PDF file size directly inside your browser with zero uploads. Choose lossless structure cleanup (selectable text preserved) or strong scan compression, plus A4 and Letter page resizing.',
+        'Shrink PDF file size for free directly inside your browser with zero uploads. Choose lossless cleanup (selectable text) or strong scan compression + A4 resize.',
       guideTitle: 'Structure Optimization vs Strong Compression',
       guideItems: [
         'Structure Optimization (Lossless) removes excess metadata without lowering visual quality. All text stays sharp and selectable.',
         'Strong Compression is built for heavy scanned PDFs or photo-dense files. It converts each page into a compressed image for maximum size reduction.',
         'If your PDF is already optimal in Lossless mode, izikit keeps your original file so the size never grows.',
+      ],
+      howToSteps: [
+        'Select or drop the PDF file you want to shrink.',
+        'Pick Structure Optimization (keeps selectable text) or Strong Compression (for large scanned PDFs) and optional A4/Letter resizing.',
+        'Click Compress PDF, review the size reduction, and download your smaller file.',
+      ],
+      faqs: [
+        {
+          q: 'What is the difference between Lossless and Strong Compression?',
+          a: 'Lossless Structure Optimization strips bloat while keeping sharp selectable text. Strong Compression re-encodes heavy scanned pages for maximum size reduction.',
+        },
+        {
+          q: 'Can I resize mixed PDF pages to uniform A4 or US Letter?',
+          a: 'Yes. Enable page resizing to normalize every page to A4 or US Letter in the same pass.',
+        },
+        {
+          q: 'Are my PDF files uploaded during compression?',
+          a: 'Never. All compression runs locally in your browser with zero server uploads.',
+        },
       ],
     },
     'watermark-image': {
@@ -245,14 +480,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Stamp copyright text or a transparent PNG logo across multiple photos at once.',
       categoryLabel: 'Image',
-      seoTitle: 'Batch Add Text & Logo Watermark to Images Locally | izikit',
+      seoTitle: 'Add Text & Logo Watermark to Photos Free Online | izikit',
       seoDescription:
-        'Add custom text or transparent PNG logo watermarks to single or batch JPG, PNG, and WebP photos directly inside your browser with zero uploads and ZIP export.',
+        'Stamp custom copyright text or transparent PNG logos onto single or batch JPG, PNG, and WebP photos for free inside your browser with zero uploads.',
       guideTitle: 'Tips for consistent photo watermarks',
       guideItems: [
         'Text and logo sizes scale relative to each image width, keeping watermarks proportional across mixed-resolution batches.',
         'Use a transparent PNG or WebP logo file so your mark sits cleanly over photos without a solid box.',
         'Turn on subtle shadow when placing white text over bright photos so the watermark stays easy to read.',
+      ],
+      howToSteps: [
+        'Drop one or more photos you want to watermark.',
+        'Choose text watermark or upload a transparent PNG logo, then set placement, tiling, size, and opacity.',
+        'Click Add watermark and download photos individually or as a ZIP archive.',
+      ],
+      faqs: [
+        {
+          q: 'Can I watermark ID photos for online verification safely?',
+          a: 'Yes. Because izikit runs 100% locally in your browser with zero uploads, adding diagonal verification text to ID photos stays completely private.',
+        },
+        {
+          q: 'Can I stamp a transparent PNG logo onto multiple product photos at once?',
+          a: 'Yes. Drop your entire photo batch, upload your transparent PNG logo, and export everything in one ZIP file.',
+        },
+        {
+          q: 'Does the watermark scale automatically for different photo sizes?',
+          a: 'Yes. Watermark dimensions scale relative to each image width so mixed-resolution batches look consistent.',
+        },
       ],
     },
     'collage-image': {
@@ -261,14 +515,138 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Arrange multiple photos into a grid canvas with aspect ratio, gap, and corner controls.',
       categoryLabel: 'Image',
-      seoTitle: 'Local Browser Photo Collage & Grid Maker Without Uploading | izikit',
+      seoTitle: 'Free Online Photo Collage & Grid Maker No Upload | izikit',
       seoDescription:
-        'Combine 2 to 9+ photos into one grid collage (1:1, 4:5, 16:9, A4) with gap, padding, rounded corners, and background color right inside your browser with zero uploads.',
+        'Combine 2 to 9+ photos into one grid collage (1:1, 4:5, 16:9, A4) with gap, rounded corners, and custom background color for free in your browser.',
       guideTitle: 'Tips for building photo collages',
       guideItems: [
         'Choose Cover fit so each photo fills its grid cell edge-to-edge, or Contain fit to show every photo uncut.',
         'Use the Move Up and Move Down buttons in the file list to swap photo positions in the grid.',
         'Select PNG or WebP output format if you want a transparent collage background.',
+      ],
+      howToSteps: [
+        'Select two or more photos to include in your collage.',
+        'Choose grid columns, canvas ratio (1:1, 4:5, 16:9, A4), spacing, corner radius, and background color.',
+        'Click Build collage and download your watermark-free image.',
+      ],
+      faqs: [
+        {
+          q: 'Does the photo collage maker add any watermark?',
+          a: 'No. Every collage you export is 100% watermark-free, free to use, and requires no account.',
+        },
+        {
+          q: 'How can I prevent photos from being cropped in the grid?',
+          a: 'Switch fit mode from Cover to Contain so the full uncropped photo fits inside each grid cell.',
+        },
+        {
+          q: 'Which canvas ratios work best for Instagram or printing?',
+          a: 'Pick 1:1 or 4:5 for Instagram posts, 16:9 for presentations, or A4 for printing.',
+        },
+      ],
+    },
+    'blur-redact-image': {
+      name: 'Blur & Redact Photo',
+      cta: 'Censor photo',
+      shortDescription:
+        'Hide IDs, faces, license plates, or sensitive text with mosaic pixelation, blur, or solid bars.',
+      categoryLabel: 'Image',
+      seoTitle: 'Blur, Pixelate & Redact Photo Online Free | izikit',
+      seoDescription:
+        'Pixelate, blur, or cover sensitive details like ID numbers, addresses, faces, and license plates directly in your browser for free with zero uploads.',
+      guideTitle: 'Tips for redacting sensitive photo details',
+      guideItems: [
+        'For highly sensitive text like ID numbers, bank details, or barcodes, choose Solid Bar so it cannot be reconstructed.',
+        'Use Mosaic or Blur for faces and license plates when you prefer a softer visual finish.',
+        'All redactions are permanently baked into the exported image right on your device.',
+      ],
+      howToSteps: [
+        'Drop the photo containing sensitive details such as IDs, faces, addresses, or plates.',
+        'Pick Solid Bar, Mosaic (Pixelate), or Blur mode and drag rectangles over each area to hide.',
+        'Export and download your permanently redacted image.',
+      ],
+      faqs: [
+        {
+          q: 'Which redaction mode is safest for hiding ID or account numbers?',
+          a: 'Use Solid Bar mode because original pixels are completely replaced with solid color and cannot be reversed.',
+        },
+        {
+          q: 'Are sensitive photos uploaded to any server?',
+          a: 'No. All blurring and redaction happens strictly inside your local browser memory.',
+        },
+        {
+          q: 'Can I redact multiple areas on the same photo?',
+          a: 'Yes. Draw as many redaction boxes as needed and undo the last box anytime before exporting.',
+        },
+      ],
+    },
+    'strip-exif': {
+      name: 'Strip EXIF & Photo Metadata',
+      cta: 'Strip metadata',
+      shortDescription:
+        'Remove GPS coordinates, device info, and camera metadata from photos in batch before sharing.',
+      categoryLabel: 'Image',
+      seoTitle: 'Remove EXIF, GPS & Photo Metadata Free Online | izikit',
+      seoDescription:
+        'Strip EXIF, GPS location, camera model, XMP, and IPTC metadata from JPG, PNG, and WebP photos losslessly for free in your browser with zero uploads.',
+      guideTitle: 'Why strip EXIF metadata from photos?',
+      guideItems: [
+        'Phone photos often embed exact GPS coordinates, device model, and timestamps that reveal private details.',
+        'For JPEG and PNG files, izikit removes metadata segments directly at the binary level with zero quality loss.',
+        'Drop dozens of photos at once and download cleaned copies individually or together in a ZIP archive.',
+      ],
+      howToSteps: [
+        'Add one or more JPG, PNG, or WebP photos you want to clean.',
+        'Inspect the detected EXIF and GPS metadata summary on each file.',
+        'Click Strip metadata and download cleaned photos individually or as a ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Does removing EXIF metadata reduce photo quality?',
+          a: 'No. For JPEG and PNG files, izikit removes metadata chunks directly at the binary level with zero re-compression.',
+        },
+        {
+          q: 'What private data gets removed?',
+          a: 'GPS location coordinates, phone/camera make and model, capture timestamps, lens info, and XMP/IPTC metadata blocks.',
+        },
+        {
+          q: 'Can I clean metadata from multiple photos at once?',
+          a: 'Yes. Drop dozens of photos at once and download all cleaned files in a single ZIP archive.',
+        },
+      ],
+    },
+    'heic-to-jpg': {
+      name: 'HEIC (iPhone) to JPG',
+      cta: 'Convert HEIC to JPG',
+      shortDescription:
+        'Batch convert iPhone HEIC/HEIF photos to JPG, PNG, WebP, or AVIF right in your browser.',
+      categoryLabel: 'Image',
+      seoTitle: 'Convert HEIC (iPhone) to JPG Free Without Upload | izikit',
+      seoDescription:
+        'Batch convert iPhone HEIC/HEIF photos to JPG, PNG, WebP, or AVIF for free inside your browser with zero server uploads. Download individually or as ZIP.',
+      guideTitle: 'Tips for converting iPhone HEIC photos',
+      guideItems: [
+        'Default iPhone HEIC files are often rejected by web portals; convert to JPEG (85–90% quality) for universal compatibility.',
+        'Every photo is decoded 100% on your own device using a local WebAssembly decoder with zero server uploads.',
+        'Drop dozens of HEIC photos at once and download them individually or together in one ZIP file.',
+      ],
+      howToSteps: [
+        'Select one or more .HEIC / .HEIF photos from your iPhone or iPad.',
+        'Choose JPG, PNG, WebP, or AVIF output format and your preferred quality.',
+        'Click Convert HEIC to JPG and download files individually or as a ZIP archive.',
+      ],
+      faqs: [
+        {
+          q: 'Why do many websites reject iPhone HEIC photos?',
+          a: 'Many web forms, universities, and government portals only accept JPG or PNG. Converting HEIC to JPG at 85–90% quality ensures universal compatibility.',
+        },
+        {
+          q: 'Are my iPhone photos uploaded to a server during conversion?',
+          a: 'No. Decoding runs 100% locally on your device using WebAssembly so your personal photos stay private.',
+        },
+        {
+          q: 'Can I convert multiple HEIC files to JPG in one batch?',
+          a: 'Yes. Select dozens of HEIC files at once and download all converted images in a single ZIP.',
+        },
       ],
     },
     'protect-pdf': {
@@ -277,14 +655,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Encrypt a PDF with an AES-256 password or remove password protection from your own files.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Protect & Unlock PDF Passwords (AES-256) Locally in Browser | izikit',
+      seoTitle: 'Protect & Unlock PDF Password (AES-256) Free | izikit',
       seoDescription:
-        'Add AES-256 password protection and print/copy permissions, or unlock password-protected PDFs you own directly inside your browser with zero file or password uploads.',
+        'Encrypt PDFs with an AES-256 password and print/copy permissions, or unlock password-protected PDFs for free in your browser with zero uploads.',
       guideTitle: 'Important notes before locking a PDF',
       guideItems: [
         'Both your document and password stay 100% inside your browser. No password is ever sent over the network.',
         'Save your password in a safe place. Because izikit has no server, a forgotten password cannot be recovered.',
         'To unlock an encrypted PDF, enter the document password that was used to lock it.',
+      ],
+      howToSteps: [
+        'Choose Protect PDF (add password) or Unlock PDF (remove password) and drop your file.',
+        'Enter your password and configure optional print/copy permissions when locking.',
+        'Run the tool and download your encrypted or unlocked PDF.',
+      ],
+      faqs: [
+        {
+          q: 'How strong is the PDF encryption used by izikit?',
+          a: 'izikit encrypts PDFs using AES-256 bit encryption so your document can only be opened with the correct password.',
+        },
+        {
+          q: 'Are my PDF and password ever sent over the internet?',
+          a: 'No. Both your file and password stay 100% inside your browser and never touch any server.',
+        },
+        {
+          q: 'Can this tool crack a PDF whose password I forgot?',
+          a: 'No. Unlock PDF is designed to remove password prompts from documents you already own and know the password for.',
+        },
       ],
     },
     'edit-pdf': {
@@ -293,14 +690,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Add text notes, highlights, signatures, and permanent redaction blocks directly onto PDF pages.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Edit, Annotate, Sign & Redact PDF Locally in Browser | izikit',
+      seoTitle: 'Edit, Sign & Redact PDF Free Online No Upload | izikit',
       seoDescription:
-        'Add text boxes, highlights, drawn or PNG signatures, and permanent redaction boxes on PDF pages directly in your browser with zero file uploads.',
+        'Add text, highlights, drawn or PNG signatures, and permanent redaction blocks onto PDF pages for free in your browser with zero uploads.',
       guideTitle: 'How to annotate, sign & redact',
       guideItems: [
         'Pick a tool from the top bar, then click or drag directly on the PDF page preview to place text, highlights, or a signature.',
         'When covering private data with Redact, leave Flatten redacted pages enabled so the underlying text beneath black boxes is permanently removed.',
         'All other pages without redaction stay sharp, searchable vector text.',
+      ],
+      howToSteps: [
+        'Open the PDF document you want to annotate, sign, or redact.',
+        'Select Text, Highlight, Signature (draw or upload PNG), or Redact and place it directly on the page.',
+        'Save and download your updated PDF document.',
+      ],
+      faqs: [
+        {
+          q: 'How do I add my signature to a PDF on phone or desktop?',
+          a: 'Choose the Signature tool to draw directly with your finger/mouse or upload a transparent PNG signature, then position it anywhere on the page.',
+        },
+        {
+          q: 'Does Redact permanently erase hidden text underneath?',
+          a: 'Yes. With Flatten redacted pages enabled, the underlying text beneath black boxes is permanently removed and cannot be copied.',
+        },
+        {
+          q: 'Are signed contracts uploaded to any server?',
+          a: 'Never. Editing and signing happen 100% locally inside your browser.',
+        },
       ],
     },
     'remove-bg': {
@@ -309,14 +725,33 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Remove photo backgrounds automatically with local AI or studio color key, plus ID photo backdrops.',
       categoryLabel: 'Image',
-      seoTitle: 'Remove Image Background Locally in Browser (ONNX/WASM) | izikit',
+      seoTitle: 'Remove Background & ID Photo Free (Local AI) | izikit',
       seoDescription:
-        'Remove photo backgrounds right inside your browser using a local AI model or instant color key, refine edges with a brush, and apply transparent or ID photo red/blue backdrops.',
+        'Remove photo backgrounds for free in your browser using local AI or instant color key, refine edges with a brush, and apply transparent or ID photo backdrops.',
       guideTitle: 'Tips for background removal & ID photos',
       guideItems: [
         'Auto AI mode downloads a ~40 MB model on first use and saves it in your browser so future sessions start right away.',
         'Solid Color mode works immediately with zero download, ideal for single-color backdrops, green screens, or signatures on white paper.',
         'Use the Erase and Restore brushes on the preview to touch up hair or shoulder edges, then pick Transparent, White, or ID Photo Red/Blue.',
+      ],
+      howToSteps: [
+        'Drop a portrait, product photo, or signature image into the workspace.',
+        'Run Auto AI or Solid Color mode, then refine hair or edges with the Erase/Restore brush if needed.',
+        'Select Transparent, White, Red, Blue, or custom backdrop color and download.',
+      ],
+      faqs: [
+        {
+          q: 'Are my photos uploaded to a third-party AI server?',
+          a: 'No. The AI segmentation model runs directly inside your browser via ONNX/WebAssembly, so your photos never leave your device.',
+        },
+        {
+          q: 'Can I replace the background with white, red, or blue for ID photos?',
+          a: 'Yes. Pick Transparent PNG, pure White, standard ID Photo Red (#DB1514), ID Photo Blue (#00529C), or any custom hex color.',
+        },
+        {
+          q: 'Is the output resolution downgraded or watermarked?',
+          a: 'No. You get full-resolution downloads with zero watermarks and no sign-in required.',
+        },
       ],
     },
     'word-to-pdf': {
@@ -325,20 +760,42 @@ export const enDictionary: Dictionary = {
       shortDescription:
         'Convert Microsoft Word (.docx) files into crisp vector PDFs with headings, tables, and images.',
       categoryLabel: 'PDF Document',
-      seoTitle: 'Convert Word (.docx) to Vector PDF Locally in Browser | izikit',
+      seoTitle: 'Convert Word (.docx) to PDF Free Without Upload | izikit',
       seoDescription:
-        'Convert Microsoft Word (.docx) documents into selectable vector PDFs directly inside your browser with zero uploads. Preserves headings, lists, tables, images, and A4/Letter sizing.',
+        'Convert Microsoft Word (.docx) documents into selectable vector PDFs for free inside your browser with zero uploads. Preserves tables, images, and A4/Letter.',
       guideTitle: 'Supported Word (.docx) formatting',
       guideItems: [
         'Produces a true vector PDF where all text remains sharp, selectable, and searchable.',
         'Preserves headings, left/center/right alignment, bold and italic text, bulleted and numbered lists, tables, and embedded PNG/JPG images.',
         'Complex desktop-only elements like floating shapes or newspaper columns are simplified into a clean top-to-bottom page flow.',
       ],
+      howToSteps: [
+        'Select a Microsoft Word (.docx) file from your device.',
+        'Choose paper size (A4 or US Letter), font style, line spacing, and optional page numbers.',
+        'Click Convert to PDF and download your crisp vector PDF.',
+      ],
+      faqs: [
+        {
+          q: 'Is text inside the converted PDF selectable and searchable?',
+          a: 'Yes. izikit generates a true vector PDF rather than flat page screenshots, so every word stays sharp and searchable.',
+        },
+        {
+          q: 'Are older .doc Word files supported?',
+          a: 'izikit currently supports modern .docx files created by Microsoft Word, Google Docs, and LibreOffice.',
+        },
+        {
+          q: 'Are my Word documents uploaded to a conversion server?',
+          a: 'No. Parsing and PDF generation happen 100% locally in your browser.',
+        },
+      ],
     },
   },
   shared: {
     localBadge: 'Processed locally on your device',
-    backToAllTools: 'All Tools',
+    homeBreadcrumb: 'Home',
+    backToAllTools: 'All tools',
+    howToTitlePrefix: 'How to use',
+    faqTitlePrefix: 'Frequently asked questions about',
     dropzoneIdle: 'Drag and drop files here, or click to choose from your device',
     dropzoneActive: 'Drop files here',
     dropzoneSelectButton: 'Select Files',
@@ -358,8 +815,127 @@ export const enDictionary: Dictionary = {
     supportHeading: 'Did this tool save you time?',
     supportBody:
       'izikit is free to use with no daily quotas and zero server uploads. You can help cover domain renewal and ongoing tool maintenance.',
-    supportAboutCta: 'Support & privacy info',
+    supportAboutCta: 'Buy me a coffee on Trakteer',
     supportDismiss: 'Dismiss',
+    relatedToolsTitle: 'Related tools',
+    relatedToolsHint: 'Continue your workflow with tools often used together.',
+  },
+  upcomingTools: {
+    'passport-photo-grid': {
+      name: 'ID Photo Print Sheet (4R / A4)',
+      shortDescription: 'Arrange 2×3, 3×4, or 4×6 ID photos onto a print-ready 4R or A4 sheet at 300 DPI.',
+    },
+    'signature-to-png': {
+      name: 'Signature to Transparent PNG',
+      shortDescription: 'Turn a paper signature photo or screen drawing into a clean transparent PNG.',
+    },
+    'svg-favicon-generator': {
+      name: 'SVG to PNG & Favicon Generator',
+      shortDescription: 'Generate multi-size favicon.ico, apple-touch-icon, and PWA icons from one SVG or PNG.',
+    },
+    'extract-pdf-images': {
+      name: 'Extract Images from PDF',
+      shortDescription: 'Pull every embedded photo and image out of a PDF document and download as ZIP.',
+    },
+    'qr-code-generator': {
+      name: 'QR Code Generator',
+      shortDescription: 'Create custom Link, WhatsApp, WiFi, or vCard QR codes with center logos and zero tracking.',
+    },
+    'data-converter': {
+      name: 'CSV ↔ Excel & JSON Formatter',
+      shortDescription: 'Convert between CSV, Excel (.xlsx), and JSON plus format and validate JSON locally.',
+    },
+    'compare-pdf': {
+      name: 'Compare 2 PDFs (PDF Diff)',
+      shortDescription: 'Highlight visual and text differences between two versions of a contract or report.',
+    },
+    'ocr-text': {
+      name: 'OCR Image & Scanned PDF to Text',
+      shortDescription: 'Extract selectable text from scanned PDFs, receipts, or photos right in your browser.',
+    },
+    'media-trim-gif': {
+      name: 'Trim Media & MP4 to GIF',
+      shortDescription: 'Trim short video/audio clips or convert MP4 clips into lightweight animated GIFs locally.',
+    },
+  },
+  stripExif: {
+    formatsHint: 'JPG, PNG, WebP (batch supported) • Up to 30 MB per file',
+    photosUnit: 'photos queued for cleaning',
+    losslessNote: 'JPEG & PNG metadata is stripped losslessly without re-encoding quality loss.',
+    cleanButton: 'Strip Metadata',
+    processingButton: 'Cleaning...',
+    resultReadyTitle: 'Photo metadata has been stripped',
+    badgeGps: 'GPS DETECTED',
+    badgeCleaned: 'METADATA CLEANED',
+    badgeAlreadyClean: 'No EXIF/GPS detected',
+    downloadSingle: 'Download',
+    downloadAllSingle: 'Download Individually',
+    downloadZip: 'Download All (.zip)',
+    downloadZipSingle: 'Download (.zip)',
+    errors: {
+      notImage: 'Unsupported file format (use JPG, PNG, or WebP):',
+      tooLarge: 'Image exceeds the 30 MB limit:',
+      generic: 'Could not strip metadata. Check your file and try again.',
+    },
+  },
+  blurRedactImage: {
+    formatsHint: 'JPG, PNG, WebP (1 photo) • Up to 30 MB',
+    regionsUnit: 'redacted areas',
+    changeFile: 'Change photo',
+    modeHeading: 'Redaction mode',
+    modePixelate: 'Mosaic (Pixelate)',
+    modeBlur: 'Smooth Blur',
+    modeSolid: 'Solid Bar',
+    undoButton: 'Undo',
+    clearRegionsButton: 'Clear all',
+    intensityLabel: 'Effect strength',
+    solidColorLabel: 'Solid bar color',
+    colorBlack: 'Black',
+    colorWhite: 'White',
+    outputFormatLabel: 'Output format',
+    dragHint: 'Click and drag across the photo (or swipe on touchscreens) to draw censored regions.',
+    emptyRegionsHint: 'No regions yet — drag on the photo to start redacting.',
+    regionsReady: 'redacted areas ready to export',
+    downloadButton: 'Download Redacted Photo',
+    errors: {
+      notImage: 'Unsupported file format (use JPG, PNG, or WebP):',
+      tooLarge: 'Image exceeds the 30 MB limit:',
+      generic: 'Could not process image. Check your file and try again.',
+    },
+  },
+  pdfToImage: {
+    formatsHint: 'PDF (1 document) • Up to 100 MB',
+    inspectingLabel: 'Reading PDF page count...',
+    pagesUnit: 'pages',
+    pageLabel: 'Page',
+    changeFile: 'Change PDF',
+    settingsHeading: 'Image export settings',
+    formatLabel: 'Image format',
+    dpiLabel: 'Resolution (DPI)',
+    dpi150: '150 DPI (Light · Sharing)',
+    dpi200: '200 DPI (Sharp Standard)',
+    dpi300: '300 DPI (Print Quality)',
+    qualityLabel: 'Image quality',
+    modeAllPages: 'All pages',
+    modeRangePages: 'Select page range',
+    rangeLabel: 'Page range (comma-separated)',
+    rangePlaceholder: 'Example: 1-3, 5, 8',
+    convertButton: 'Export to Images',
+    progressRendering: 'Rendering page',
+    resultReadyTitle: 'PDF page images are ready',
+    downloadSingle: 'Download',
+    downloadAllSingle: 'Download Individually',
+    downloadZip: 'Download All (.zip)',
+    downloadZipSingle: 'Download (.zip)',
+    errors: {
+      notPdf: 'File is not a valid PDF document:',
+      tooLarge: 'PDF exceeds the 100 MB limit:',
+      encrypted: 'This PDF is password-protected. Unlock it first using Protect & Unlock PDF.',
+      corrupt: 'This PDF file appears corrupted or unreadable.',
+      invalidRange: 'Invalid page range format. Example: 1-3, 5.',
+      outOfRange: 'Page number exceeds this document page count.',
+      generic: 'Could not render PDF pages to images. Try a lower DPI or check your file.',
+    },
   },
   mergePdf: {
     formatsHint: 'PDF • Up to 100 MB per file (250 MB total)',
@@ -509,7 +1085,8 @@ export const enDictionary: Dictionary = {
     },
   },
   convertImage: {
-    formatsHint: 'JPG, PNG, WebP (batch supported) • Up to 30 MB per file',
+    formatsHint: 'JPG, PNG, WebP, AVIF, HEIC (batch supported) • Up to 30 MB per file',
+    heicFormatsHint: 'iPhone HEIC / HEIF photos (batch supported) • Up to 30 MB per file',
     settingsHeading: 'Conversion settings',
     targetFormatLabel: 'Convert to format',
     qualityLabel: 'Image quality',
@@ -518,11 +1095,15 @@ export const enDictionary: Dictionary = {
     bgBlack: 'Black (#000000)',
     convertButton: 'Convert',
     progressConverting: 'Converting image',
+    progressDecodingHeic: 'Decoding HEIC photo',
     resultReadyTitle: 'Converted images are ready',
     downloadSingle: 'Download',
+    downloadAllSingle: 'Download Individually',
     downloadZip: 'Download All (.zip)',
+    downloadZipSingle: 'Download (.zip)',
     errors: {
-      notImage: 'Unsupported file format (use JPG, PNG, or WebP):',
+      notImage: 'Unsupported file format (use JPG, PNG, WebP, AVIF, or HEIC):',
+      notHeic: 'File is not a valid HEIC/HEIF image:',
       tooLarge: 'Image exceeds the 30 MB limit:',
       generic: 'Could not convert image. Check your file and try again.',
     },
@@ -983,7 +1564,7 @@ export const enDictionary: Dictionary = {
   about: {
     seoTitle: 'About & Local Privacy Architecture | izikit',
     seoDescription:
-      'How izikit processes PDFs and images 100% inside your browser without upload servers, full list of 15 tools, and project support info.',
+      'How izikit processes 19 PDF and image tools 100% inside your browser without upload servers, local privacy verification, and project support info.',
     title: 'About izikit & Zero-Server Privacy',
     intro:
       'izikit was built so you can merge PDFs, prepare ID photos, or shrink everyday work files without uploading private documents to third-party servers.',

@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import { SITE_CONFIG } from '@/config/site';
 import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
 import Header from '@/components/layout/Header.astro';
 import Footer from '@/components/layout/Footer.astro';
@@ -9,13 +10,46 @@ interface Props {
   currentRoute: string;
   title: string;
   description: string;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  ogImage?: string;
+  ogImageAlt?: string;
+  noindex?: boolean;
 }
 
-const { locale, currentRoute, title, description, jsonLd } = Astro.props;
+const {
+  locale,
+  currentRoute,
+  title,
+  description,
+  jsonLd,
+  ogImage,
+  ogImageAlt,
+  noindex = false,
+} = Astro.props;
 const dict = getDictionary(locale);
 const seo = getSeoUrls(currentRoute, locale);
 const isDev = import.meta.env.DEV;
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION as
+  | string
+  | undefined;
+
+const base = SITE_CONFIG.siteUrl.replace(/\/+$/, '');
+const defaultOgImage = locale === 'id' ? '/og-image-id.png' : '/og-image-en.png';
+const resolvedOgImagePath = ogImage ?? defaultOgImage;
+const ogImageUrl = resolvedOgImagePath.startsWith('http')
+  ? resolvedOgImagePath
+  : `${base}${resolvedOgImagePath.startsWith('/') ? '' : '/'}${resolvedOgImagePath}`;
+const resolvedOgImageAlt = ogImageAlt ?? title;
+const alternateOgLocale = locale === 'id' ? 'en_US' : 'id_ID';
+const robotsContent = noindex
+  ? 'noindex, follow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+const serializedJsonLd = jsonLd
+  ? Array.isArray(jsonLd)
+    ? JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLd })
+    : JSON.stringify(jsonLd)
+  : null;
 ---
 
 <!doctype html>
@@ -25,30 +59,49 @@ const isDev = import.meta.env.DEV;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="manifest" href="/manifest.webmanifest" />
-    <meta name="theme-color" content="#0D0F12" />
+    <meta name="robots" content={robotsContent} />
+    {
+      googleSiteVerification && (
+        <meta name="google-site-verification" content={googleSiteVerification} />
+      )
+    }
 
-    <link rel="canonical" href={seo.canonical} />
-    <link rel="alternate" hreflang="id" href={seo.alternates.id} />
-    <link rel="alternate" hreflang="en" href={seo.alternates.en} />
-    <link rel="alternate" hreflang="x-default" href={seo.alternates.xDefault} />
+    <link rel="icon" type="image/svg+xml" href="/izikit-icon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#0B1020" />
+
+    {
+      !noindex && (
+        <>
+          <link rel="canonical" href={seo.canonical} />
+          <link rel="alternate" hreflang="id" href={seo.alternates.id} />
+          <link rel="alternate" hreflang="en" href={seo.alternates.en} />
+          <link rel="alternate" hreflang="x-default" href={seo.alternates.xDefault} />
+        </>
+      )
+    }
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="izikit" />
     <meta property="og:locale" content={dict.ogLocale} />
+    <meta property="og:locale:alternate" content={alternateOgLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={seo.canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={resolvedOgImageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={resolvedOgImageAlt} />
 
-    {
-      jsonLd && (
-        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-      )
-    }
+    {serializedJsonLd && <script type="application/ld+json" set:html={serializedJsonLd} />}
 
     <script is:inline define:vars={{ isDev }}>
       (function () {

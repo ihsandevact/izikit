@@ -1,9 +1,10 @@
-export type ToolCategory = 'pdf' | 'image';
+export type ToolCategory = 'pdf' | 'image' | 'utility';
 export type ToolGroup =
   | 'pdf-organize'
   | 'pdf-edit-security'
   | 'image-optimize'
-  | 'image-studio';
+  | 'image-studio'
+  | 'daily-utilities';
 export type ToolBadge = 'new' | 'ai' | 'popular';
 export type ToolStatus = 'live' | 'coming-soon';
 export type ToolIconKey =
@@ -21,7 +22,20 @@ export type ToolIconKey =
   | 'convert-image'
   | 'watermark-image'
   | 'collage-image'
-  | 'remove-bg';
+  | 'remove-bg'
+  | 'pdf-to-image'
+  | 'blur-redact-image'
+  | 'strip-exif'
+  | 'heic-to-jpg'
+  | 'passport-photo-grid'
+  | 'signature-to-png'
+  | 'svg-favicon-generator'
+  | 'extract-pdf-images'
+  | 'qr-code-generator'
+  | 'data-converter'
+  | 'compare-pdf'
+  | 'ocr-text'
+  | 'media-trim-gif';
 
 export interface ToolDefinition {
   id: string;
@@ -31,9 +45,10 @@ export interface ToolDefinition {
   badge?: ToolBadge;
   formatLabel: string;
   status: ToolStatus;
-  phase: 1 | 2 | 3 | 4;
+  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   icon: ToolIconKey;
   acceptedExtensions: string[];
+  relatedToolIds?: readonly string[];
   keywords: {
     id: string[];
     en: string[];
@@ -45,7 +60,42 @@ export const TOOL_GROUPS: readonly ToolGroup[] = [
   'pdf-edit-security',
   'image-optimize',
   'image-studio',
+  'daily-utilities',
 ] as const;
+
+export interface ToolGroupStyle {
+  bgVar: string;
+  inkColor: string;
+  shape: 'square' | 'circle';
+}
+
+export const TOOL_GROUP_STYLES: Record<ToolGroup, ToolGroupStyle> = {
+  'pdf-organize': {
+    bgVar: 'var(--cat-pdf-organize)',
+    inkColor: '#FFFFFF',
+    shape: 'square',
+  },
+  'pdf-edit-security': {
+    bgVar: 'var(--cat-pdf-edit)',
+    inkColor: '#FFFFFF',
+    shape: 'square',
+  },
+  'image-optimize': {
+    bgVar: 'var(--cat-image-optimize)',
+    inkColor: '#FFFFFF',
+    shape: 'square',
+  },
+  'image-studio': {
+    bgVar: 'var(--cat-image-studio)',
+    inkColor: 'var(--cat-image-studio-ink)',
+    shape: 'circle',
+  },
+  'daily-utilities': {
+    bgVar: 'var(--cat-daily-utilities)',
+    inkColor: '#FFFFFF',
+    shape: 'square',
+  },
+};
 
 export const TOOLS: readonly ToolDefinition[] = [
   {
@@ -59,6 +109,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'merge-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['compress-pdf', 'rotate-reorder-pdf', 'protect-pdf'],
     keywords: {
       id: ['gabung pdf', 'satukan pdf', 'merge pdf', 'dokumen', 'kombinasi pdf'],
       en: ['merge pdf', 'combine pdf', 'join pdf', 'documents'],
@@ -74,6 +125,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'split-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['merge-pdf', 'rotate-reorder-pdf', 'compress-pdf'],
     keywords: {
       id: ['pisah pdf', 'potong halaman pdf', 'split pdf', 'ekstrak halaman'],
       en: ['split pdf', 'extract pages', 'cut pdf'],
@@ -89,6 +141,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'rotate-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['merge-pdf', 'split-pdf', 'compress-pdf'],
     keywords: {
       id: ['putar pdf', 'urutkan halaman pdf', 'rotate pdf', 'reorder'],
       en: ['rotate pdf', 'reorder pages', 'organize pdf'],
@@ -105,6 +158,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 4,
     icon: 'word-to-pdf',
     acceptedExtensions: ['.docx'],
+    relatedToolIds: ['merge-pdf', 'compress-pdf', 'edit-pdf'],
     keywords: {
       id: ['word ke pdf', 'docx ke pdf', 'ubah word jadi pdf', 'dokumen word'],
       en: ['word to pdf', 'docx to pdf', 'convert docx to pdf', 'microsoft word'],
@@ -120,6 +174,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'image-to-pdf',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['pdf-to-image', 'compress-pdf', 'compress-image'],
     keywords: {
       id: ['gambar ke pdf', 'foto ke pdf', 'jpg ke pdf', 'image to pdf'],
       en: ['image to pdf', 'jpg to pdf', 'photos to pdf'],
@@ -136,6 +191,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 2,
     icon: 'compress-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['merge-pdf', 'protect-pdf', 'watermark-pdf'],
     keywords: {
       id: ['kompres pdf', 'kecilkan ukuran pdf', 'resize pdf', 'a4', 'scan pdf'],
       en: ['compress pdf', 'shrink pdf', 'reduce pdf size', 'resize pdf', 'a4'],
@@ -152,6 +208,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 3,
     icon: 'edit-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['protect-pdf', 'watermark-pdf', 'compress-pdf'],
     keywords: {
       id: ['edit pdf', 'tanda tangan pdf', 'sign pdf', 'anotasi', 'stabilo', 'redact pdf'],
       en: ['edit pdf', 'sign pdf', 'signature', 'annotate pdf', 'highlight', 'redact pdf'],
@@ -167,6 +224,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 2,
     icon: 'protect-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['edit-pdf', 'watermark-pdf', 'compress-pdf'],
     keywords: {
       id: ['kunci pdf', 'password pdf', 'buka pdf', 'unlock pdf', 'protect pdf', 'sandi'],
       en: ['protect pdf', 'lock pdf', 'unlock pdf', 'password pdf', 'encrypt pdf', 'decrypt'],
@@ -182,6 +240,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 2,
     icon: 'watermark-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['protect-pdf', 'compress-pdf', 'edit-pdf'],
     keywords: {
       id: ['watermark pdf', 'nomor halaman pdf', 'stempel pdf', 'draft', 'confidential'],
       en: ['watermark pdf', 'page numbers pdf', 'stamp pdf', 'draft', 'confidential'],
@@ -198,6 +257,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'compress-image',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['resize-crop-image', 'convert-image', 'image-to-pdf'],
     keywords: {
       id: ['kompres gambar', 'kecilkan ukuran foto', 'compress image', 'jpg', 'png', 'webp'],
       en: ['compress image', 'shrink photo', 'optimize image', 'jpg', 'png', 'webp'],
@@ -213,6 +273,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 1,
     icon: 'resize-image',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['compress-image', 'convert-image', 'remove-bg'],
     keywords: {
       id: ['ubah ukuran gambar', 'potong foto', 'resize', 'crop'],
       en: ['resize image', 'crop image', 'dimensions', 'flip'],
@@ -223,14 +284,15 @@ export const TOOLS: readonly ToolDefinition[] = [
     slug: 'convert-image',
     category: 'image',
     group: 'image-optimize',
-    formatLabel: 'JPG ⇄ PNG ⇄ WEBP',
+    formatLabel: 'JPG ⇄ PNG ⇄ WEBP ⇄ AVIF',
     status: 'live',
     phase: 1,
     icon: 'convert-image',
-    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp', '.avif', '.heic', '.heif'],
+    relatedToolIds: ['heic-to-jpg', 'compress-image', 'resize-crop-image'],
     keywords: {
-      id: ['konversi gambar', 'ubah format gambar', 'png ke jpg', 'webp'],
-      en: ['convert image', 'png to jpg', 'jpg to webp', 'format'],
+      id: ['konversi gambar', 'ubah format gambar', 'png ke jpg', 'webp', 'avif', 'avif ke jpg', 'jpg ke avif'],
+      en: ['convert image', 'png to jpg', 'jpg to webp', 'avif', 'avif to jpg', 'jpg to avif', 'format'],
     },
   },
   {
@@ -244,6 +306,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 3,
     icon: 'remove-bg',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['resize-crop-image', 'compress-image', 'collage-image'],
     keywords: {
       id: ['hapus background', 'remove bg', 'pasfoto merah biru', 'latar transparan', 'ai lokal'],
       en: ['remove background', 'remove bg', 'transparent background', 'cutout photo', 'id photo'],
@@ -259,6 +322,7 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 2,
     icon: 'watermark-image',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['compress-image', 'resize-crop-image', 'collage-image'],
     keywords: {
       id: ['watermark gambar', 'watermark foto', 'tempel logo foto', 'teks di gambar'],
       en: ['watermark image', 'add logo to photo', 'text on image', 'stamp photo'],
@@ -274,13 +338,263 @@ export const TOOLS: readonly ToolDefinition[] = [
     phase: 2,
     icon: 'collage-image',
     acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['compress-image', 'watermark-image', 'image-to-pdf'],
     keywords: {
       id: ['kolase foto', 'grid gambar', 'gabung foto', 'collage maker'],
       en: ['photo collage', 'image grid', 'combine photos', 'collage maker'],
+    },
+  },
+
+  // =========================================================================
+  // UPCOMING TOOLS (Fase 5 – Fase 8) — Rendered in "Segera Hadir" on /tools
+  // =========================================================================
+  {
+    id: 'pdf-to-image',
+    slug: 'pdf-to-image',
+    category: 'pdf',
+    group: 'pdf-organize',
+    badge: 'new',
+    formatLabel: 'PDF → JPG / PNG / WEBP',
+    status: 'live',
+    phase: 5,
+    icon: 'pdf-to-image',
+    acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['image-to-pdf', 'split-pdf', 'compress-image'],
+    keywords: {
+      id: ['pdf ke gambar', 'pdf ke jpg', 'pdf ke png', 'pdf to image', 'ekspor halaman pdf'],
+      en: ['pdf to image', 'pdf to jpg', 'pdf to png', 'export pdf pages'],
+    },
+  },
+  {
+    id: 'blur-redact-image',
+    slug: 'blur-redact-image',
+    category: 'image',
+    group: 'image-studio',
+    badge: 'new',
+    formatLabel: 'JPG / PNG / WEBP',
+    status: 'live',
+    phase: 5,
+    icon: 'blur-redact-image',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['remove-bg', 'compress-image', 'watermark-image'],
+    keywords: {
+      id: ['sensor foto', 'blur ktp', 'blur wajah', 'plat nomor', 'pixelate', 'redact foto', 'mozaik'],
+      en: ['blur image', 'censor photo', 'pixelate face', 'redact sensitive data', 'mosaic'],
+    },
+  },
+  {
+    id: 'strip-exif',
+    slug: 'strip-exif',
+    category: 'image',
+    group: 'image-optimize',
+    badge: 'new',
+    formatLabel: 'JPG / PNG / WEBP',
+    status: 'live',
+    phase: 5,
+    icon: 'strip-exif',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['blur-redact-image', 'compress-image', 'convert-image'],
+    keywords: {
+      id: ['hapus exif', 'hapus metadata foto', 'hapus gps foto', 'privasi foto', 'bersihkan exif'],
+      en: ['strip exif', 'remove photo metadata', 'remove gps', 'exif cleaner', 'privacy photo'],
+    },
+  },
+  {
+    id: 'heic-to-jpg',
+    slug: 'heic-to-jpg',
+    category: 'image',
+    group: 'image-optimize',
+    badge: 'new',
+    formatLabel: 'HEIC → JPG / PNG / WEBP',
+    status: 'live',
+    phase: 5,
+    icon: 'heic-to-jpg',
+    acceptedExtensions: ['.heic', '.heif'],
+    relatedToolIds: ['convert-image', 'compress-image', 'strip-exif'],
+    keywords: {
+      id: ['heic ke jpg', 'foto iphone ke jpg', 'konversi heic', 'heic to png', 'heif ke jpg'],
+      en: ['heic to jpg', 'iphone photo converter', 'heic to png', 'heif to jpg'],
+    },
+  },
+  {
+    id: 'passport-photo-grid',
+    slug: 'passport-photo-grid',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: '4R / A4 · 300 DPI',
+    status: 'coming-soon',
+    phase: 6,
+    icon: 'passport-photo-grid',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['cetak pasfoto', 'grid pasfoto', 'pasfoto 3x4', 'pasfoto 4x6', 'kertas 4r'],
+      en: ['passport photo sheet', 'id photo print', '4r photo grid', '3x4 4x6'],
+    },
+  },
+  {
+    id: 'signature-to-png',
+    slug: 'signature-to-png',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'PNG TRANSPARAN',
+    status: 'coming-soon',
+    phase: 6,
+    icon: 'signature-to-png',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['tanda tangan png', 'tanda tangan transparan', 'hapus background tanda tangan'],
+      en: ['transparent signature', 'signature to png', 'digital signature'],
+    },
+  },
+  {
+    id: 'svg-favicon-generator',
+    slug: 'svg-favicon-generator',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'SVG / PNG → ICO + ZIP',
+    status: 'coming-soon',
+    phase: 6,
+    icon: 'svg-favicon-generator',
+    acceptedExtensions: ['.svg', '.png'],
+    keywords: {
+      id: ['svg ke png', 'favicon generator', 'buat favicon ico', 'ikon aplikasi'],
+      en: ['svg to png', 'favicon generator', 'ico generator', 'app icons'],
+    },
+  },
+  {
+    id: 'extract-pdf-images',
+    slug: 'extract-pdf-images',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'PDF → ZIP GAMBAR',
+    status: 'coming-soon',
+    phase: 6,
+    icon: 'extract-pdf-images',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['ekstrak gambar pdf', 'ambil foto dari pdf', 'extract images pdf'],
+      en: ['extract images from pdf', 'save pdf images', 'pdf image extractor'],
+    },
+  },
+  {
+    id: 'qr-code-generator',
+    slug: 'qr-code-generator',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'SVG / PNG',
+    status: 'coming-soon',
+    phase: 7,
+    icon: 'qr-code-generator',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['qr code generator', 'buat qr code', 'qr whatsapp', 'qr wifi', 'qr logo'],
+      en: ['qr code generator', 'custom qr code', 'wifi qr', 'vcard qr'],
+    },
+  },
+  {
+    id: 'data-converter',
+    slug: 'data-converter',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'CSV ⇄ XLSX ⇄ JSON',
+    status: 'coming-soon',
+    phase: 7,
+    icon: 'data-converter',
+    acceptedExtensions: ['.csv', '.xlsx', '.json'],
+    keywords: {
+      id: ['csv ke excel', 'excel ke csv', 'json formatter', 'konversi data'],
+      en: ['csv to excel', 'xlsx converter', 'json formatter', 'data utility'],
+    },
+  },
+  {
+    id: 'compare-pdf',
+    slug: 'compare-pdf',
+    category: 'pdf',
+    group: 'pdf-edit-security',
+    formatLabel: 'PDF DIFF',
+    status: 'coming-soon',
+    phase: 7,
+    icon: 'compare-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['bandingkan pdf', 'pdf diff', 'cek perbedaan pdf', 'revisi kontrak'],
+      en: ['compare pdf', 'pdf diff', 'visual pdf diff', 'check document changes'],
+    },
+  },
+  {
+    id: 'ocr-text',
+    slug: 'ocr-text',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'PDF / IMG → TEKS',
+    status: 'coming-soon',
+    phase: 8,
+    icon: 'ocr-text',
+    acceptedExtensions: ['.pdf', '.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['ocr pdf', 'ocr gambar', 'scan ke teks', 'ekstrak teks foto'],
+      en: ['ocr pdf', 'image to text', 'scan to text', 'tesseract'],
+    },
+  },
+  {
+    id: 'media-trim-gif',
+    slug: 'media-trim-gif',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'MP4 → GIF / TRIM',
+    status: 'coming-soon',
+    phase: 8,
+    icon: 'media-trim-gif',
+    acceptedExtensions: ['.mp4', '.webm', '.mp3', '.wav'],
+    keywords: {
+      id: ['mp4 ke gif', 'potong video', 'potong audio', 'kompres video ringan'],
+      en: ['mp4 to gif', 'trim video', 'trim audio', 'lightweight media'],
     },
   },
 ] as const;
 
 export function getLiveTools(): ToolDefinition[] {
   return TOOLS.filter((tool) => tool.status === 'live');
+}
+
+export function getUpcomingTools(): ToolDefinition[] {
+  return TOOLS.filter((tool) => tool.status === 'coming-soon');
+}
+
+export function getRelatedLiveTools(toolId: string, limit = 3): ToolDefinition[] {
+  const live = getLiveTools();
+  const current = live.find((t) => t.id === toolId);
+  if (!current) return live.slice(0, limit);
+
+  const picked: ToolDefinition[] = [];
+  const seen = new Set<string>([current.id]);
+
+  if (current.relatedToolIds) {
+    for (const relId of current.relatedToolIds) {
+      if (picked.length >= limit) break;
+      const match = live.find((t) => t.id === relId && !seen.has(t.id));
+      if (match) {
+        picked.push(match);
+        seen.add(match.id);
+      }
+    }
+  }
+
+  for (const candidate of live) {
+    if (picked.length >= limit) break;
+    if (candidate.group === current.group && !seen.has(candidate.id)) {
+      picked.push(candidate);
+      seen.add(candidate.id);
+    }
+  }
+
+  for (const candidate of live) {
+    if (picked.length >= limit) break;
+    if (candidate.category === current.category && !seen.has(candidate.id)) {
+      picked.push(candidate);
+      seen.add(candidate.id);
+    }
+  }
+
+  return picked;
 }

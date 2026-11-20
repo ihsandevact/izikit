@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ToolDirectory from '@/components/home/ToolDirectory';
+import { getLiveTools } from '@/config/tools';
 import { getDictionary, getSeoUrls, type Locale } from '@/i18n';
+import { buildToolsCatalogJsonLd } from '@/lib/seo-schema';
 
 interface Props {
   locale: Locale;
@@ -10,20 +12,14 @@ interface Props {
 const { locale } = Astro.props;
 const dict = getDictionary(locale);
 const seo = getSeoUrls('/tools', locale);
+const liveTools = getLiveTools();
 
 const pageTitle =
   locale === 'id'
-    ? 'Semua Tools Gratis Tanpa Login & Tanpa Upload | izikit'
-    : 'All Free Browser Tools Without Login or Upload | izikit';
+    ? 'Semua Tools PDF & Gambar Gratis Tanpa Login | izikit'
+    : 'All Free PDF & Image Browser Tools No Login | izikit';
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: pageTitle,
-  url: seo.canonical,
-  inLanguage: dict.langTag,
-  description: dict.home.catalogSubtitle,
-};
+const jsonLd = buildToolsCatalogJsonLd(locale, seo, dict, pageTitle, liveTools);
 ---
 
 <BaseLayout
@@ -33,7 +29,7 @@ const jsonLd = {
   description={dict.home.catalogSubtitle}
   jsonLd={jsonLd}
 >
-  <section class="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
+  <section class="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
     <ToolDirectory client:load locale={locale} mode="catalog" />
   </section>
 </BaseLayout>

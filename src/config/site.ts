@@ -8,14 +8,10 @@ export const SITE_CONFIG = {
   brandName: 'izikit',
   siteUrl: 'https://izikit.app',
   version: '0.1.0',
-  /**
-   * Configure real donation links (Saweria, Trakteer, Ko-fi) once ready.
-   * When null, the UI links honestly to /about#support without dead external URLs.
-   */
+  /** Every support / "Dukung" action points here. */
+  supportUrl: 'https://trakteer.id/ihsan97/tip',
   supportChannels: [
-    { id: 'saweria', label: 'Saweria', url: null },
-    { id: 'trakteer', label: 'Trakteer', url: null },
-    { id: 'kofi', label: 'Ko-fi', url: null },
+    { id: 'trakteer', label: 'Trakteer', url: 'https://trakteer.id/ihsan97/tip' },
   ] as readonly SupportChannel[],
   limits: {
     pdfSoftMaxBytes: 100 * 1024 * 1024, // 100 MB recommended per file for browser memory

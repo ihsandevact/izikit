@@ -1,27 +1,52 @@
 ---
 import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
-import { ShieldLocalIcon } from '@/components/shared/icons';
+import { getRelatedLiveTools } from '@/config/tools';
+import { ShieldLocalIcon, ToolIconBadge } from '@/components/shared/icons';
+import type { FaqItem } from '@/lib/seo-schema';
 
 interface Props {
   locale: Locale;
+  toolId?: string;
   toolName: string;
   toolDescription: string;
   guideTitle: string;
   guideItems: readonly string[];
+  howToSteps?: readonly string[];
+  faqs?: readonly FaqItem[];
 }
 
-const { locale, toolName, toolDescription, guideTitle, guideItems } = Astro.props;
+const {
+  locale,
+  toolId,
+  toolName,
+  toolDescription,
+  guideTitle,
+  guideItems,
+  howToSteps = [],
+  faqs = [],
+} = Astro.props;
 const dict = getDictionary(locale);
-const homeHref = getLocalizedPath('/tools', locale);
+const rootHref = getLocalizedPath('/', locale);
+const allToolsHref = getLocalizedPath('/tools', locale);
+const relatedTools = toolId ? getRelatedLiveTools(toolId, 3) : [];
 ---
 
-<section class="mx-auto max-w-5xl px-4 py-4 sm:px-6 sm:py-6">
-  <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
+<section class="mx-auto max-w-5xl px-4 py-5 sm:px-6 sm:py-8">
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-2.5 sm:mb-5">
     <nav aria-label="Breadcrumb" class="text-sm text-[var(--ink-muted)]">
       <ol class="m-0 flex list-none flex-wrap items-center gap-1.5 p-0">
         <li>
           <a
-            href={homeHref}
+            href={rootHref}
+            class="inline-flex min-h-9 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
+          >
+            {dict.shared.homeBreadcrumb}
+          </a>
+        </li>
+        <li aria-hidden="true" class="font-data text-xs">/</li>
+        <li>
+          <a
+            href={allToolsHref}
             class="inline-flex min-h-9 items-center text-[var(--ink-muted)] underline-offset-4 hover:text-[var(--ink-primary)] hover:underline"
           >
             {dict.shared.backToAllTools}
@@ -32,8 +57,8 @@ const homeHref = getLocalizedPath('/tools', locale);
       </ol>
     </nav>
 
-    <div class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-1 text-xs font-semibold text-[var(--success)]">
-      <ShieldLocalIcon className="h-3.5 w-3.5 shrink-0" />
+    <div class="inline-flex items-center gap-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-1 text-xs font-semibold text-[var(--ink-primary)]">
+      <ShieldLocalIcon className="h-3.5 w-3.5 shrink-0 text-[var(--hl)]" />
       <span>{dict.shared.localBadge}</span>
     </div>
   </div>
@@ -67,6 +92,111 @@ const homeHref = getLocalizedPath('/tools', locale);
       {guideItems.map((item) => <li>{item}</li>)}
     </ul>
   </aside>
+
+  {
+    howToSteps.length > 0 && (
+      <section
+        aria-labelledby="tool-howto-heading"
+        class="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:mt-6 sm:p-5"
+      >
+        <h2
+          id="tool-howto-heading"
+          class="font-display m-0 mb-3 text-base font-bold text-[var(--ink-primary)]"
+        >
+          {dict.shared.howToTitlePrefix} {toolName}
+        </h2>
+        <ol class="m-0 grid list-none grid-cols-1 gap-3 p-0 sm:grid-cols-3">
+          {howToSteps.map((step, index) => (
+            <li class="flex items-start gap-3 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-recess)]/50 p-3.5">
+              <span class="font-data inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--accent)] text-xs font-bold text-[var(--accent-ink)]">
+                {index + 1}
+              </span>
+              <p class="m-0 text-sm leading-relaxed text-[var(--ink-muted)]">{step}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )
+  }
+
+  {
+    faqs.length > 0 && (
+      <section
+        aria-labelledby="tool-faq-heading"
+        class="mt-5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:mt-6 sm:p-5"
+      >
+        <h2
+          id="tool-faq-heading"
+          class="font-display m-0 mb-3 text-base font-bold text-[var(--ink-primary)]"
+        >
+          {dict.shared.faqTitlePrefix} {toolName}
+        </h2>
+        <div class="divide-y divide-[var(--border-subtle)]">
+          {faqs.map((faq) => (
+            <details class="group py-3 first:pt-1 last:pb-1">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--link)]">
+                <span>{faq.q}</span>
+                <span
+                  aria-hidden="true"
+                  class="font-data shrink-0 text-base text-[var(--ink-muted)] transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="m-0 mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{faq.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  {
+    relatedTools.length > 0 && (
+      <section aria-labelledby="related-tools-heading" class="mt-8 space-y-4 sm:mt-10">
+        <div class="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-[2px] bg-[var(--accent)]" aria-hidden="true" />
+            <h2
+              id="related-tools-heading"
+              class="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+            >
+              {dict.shared.relatedToolsTitle}
+            </h2>
+          </div>
+          <p class="m-0 text-xs text-[var(--ink-muted)]">{dict.shared.relatedToolsHint}</p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-3">
+          {relatedTools.map((relTool) => {
+            const relMeta = dict.tools[relTool.id as keyof typeof dict.tools];
+            const relHref = getLocalizedPath(`/${relTool.slug}`, locale);
+            return (
+              <a
+                href={relHref}
+                class="group flex h-full flex-col gap-3.5 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 text-[var(--ink-primary)] no-underline transition-colors hover:border-[var(--accent)] sm:p-5"
+              >
+                <div class="flex items-start justify-between gap-2.5">
+                  <ToolIconBadge icon={relTool.icon} group={relTool.group} size="md" />
+                  <span class="font-data shrink-0 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-2 py-0.5 text-[10px] font-medium text-[var(--ink-muted)]">
+                    {relTool.formatLabel}
+                  </span>
+                </div>
+                <div class="space-y-1">
+                  <h3 class="font-display m-0 text-sm leading-snug font-extrabold text-[var(--ink-primary)] group-hover:text-[var(--link)] sm:text-[15px]">
+                    {relMeta.name}
+                  </h3>
+                  <p class="m-0 line-clamp-2 text-xs leading-relaxed text-[var(--ink-muted)]">
+                    {relMeta.shortDescription}
+                  </p>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )
+  }
 </section>
 
 <script>

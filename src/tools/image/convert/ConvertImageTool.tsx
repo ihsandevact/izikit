@@ -3,8 +3,10 @@ import { getDictionary, type Locale } from '@/i18n';
 import { formatBytes } from '@/lib/format';
 import {
   mimeToExtension,
-  validateImageFiles,
-  type SupportedImageMime,
+  validateConvertibleImageFiles,
+  validateHeicFiles,
+  type ConvertibleImageMime,
+  type ConvertibleInputMime,
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadAsZip, downloadBlob } from '@/lib/download';
@@ -22,32 +24,41 @@ import type {
 interface ConvertQueueItem {
   id: string;
   file: File;
-  mime: SupportedImageMime;
-  previewUrl: string;
+  mime: ConvertibleInputMime;
+  previewUrl: string | null;
   convertedBlob?: Blob;
   outputFilename?: string;
-  outputMime?: SupportedImageMime;
+  outputMime?: ConvertibleImageMime;
   dimensions?: { width: number; height: number };
 }
 
 interface ConvertImageToolProps {
   locale: Locale;
+  mode?: 'all' | 'heic';
+  defaultTargetFormat?: ConvertibleImageMime;
 }
 
 function createConvertWorker(): Worker {
   return new Worker(new URL('./convert.worker.ts', import.meta.url), { type: 'module' });
 }
 
-export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
+export default function ConvertImageTool({
+  locale,
+  mode = 'all',
+  defaultTargetFormat,
+}: ConvertImageToolProps) {
   const dict = getDictionary(locale);
   const copy = dict.convertImage;
+  const isHeicMode = mode === 'heic';
 
   const targetId = useId();
   const qualityId = useId();
   const bgId = useId();
 
   const [items, setItems] = useState<ConvertQueueItem[]>([]);
-  const [targetFormat, setTargetFormat] = useState<SupportedImageMime>('image/webp');
+  const [targetFormat, setTargetFormat] = useState<ConvertibleImageMime>(
+    defaultTargetFormat ?? (isHeicMode ? 'image/jpeg' : 'image/webp'),
+  );
   const [quality, setQuality] = useState(90);
   const [jpegBackground, setJpegBackground] = useState('#FFFFFF');
   const [errors, setErrors] = useState<string[]>([]);
@@ -63,14 +74,18 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
     return () => {
       abortRef.current?.abort();
       for (const item of itemsRef.current) {
-        URL.revokeObjectURL(item.previewUrl);
+        if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
       }
     };
   }, []);
 
   const handleFilesSelected = async (incoming: File[]) => {
     setErrors([]);
-    const { accepted, errors: nextErrors } = await validateImageFiles(incoming, copy.errors);
+    const validator = isHeicMode ? validateHeicFiles : validateConvertibleImageFiles;
+    const errorMessages = isHeicMode
+      ? { ...copy.errors, notImage: copy.errors.notHeic }
+      : copy.errors;
+    const { accepted, errors: nextErrors } = await validator(incoming, errorMessages);
 
     if (nextErrors.length > 0) {
       setErrors(nextErrors);
@@ -80,7 +95,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
         id,
         file,
         mime,
-        previewUrl: URL.createObjectURL(file),
+        previewUrl: mime === 'image/heic' ? null : URL.createObjectURL(file),
       }));
       setItems((prev) => [...prev, ...nextItems]);
     }
@@ -89,7 +104,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
   const removeItem = (id: string) => {
     setItems((prev) => {
       const target = prev.find((i) => i.id === id);
-      if (target) URL.revokeObjectURL(target.previewUrl);
+      if (target?.previewUrl) URL.revokeObjectURL(target.previewUrl);
       return prev.filter((i) => i.id !== id);
     });
   };
@@ -97,7 +112,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
   const resetAll = () => {
     abortRef.current?.abort();
     for (const item of items) {
-      URL.revokeObjectURL(item.previewUrl);
+      if (item.previewUrl) URL.revokeObjectURL(item.previewUrl);
     }
     setItems([]);
     setErrors([]);
@@ -121,13 +136,37 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
         { targetFormat, quality, jpegBackground },
       );
 
+      const hasHeic = items.some((item) => item.mime === 'image/heic');
+      const heicMod = hasHeic ? await import('heic-to') : null;
+
       const jobById = new Map(jobs.map((job) => [job.id, job]));
-      const prepared = await Promise.all(
-        items.map(async (item) => ({
-          job: jobById.get(item.id)!,
-          buffer: await item.file.arrayBuffer(),
-        })),
-      );
+      const prepared = [];
+      for (let i = 0; i < items.length; i += 1) {
+        if (controller.signal.aborted) {
+          throw new DOMException('Aborted', 'AbortError');
+        }
+        const item = items[i];
+        const job = jobById.get(item.id)!;
+        if (item.mime === 'image/heic' && heicMod) {
+          setProgress({
+            percent: Math.round(((i + 0.3) / items.length) * 45),
+            detail: `${copy.progressDecodingHeic} ${i + 1}/${items.length}: ${item.file.name}`,
+          });
+          const decodedPng = await heicMod.heicTo({
+            blob: item.file,
+            type: 'image/png',
+          });
+          prepared.push({
+            job: { ...job, inputMime: 'image/png' as const },
+            buffer: await decodedPng.arrayBuffer(),
+          });
+        } else {
+          prepared.push({
+            job,
+            buffer: await item.file.arrayBuffer(),
+          });
+        }
+      }
       const transferables = prepared.map((p) => p.buffer);
 
       const response = await runWorkerTask<ConvertWorkerRequest, ConvertWorkerResponse>(
@@ -140,7 +179,8 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
             const detail = evt.label
               ? `${copy.progressConverting} ${evt.current ?? ''}/${evt.total ?? items.length}: ${evt.label}`
               : copy.progressConverting;
-            setProgress({ percent: evt.percent, detail });
+            const scaledPercent = hasHeic ? 45 + Math.round(evt.percent * 0.55) : evt.percent;
+            setProgress({ percent: scaledPercent, detail });
           },
         },
       );
@@ -150,9 +190,15 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
         prev.map((item) => {
           const out = resultById.get(item.id);
           if (!out) return item;
+          const convertedBlob = new Blob([out.buffer], { type: out.outputMime });
+          let nextPreviewUrl = item.previewUrl;
+          if (!nextPreviewUrl && out.outputMime !== 'image/avif') {
+            nextPreviewUrl = URL.createObjectURL(convertedBlob);
+          }
           return {
             ...item,
-            convertedBlob: new Blob([out.buffer], { type: out.outputMime }),
+            previewUrl: nextPreviewUrl,
+            convertedBlob,
             outputFilename: out.outputFilename,
             outputMime: out.outputMime,
             dimensions: { width: out.width, height: out.height },
@@ -187,8 +233,21 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
     }
   };
 
+  const handleDownloadAllSingle = () => {
+    const done = items.filter((item) => item.convertedBlob && item.outputFilename);
+    done.forEach((item, idx) => {
+      window.setTimeout(() => {
+        downloadBlob(item.convertedBlob!, item.outputFilename!);
+      }, idx * 140);
+    });
+  };
+
   const doneItems = items.filter((item) => item.convertedBlob);
   const targetExtUpper = mimeToExtension(targetFormat).toUpperCase();
+  const acceptAttr = isHeicMode
+    ? 'image/heic,image/heif,.heic,.heif'
+    : 'image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,.jpg,.jpeg,.png,.webp,.avif,.heic,.heif';
+  const formatsHint = isHeicMode ? copy.heicFormatsHint : copy.formatsHint;
 
   return (
     <div className="space-y-5">
@@ -200,26 +259,26 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
 
       {items.length === 0 ? (
         <Dropzone
-          accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+          accept={acceptAttr}
           multiple
           disabled={isConverting}
           idleLabel={dict.shared.dropzoneIdle}
           activeLabel={dict.shared.dropzoneActive}
           buttonLabel={dict.shared.dropzoneSelectButton}
-          formatsHint={copy.formatsHint}
+          formatsHint={formatsHint}
           onFilesSelected={handleFilesSelected}
         />
       ) : (
         <div className="space-y-5">
           <Dropzone
-            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+            accept={acceptAttr}
             multiple
             compact
             disabled={isConverting}
             idleLabel={dict.shared.dropzoneIdle}
             activeLabel={dict.shared.dropzoneActive}
             buttonLabel={dict.shared.dropzoneAddMore}
-            formatsHint={copy.formatsHint}
+            formatsHint={formatsHint}
             onFilesSelected={handleFilesSelected}
           />
 
@@ -236,7 +295,7 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
               className={`grid gap-4 ${
                 targetFormat === 'image/png'
                   ? 'sm:grid-cols-1 max-w-sm'
-                  : targetFormat === 'image/webp'
+                  : targetFormat === 'image/webp' || targetFormat === 'image/avif'
                     ? 'sm:grid-cols-2'
                     : 'sm:grid-cols-2 lg:grid-cols-3'
               }`}
@@ -248,10 +307,11 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                 <select
                   id={targetId}
                   value={targetFormat}
-                  onChange={(e) => setTargetFormat(e.target.value as SupportedImageMime)}
+                  onChange={(e) => setTargetFormat(e.target.value as ConvertibleImageMime)}
                   className="h-11 w-full rounded-lg border border-[var(--border-control)] bg-[var(--bg-card)] px-3 text-sm text-[var(--ink-primary)]"
                 >
                   <option value="image/webp">WebP (.webp)</option>
+                  <option value="image/avif">AVIF (.avif)</option>
                   <option value="image/jpeg">JPEG (.jpg)</option>
                   <option value="image/png">PNG (.png)</option>
                 </select>
@@ -334,28 +394,51 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                   </h3>
                 </div>
 
-                {doneItems.length > 1 ? (
-                  <button
-                    type="button"
-                    onClick={handleDownloadZip}
-                    disabled={isZipping}
-                    className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
-                  >
-                    <DownloadIcon className="h-4 w-4" />
-                    <span>{isZipping ? dict.shared.buildingZip : copy.downloadZip}</span>
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() =>
-                      downloadBlob(doneItems[0].convertedBlob!, doneItems[0].outputFilename!)
-                    }
-                    className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
-                  >
-                    <DownloadIcon className="h-4 w-4" />
-                    <span>{copy.downloadSingle}</span>
-                  </button>
-                )}
+                <div className="flex flex-wrap items-center gap-2">
+                  {doneItems.length > 1 ? (
+                    <>
+                      <button
+                        type="button"
+                        onClick={handleDownloadZip}
+                        disabled={isZipping}
+                        className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
+                      >
+                        <DownloadIcon className="h-4 w-4" />
+                        <span>{isZipping ? dict.shared.buildingZip : copy.downloadZip}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadAllSingle}
+                        className="btn-secondary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
+                      >
+                        <DownloadIcon className="h-4 w-4" />
+                        <span>{copy.downloadAllSingle}</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          downloadBlob(doneItems[0].convertedBlob!, doneItems[0].outputFilename!)
+                        }
+                        className="btn-primary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold"
+                      >
+                        <DownloadIcon className="h-4 w-4" />
+                        <span>{copy.downloadSingle}</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadZip}
+                        disabled={isZipping}
+                        className="btn-secondary inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold"
+                      >
+                        <DownloadIcon className="h-4 w-4" />
+                        <span>{isZipping ? dict.shared.buildingZip : copy.downloadZipSingle}</span>
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
 
               <SupportCard
@@ -376,13 +459,19 @@ export default function ConvertImageTool({ locale }: ConvertImageToolProps) {
                 className="flex flex-col gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-paper)] p-3 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="flex min-w-0 items-center gap-3">
-                  <img
-                    src={item.previewUrl}
-                    alt={item.file.name}
-                    width={56}
-                    height={56}
-                    className="h-14 w-14 shrink-0 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
-                  />
+                  {item.previewUrl ? (
+                    <img
+                      src={item.previewUrl}
+                      alt={item.file.name}
+                      width={56}
+                      height={56}
+                      className="h-14 w-14 shrink-0 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] object-cover"
+                    />
+                  ) : (
+                    <span className="font-data inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)] text-[11px] font-bold text-[var(--ink-muted)]">
+                      {mimeToExtension(item.mime).toUpperCase()}
+                    </span>
+                  )}
                   <div className="min-w-0 space-y-0.5">
                     <p className="m-0 truncate text-sm font-medium text-[var(--ink-primary)]">
                       {item.outputFilename || item.file.name}

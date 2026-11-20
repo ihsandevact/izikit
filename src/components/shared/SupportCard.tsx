@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { getActiveSupportChannels } from '@/config/site';
-import { getLocalizedPath, type Locale } from '@/i18n';
+import { SITE_CONFIG } from '@/config/site';
+import type { Locale } from '@/i18n';
+import { CoffeeIcon } from './icons';
 
 interface SupportCardProps {
   locale: Locale;
@@ -10,19 +11,10 @@ interface SupportCardProps {
   dismissLabel: string;
 }
 
-export default function SupportCard({
-  locale,
-  heading,
-  body,
-  aboutCta,
-  dismissLabel,
-}: SupportCardProps) {
+export default function SupportCard({ heading, body, aboutCta, dismissLabel }: SupportCardProps) {
   const [dismissed, setDismissed] = useState(false);
 
   if (dismissed) return null;
-
-  const activeChannels = getActiveSupportChannels();
-  const aboutSupportHref = `${getLocalizedPath('/about', locale)}#support`;
 
   return (
     <aside
@@ -36,26 +28,15 @@ export default function SupportCard({
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {activeChannels.length > 0 ? (
-            activeChannels.map((channel) => (
-              <a
-                key={channel.id}
-                href={channel.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline"
-              >
-                {channel.label}
-              </a>
-            ))
-          ) : (
-            <a
-              href={aboutSupportHref}
-              className="btn-secondary inline-flex min-h-11 items-center rounded-lg px-3.5 text-sm font-medium no-underline"
-            >
-              {aboutCta}
-            </a>
-          )}
+          <a
+            href={SITE_CONFIG.supportUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-secondary inline-flex min-h-11 items-center gap-2 rounded-lg px-3.5 text-sm font-semibold no-underline"
+          >
+            <CoffeeIcon className="h-4 w-4 shrink-0 text-[var(--hl)]" />
+            <span>{aboutCta}</span>
+          </a>
 
           <button
             type="button"
