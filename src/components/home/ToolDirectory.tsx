@@ -45,6 +45,7 @@ export default function ToolDirectory({ locale, mode = 'launcher' }: ToolDirecto
   const upcomingTools = useMemo(() => TOOLS.filter((t) => t.status === 'coming-soon'), []);
   const normalizedQuery = query.trim().toLowerCase();
   const allToolsHref = getLocalizedPath('/tools', locale);
+  const roadmapHref = getLocalizedPath('/roadmap', locale);
 
   // Load recent tools from localStorage + optional ?group= query param on catalog page
   useEffect(() => {
@@ -199,15 +200,6 @@ export default function ToolDirectory({ locale, mode = 'launcher' }: ToolDirecto
     () => TOOL_GROUPS.filter((grp) => groupCounts[grp] > 0),
     [groupCounts],
   );
-
-  const filteredUpcomingTools = useMemo(() => {
-    return upcomingTools.filter((tool) => {
-      if (activeGroup !== 'all' && tool.group !== activeGroup) {
-        return false;
-      }
-      return matchesSearch(tool, normalizedQuery);
-    });
-  }, [activeGroup, matchesSearch, normalizedQuery, upcomingTools]);
 
   const resetFilters = () => {
     setQuery('');
@@ -568,8 +560,8 @@ export default function ToolDirectory({ locale, mode = 'launcher' }: ToolDirecto
           />
         </aside>
 
-        <div className="min-w-0 space-y-12">
-          {catalogTools.length === 0 && filteredUpcomingTools.length === 0 ? (
+        <div className="min-w-0 space-y-10">
+          {catalogTools.length === 0 ? (
             <div className="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-6 py-12 text-center">
               <h2 className="font-display m-0 text-lg font-extrabold text-[var(--ink-primary)]">
                 {dict.home.emptySearchTitle}
@@ -665,75 +657,35 @@ export default function ToolDirectory({ locale, mode = 'launcher' }: ToolDirecto
                 </div>
               )}
 
-              {/* Dedicated Coming Soon ("Segera Hadir") Section */}
-              {filteredUpcomingTools.length > 0 && (
-                <section
-                  id="coming-soon"
-                  aria-labelledby="heading-coming-soon"
-                  className="space-y-4 border-t border-dashed border-[var(--border-control)] pt-8"
-                >
-                  <div className="flex flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
-                    <div className="flex items-center gap-2.5">
+              {/* Compact Link Banner to Dedicated Roadmap ("Segera Hadir") Page */}
+              {upcomingTools.length > 0 && !normalizedQuery && (
+                <div className="flex flex-col items-start justify-between gap-4 rounded-2xl border border-dashed border-[var(--border-control)] bg-[var(--bg-card)]/70 p-4 sm:flex-row sm:items-center sm:p-5">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
                       <span
                         aria-hidden="true"
-                        className="inline-block h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--hl)]"
+                        className="inline-block h-2 w-2 shrink-0 rounded-full bg-[var(--hl)]"
                       />
-                      <h2
-                        id="heading-coming-soon"
-                        className="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
-                      >
+                      <span className="font-display text-sm font-extrabold text-[var(--ink-primary)]">
                         {dict.home.upcomingSectionTitle}
-                      </h2>
-                      <span className="font-data rounded-md border border-[var(--border-subtle)] bg-[var(--hl-tint)] px-2 py-0.5 text-[10px] font-bold text-[var(--hl)]">
-                        {filteredUpcomingTools.length} {dict.home.comingSoonBadge}
+                      </span>
+                      <span className="font-data rounded-md bg-[var(--hl-tint)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--hl)]">
+                        {upcomingTools.length} {dict.home.comingSoonBadge}
                       </span>
                     </div>
-                    <p className="m-0 text-xs text-[var(--ink-muted)] sm:max-w-xs sm:text-right">
+                    <p className="m-0 text-xs text-[var(--ink-muted)]">
                       {dict.home.upcomingSectionHint}
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-4">
-                    {filteredUpcomingTools.map((tool) => {
-                      const meta =
-                        dict.upcomingTools[tool.id as keyof typeof dict.upcomingTools];
-                      if (!meta) return null;
-
-                      return (
-                        <div
-                          key={tool.id}
-                          aria-disabled="true"
-                          className="flex h-full items-start gap-4 rounded-2xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-card)]/70 p-4 opacity-85 sm:p-5"
-                        >
-                          <ToolIconBadge
-                            icon={tool.icon}
-                            group={tool.group}
-                            size="md"
-                            className="mt-0.5 opacity-80"
-                          />
-
-                          <div className="min-w-0 flex-1 space-y-1.5">
-                            <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                              <h3 className="font-display m-0 text-sm leading-snug font-extrabold text-[var(--ink-primary)] sm:text-[15px]">
-                                {meta.name}
-                              </h3>
-                              <span className="font-data shrink-0 rounded-md bg-[var(--hl-tint)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--hl)]">
-                                {dict.home.comingSoonBadge}
-                              </span>
-                              <span className="font-data shrink-0 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--ink-muted)]">
-                                {dict.home.phasePrefix} {tool.phase}
-                              </span>
-                            </div>
-
-                            <p className="m-0 line-clamp-3 text-xs leading-relaxed text-[var(--ink-muted)] sm:text-[13px]">
-                              {meta.shortDescription}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </section>
+                  <a
+                    href={roadmapHref}
+                    className="btn-secondary inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-lg px-4 text-xs font-semibold no-underline"
+                  >
+                    <span>{dict.home.upcomingBannerCta}</span>
+                    <span aria-hidden="true">→</span>
+                  </a>
+                </div>
               )}
             </>
           )}

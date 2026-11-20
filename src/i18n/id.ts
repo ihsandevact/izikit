@@ -17,6 +17,7 @@ export const idDictionary = {
   },
   nav: {
     tools: 'Semua tools',
+    roadmap: 'Segera Hadir',
     installApp: 'Pasang aplikasi',
     installReadyNotice: 'izikit sudah siap dipakai offline di browser ini.',
     pdfGroup: 'Dokumen PDF',
@@ -94,6 +95,7 @@ export const idDictionary = {
     imageSectionHint: 'Kecilkan ukuran file, hapus latar pasfoto, potong, watermark, atau susun kolase.',
     upcomingSectionTitle: 'Segera hadir',
     upcomingSectionHint: 'Fitur baru yang akan segera hadir.',
+    upcomingBannerCta: 'Lihat daftar Segera Hadir',
     comingSoonBadge: 'SOON',
     phasePrefix: 'FASE',
     openToolCta: 'Buka alat',
@@ -817,6 +819,21 @@ export const idDictionary = {
     supportDismiss: 'Tutup',
     relatedToolsTitle: 'Tools terkait',
     relatedToolsHint: 'Lanjutkan alur kerjamu dengan alat lain yang sering dipakai bersamaan.',
+  },
+  roadmap: {
+    seoTitle: 'Segera Hadir — Roadmap Fitur Baru | izikit',
+    seoDescription:
+      'Daftar fitur dan alat PDF, gambar, serta utilitas kerja harian yang sedang disiapkan untuk izikit. Semuanya tetap 100% gratis, tanpa login, dan berjalan di browser.',
+    title: 'Segera Hadir',
+    subtitle:
+      'Fitur-fitur baru yang sedang disiapkan bertahap untuk izikit. Semuanya tetap 100% gratis, tanpa login, dan berjalan langsung di perangkat kamu.',
+    backToLiveTitle: 'Sudah ada {count} tools yang bisa langsung kamu pakai sekarang',
+    backToLiveCta: 'Jelajahi Semua tools',
+    phaseTitles: {
+      6: 'Studio Visual & Ekstraksi PDF',
+      7: 'Utilitas Kerja Harian & Perbandingan PDF',
+      8: 'OCR & Media Ringan (WASM)',
+    },
   },
   upcomingTools: {
     'passport-photo-grid': {

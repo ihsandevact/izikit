@@ -167,7 +167,7 @@ const relatedTools = toolId ? getRelatedLiveTools(toolId, 3) : [];
 <script>
   try {
     const rawPath = window.location.pathname.replace(/^\/en(\/|$)/, '/').replace(/^\/+|\/+$/g, '');
-    if (rawPath && rawPath !== 'about' && rawPath !== 'tools') {
+    if (rawPath && rawPath !== 'about' && rawPath !== 'tools' && rawPath !== 'roadmap') {
       const key = 'izikit-recent-tools';
       const existingRaw = localStorage.getItem(key);
       const existing: string[] = existingRaw ? JSON.parse(existingRaw) : [];

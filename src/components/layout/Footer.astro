@@ -92,6 +92,14 @@ const imageTools = liveTools.filter((tool) => tool.category === 'image');
         <ul class="m-0 grid list-none grid-cols-2 gap-x-6 gap-y-0.5 p-0 text-xs sm:block sm:space-y-0.5 sm:text-sm">
           <li>
             <a
+              href={getLocalizedPath('/roadmap', locale)}
+              class="inline-flex min-h-9 items-center py-0.5 text-[var(--ink-muted)] underline-offset-4 transition-colors hover:text-[var(--link)] hover:underline"
+            >
+              {dict.nav.roadmap}
+            </a>
+          </li>
+          <li>
+            <a
               href={getLocalizedPath('/about', locale)}
               class="inline-flex min-h-9 items-center py-0.5 text-[var(--ink-muted)] underline-offset-4 transition-colors hover:text-[var(--link)] hover:underline"
             >

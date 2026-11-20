@@ -19,6 +19,7 @@ export const enDictionary: Dictionary = {
   },
   nav: {
     tools: 'All tools',
+    roadmap: 'Coming Soon',
     installApp: 'Install app',
     installReadyNotice: 'izikit is ready for offline use in this browser.',
     pdfGroup: 'PDF Documents',
@@ -96,6 +97,7 @@ export const enDictionary: Dictionary = {
     imageSectionHint: 'Shrink file sizes, remove ID photo backgrounds, crop, watermark, or build collages.',
     upcomingSectionTitle: 'Coming soon',
     upcomingSectionHint: 'New tools coming soon.',
+    upcomingBannerCta: 'View Coming Soon list',
     comingSoonBadge: 'SOON',
     phasePrefix: 'PHASE',
     openToolCta: 'Open tool',
@@ -819,6 +821,21 @@ export const enDictionary: Dictionary = {
     supportDismiss: 'Dismiss',
     relatedToolsTitle: 'Related tools',
     relatedToolsHint: 'Continue your workflow with tools often used together.',
+  },
+  roadmap: {
+    seoTitle: 'Coming Soon — Upcoming Tools Roadmap | izikit',
+    seoDescription:
+      'Upcoming PDF, image, and daily work utility tools being built for izikit. Always 100% free, no login, and running right in your browser.',
+    title: 'Coming Soon',
+    subtitle:
+      'Upcoming tools being built in phases for izikit. Always 100% free, no login required, and running right on your device.',
+    backToLiveTitle: '{count} tools are already live and ready to use right now',
+    backToLiveCta: 'Browse All tools',
+    phaseTitles: {
+      6: 'Visual Studio & PDF Extraction',
+      7: 'Daily Work Utilities & PDF Diff',
+      8: 'OCR & Lightweight Media (WASM)',
+    },
   },
   upcomingTools: {
     'passport-photo-grid': {

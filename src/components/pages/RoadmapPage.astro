@@ -1,0 +1,136 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getDictionary, getLocalizedPath, getSeoUrls, type Locale } from '@/i18n';
+import { getLiveTools, getUpcomingTools } from '@/config/tools';
+import { ToolIconBadge } from '@/components/shared/icons';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const dict = getDictionary(locale);
+const seo = getSeoUrls('/roadmap', locale);
+const liveTools = getLiveTools();
+const upcomingTools = getUpcomingTools();
+const allToolsHref = getLocalizedPath('/tools', locale);
+
+const phases = Array.from(new Set(upcomingTools.map((t) => t.phase))).sort((a, b) => a - b);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: dict.roadmap.seoTitle,
+  url: seo.canonical,
+  inLanguage: dict.langTag,
+  description: dict.roadmap.seoDescription,
+};
+---
+
+<BaseLayout
+  locale={locale}
+  currentRoute="/roadmap"
+  title={dict.roadmap.seoTitle}
+  description={dict.roadmap.seoDescription}
+  jsonLd={jsonLd}
+>
+  <section aria-labelledby="roadmap-page-heading" class="mx-auto max-w-5xl space-y-10 px-4 py-8 sm:px-6 sm:py-12">
+    {/* Top Header */}
+    <header class="space-y-3 border-b border-[var(--border-subtle)] pb-7">
+      <div class="flex flex-wrap items-center gap-3">
+        <h1
+          id="roadmap-page-heading"
+          class="font-display m-0 text-[clamp(1.85rem,4vw,2.6rem)] leading-tight font-extrabold text-[var(--ink-primary)]"
+        >
+          {dict.roadmap.title}
+        </h1>
+        <span class="font-data rounded-md border border-[var(--border-subtle)] bg-[var(--hl-tint)] px-2.5 py-1 text-[11px] font-bold text-[var(--hl)]">
+          {upcomingTools.length} {dict.home.comingSoonBadge}
+        </span>
+      </div>
+      <p class="m-0 max-w-2xl text-sm leading-relaxed text-[var(--ink-muted)] sm:text-base">
+        {dict.roadmap.subtitle}
+      </p>
+    </header>
+
+    {/* Grouped by Phase */}
+    <div class="space-y-10">
+      {
+        phases.map((phase) => {
+          const toolsInPhase = upcomingTools.filter((t) => t.phase === phase);
+          const phaseTitle =
+            dict.roadmap.phaseTitles[phase as keyof typeof dict.roadmap.phaseTitles] ?? '';
+          return (
+            <section aria-labelledby={`phase-heading-${phase}`} class="space-y-4">
+              <div class="flex flex-wrap items-center gap-2.5 border-b border-[var(--border-subtle)] pb-3">
+                <span class="font-data rounded-md bg-[var(--accent-tint)] px-2.5 py-0.5 text-[11px] font-bold text-[var(--link)]">
+                  {dict.home.phasePrefix} {phase}
+                </span>
+                <h2
+                  id={`phase-heading-${phase}`}
+                  class="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+                >
+                  {phaseTitle}
+                </h2>
+              </div>
+
+              <div class="grid grid-cols-1 gap-3.5 md:grid-cols-2 md:gap-4">
+                {toolsInPhase.map((tool) => {
+                  const meta =
+                    dict.upcomingTools[tool.id as keyof typeof dict.upcomingTools];
+                  if (!meta) return null;
+
+                  return (
+                    <div
+                      aria-disabled="true"
+                      class="flex h-full items-start gap-4 rounded-2xl border border-dashed border-[var(--border-subtle)] bg-[var(--bg-card)]/80 p-4 sm:p-5"
+                    >
+                      <ToolIconBadge
+                        icon={tool.icon}
+                        group={tool.group}
+                        size="md"
+                        className="mt-0.5 opacity-90"
+                      />
+
+                      <div class="min-w-0 flex-1 space-y-1.5">
+                        <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                          <h3 class="font-display m-0 text-sm leading-snug font-extrabold text-[var(--ink-primary)] sm:text-[15px]">
+                            {meta.name}
+                          </h3>
+                          <span class="font-data shrink-0 rounded-md bg-[var(--hl-tint)] px-1.5 py-0.5 text-[10px] font-bold text-[var(--hl)]">
+                            {dict.home.comingSoonBadge}
+                          </span>
+                          <span class="font-data shrink-0 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-recess)] px-1.5 py-0.5 text-[10px] font-medium text-[var(--ink-muted)]">
+                            {tool.formatLabel}
+                          </span>
+                        </div>
+
+                        <p class="m-0 text-xs leading-relaxed text-[var(--ink-muted)] sm:text-[13px]">
+                          {meta.shortDescription}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })
+      }
+    </div>
+
+    {/* CTA back to Live Tools */}
+    <div class="flex flex-col items-start justify-between gap-4 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:flex-row sm:items-center sm:p-6">
+      <p class="m-0 text-sm font-semibold text-[var(--ink-primary)]">
+        {dict.roadmap.backToLiveTitle.replace('{count}', String(liveTools.length))}
+      </p>
+      <a
+        href={allToolsHref}
+        class="btn-primary inline-flex min-h-11 shrink-0 items-center gap-2 rounded-lg px-5 text-sm font-semibold no-underline"
+      >
+        <span>{dict.roadmap.backToLiveCta}</span>
+        <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
