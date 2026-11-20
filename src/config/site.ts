@@ -7,7 +7,7 @@ export interface SupportChannel {
 export const SITE_CONFIG = {
   brandName: 'izikit',
   siteUrl: 'https://izikit.app',
-  version: '0.1.2',
+  version: '0.1.3',
   /** Every support / "Dukung" action points here. */
   supportUrl: 'https://trakteer.id/ihsan97/tip',
   supportChannels: [

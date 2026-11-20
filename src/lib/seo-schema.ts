@@ -216,9 +216,5 @@ export function buildToolPageJsonLd(
     ]),
   ];
 
-  if (toolMeta.faqs && toolMeta.faqs.length > 0) {
-    graph.push(buildFaqSchema(toolMeta.faqs));
-  }
-
   return graph;
 }

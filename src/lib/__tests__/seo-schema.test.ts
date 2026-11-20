@@ -89,7 +89,7 @@ describe('seo-schema builders', () => {
     expect(graph.map((n) => n['@type'])).toEqual(['Organization', 'AboutPage', 'BreadcrumbList']);
   });
 
-  it('builds ToolPage @graph with free WebApplication, BreadcrumbList, and FAQPage', () => {
+  it('builds ToolPage @graph with free WebApplication and BreadcrumbList', () => {
     const dict = getDictionary('id');
     const seo = getSeoUrls('/merge-pdf', 'id');
     const graph = buildToolPageJsonLd('id', seo, dict, dict.tools['merge-pdf']);
@@ -98,7 +98,6 @@ describe('seo-schema builders', () => {
       'Organization',
       'WebApplication',
       'BreadcrumbList',
-      'FAQPage',
     ]);
 
     const app = graph[1] as {
