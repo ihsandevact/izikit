@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import SvgFaviconTool from '@/tools/image/svg-favicon/SvgFaviconTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/svg-favicon-generator" toolKey="svg-favicon-generator">
+  <SvgFaviconTool client:load locale={locale} />
+</ToolPageLayout>

@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import PassportPhotoGridTool from '@/tools/image/passport-grid/PassportPhotoGridTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/passport-photo-grid" toolKey="passport-photo-grid">
+  <PassportPhotoGridTool client:load locale={locale} />
+</ToolPageLayout>

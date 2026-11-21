@@ -52,7 +52,7 @@ export const enDictionary: Dictionary = {
     keyNavigate: 'select',
     keyOpen: 'open',
     keyClear: 'clear',
-    launcherFooterRight: '19 tools · 100% free · zero upload',
+    launcherFooterRight: '23 tools · 100% free · zero upload',
     catalogTitle: 'All tools',
     catalogSubtitle:
       'Documents, PDFs, images, ID photo studio, and everyday utilities. 100% free, no account, and everything runs on your device.',
@@ -651,6 +651,146 @@ export const enDictionary: Dictionary = {
         },
       ],
     },
+    'passport-photo-grid': {
+      name: 'ID Photo Print Sheet (4R / A4)',
+      cta: 'Build print sheet',
+      shortDescription:
+        'Arrange 2×3, 3×4, or 4×6 cm ID photos onto a print-ready 4R or A4 sheet at 300 DPI.',
+      categoryLabel: 'Image',
+      seoTitle: 'ID & Passport Photo Print Sheet (4R / A4 · 300 DPI) | izikit',
+      seoDescription:
+        'Arrange 2x3, 3x4, or 4x6 cm ID photos onto a 4R or A4 print sheet at 300 DPI with optional crop marks. Export print-ready JPG or PDF locally in your browser.',
+      guideTitle: 'Tips for accurate ID photo printing',
+      guideItems: [
+        'Use Remove Background first if you need to swap your ID photo backdrop to solid red or blue.',
+        'When printing the exported PDF, choose "Actual Size / 100%" in your print dialog so physical dimensions stay exact.',
+        'Keep crop marks enabled to make trimming with scissors or a paper cutter fast and straight.',
+      ],
+      howToSteps: [
+        'Select one JPG, PNG, or WebP ID photo from your device.',
+        'Choose your photo size (2×3, 3×4, or 4×6 cm), paper size (4R or A4), copy count, and crop mark preferences.',
+        'Download your print-ready sheet as a 300 DPI JPG or exact-scale PDF.',
+      ],
+      faqs: [
+        {
+          q: 'How many 3×4 cm ID photos fit on a single 4R sheet?',
+          a: 'izikit automatically picks the optimal paper orientation (landscape 15.2 × 10.2 cm) to fit up to 8 copies of 3×4 cm photos on one 4R sheet.',
+        },
+        {
+          q: 'Is the output sharp enough for photo lab or home printing?',
+          a: 'Yes. Every sheet is rendered at 300 DPI with exact millimeter physical sizing in both JPG and PDF exports.',
+        },
+        {
+          q: 'Will the top of my head get cut off if my photo has a different aspect ratio?',
+          a: 'izikit applies a smart top-biased cover crop so heads stay properly framed inside each cell.',
+        },
+      ],
+    },
+    'signature-to-png': {
+      name: 'Signature to Transparent PNG',
+      cta: 'Create transparent PNG',
+      shortDescription:
+        'Turn a paper signature photo or screen drawing into a clean transparent PNG.',
+      categoryLabel: 'Image',
+      seoTitle: 'Signature to Transparent PNG Free Online | izikit',
+      seoDescription:
+        'Convert a paper signature photo or draw directly on screen to export a crisp transparent PNG for Word, Google Docs, and PDFs without uploading.',
+      guideTitle: 'Tips for crisp transparent signatures',
+      guideItems: [
+        'Photograph your signature on plain white paper under even light, then adjust Paper Threshold until the backdrop vanishes.',
+        'Recolor strokes to Deep Black or Pen Blue so your signature looks sharp on Word, Google Docs, and PDFs.',
+        'Keep Auto-Trim enabled to crop excess transparent padding around your signature.',
+      ],
+      howToSteps: [
+        'Pick Photo from Paper to upload a signature photo, or Draw on Screen to sign directly.',
+        'Adjust background threshold, edge smoothness, and ink color while inspecting the checkerboard preview.',
+        'Click Download Transparent PNG to save your ready-to-paste signature.',
+      ],
+      faqs: [
+        {
+          q: 'Is my signature photo kept private and never uploaded?',
+          a: 'Yes. All pixel cleanup and PNG export happens 100% inside your browser with zero server uploads.',
+        },
+        {
+          q: 'What if my paper photo has shadows or yellow lighting?',
+          a: 'Lower the Paper Threshold slider until shadows disappear, then choose Deep Black ink for clean contrast.',
+        },
+        {
+          q: 'Can I paste the PNG directly into Word or Google Docs?',
+          a: 'Yes. The exported PNG has a pure transparent background and tight auto-trimmed edges.',
+        },
+      ],
+    },
+    'svg-favicon-generator': {
+      name: 'SVG to PNG & Favicon Generator',
+      cta: 'Generate favicon pack',
+      shortDescription:
+        'Generate multi-size favicon.ico, apple-touch-icon, and PWA icons from one SVG or PNG.',
+      categoryLabel: 'Image',
+      seoTitle: 'SVG to PNG & Favicon Generator (.ico + ZIP) | izikit',
+      seoDescription:
+        'Turn an SVG or PNG logo into multi-size favicon.ico, apple-touch-icon, 192px/512px PWA icons, and site.webmanifest in one ZIP locally in your browser.',
+      guideTitle: 'Tips for crisp website & PWA favicons',
+      guideItems: [
+        'Start with a square SVG or at least a 512×512 PNG so every generated icon size stays razor-sharp.',
+        'Add 8–12% padding when using a solid background so your mark breathes cleanly inside app icons.',
+        'Copy the generated HTML <link> tags and paste them directly into your site <head>.',
+      ],
+      howToSteps: [
+        'Upload one SVG, PNG, or WebP logo file from your device.',
+        'Customize app name, padding, and transparent or rounded solid background color.',
+        'Download favicon.ico directly, individual PNG sizes, or the complete ZIP bundle with site.webmanifest.',
+      ],
+      faqs: [
+        {
+          q: 'Which resolutions are packed inside the generated favicon.ico?',
+          a: 'The binary favicon.ico packs three crisp PNG frames (16×16, 32×32, and 48×48 pixels) compatible with all modern browsers and operating systems.',
+        },
+        {
+          q: 'What files are included in the ZIP download?',
+          a: 'The ZIP includes favicon.ico, favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, apple-touch-icon.png (180px), icon-192.png, icon-512.png, and site.webmanifest.',
+        },
+        {
+          q: 'Is my logo uploaded to any server?',
+          a: 'No. SVG rendering, PNG scaling, and binary ICO encoding run 100% locally inside your browser.',
+        },
+      ],
+    },
+    'extract-pdf-images': {
+      name: 'Extract Images from PDF',
+      cta: 'Extract images',
+      shortDescription:
+        'Pull every embedded photo and image out of a PDF document and download individually or as ZIP.',
+      categoryLabel: 'PDF Document',
+      seoTitle: 'Extract Images from PDF to PNG/JPG Free | izikit',
+      seoDescription:
+        'Extract all embedded photos and images from any PDF directly in your browser with zero uploads. Preview extracted images and download individually or as ZIP.',
+      guideTitle: 'Extract Images vs PDF to Image',
+      guideItems: [
+        'Extract Images pulls only the embedded raster photos/graphics inside the PDF without surrounding page text.',
+        'If you want full rendered pages (text + layout), use our PDF to Image tool instead.',
+        'Repeated header/footer logos are automatically deduplicated to keep your gallery clean.',
+      ],
+      howToSteps: [
+        'Select one PDF document from your device.',
+        'Let izikit scan all pages locally to extract every embedded image object.',
+        'Switch between PNG or JPEG output and download images individually or all together in a ZIP.',
+      ],
+      faqs: [
+        {
+          q: 'Why does my PDF show zero embedded images?',
+          a: 'PDFs made purely of vector text or vector shapes do not contain raster image objects. Use PDF to Image to render full pages instead.',
+        },
+        {
+          q: 'Are extracted images saved at their original resolution?',
+          a: 'Yes, each image is exported at the exact pixel dimensions stored inside the PDF.',
+        },
+        {
+          q: 'Is my PDF uploaded to a server during extraction?',
+          a: 'No. PDF scanning and image export run 100% locally inside your browser.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Protect & Unlock PDF',
       cta: 'Lock / unlock PDF',
@@ -838,22 +978,6 @@ export const enDictionary: Dictionary = {
     },
   },
   upcomingTools: {
-    'passport-photo-grid': {
-      name: 'ID Photo Print Sheet (4R / A4)',
-      shortDescription: 'Arrange 2×3, 3×4, or 4×6 ID photos onto a print-ready 4R or A4 sheet at 300 DPI.',
-    },
-    'signature-to-png': {
-      name: 'Signature to Transparent PNG',
-      shortDescription: 'Turn a paper signature photo or screen drawing into a clean transparent PNG.',
-    },
-    'svg-favicon-generator': {
-      name: 'SVG to PNG & Favicon Generator',
-      shortDescription: 'Generate multi-size favicon.ico, apple-touch-icon, and PWA icons from one SVG or PNG.',
-    },
-    'extract-pdf-images': {
-      name: 'Extract Images from PDF',
-      shortDescription: 'Pull every embedded photo and image out of a PDF document and download as ZIP.',
-    },
     'qr-code-generator': {
       name: 'QR Code Generator',
       shortDescription: 'Create custom Link, WhatsApp, WiFi, or vCard QR codes with center logos and zero tracking.',
@@ -873,6 +997,99 @@ export const enDictionary: Dictionary = {
     'media-trim-gif': {
       name: 'Trim Media & MP4 to GIF',
       shortDescription: 'Trim short video/audio clips or convert MP4 clips into lightweight animated GIFs locally.',
+    },
+  },
+  extractPdfImages: {
+    formatsHint: 'PDF (1 document) • Up to 100 MB',
+    pagesUnit: 'pages',
+    imagesUnit: 'images',
+    pageLabel: 'Page',
+    formatLabel: 'Output image format',
+    changeFile: 'Change PDF',
+    progressScanning: 'Scanning embedded image objects...',
+    progressPage: 'Scanning page',
+    resultReadyTitle: 'Embedded images extracted',
+    emptyResultTitle: 'No embedded images found',
+    emptyResultBody:
+      'This PDF likely contains only text or vector graphics. Use the PDF to Image tool if you want to save full rendered pages as images.',
+    downloadSingle: 'Download',
+    downloadAllSingle: 'Download Individually',
+    downloadZip: 'Download All (.zip)',
+    downloadZipSingle: 'Download (.zip)',
+    errors: {
+      notPdf: 'File is not a valid PDF document:',
+      tooLarge: 'PDF exceeds the 100 MB limit:',
+      encrypted: 'This PDF is password-protected. Unlock it first using Protect & Unlock PDF.',
+      generic: 'Could not extract images from this PDF. Check your file and try again.',
+    },
+  },
+  svgFavicon: {
+    formatsHint: 'SVG, PNG, or WebP logo • Up to 30 MB',
+    filesUnit: 'files ready',
+    changeFile: 'Change logo',
+    appNameLabel: 'App name (manifest)',
+    paddingLabel: 'Edge padding',
+    backgroundLabel: 'Icon background',
+    bgTransparent: 'Transparent',
+    bgSolid: 'Solid Color',
+    bgColorLabel: 'Background color',
+    radiusLabel: 'Corner radius',
+    downloadIco: 'Download favicon.ico',
+    downloadZip: 'Download Full Pack (.zip)',
+    downloadSingle: 'Download',
+    htmlSnippetHeading: 'HTML <head> tags',
+    copyButton: 'Copy HTML',
+    copiedButton: 'Copied!',
+    errors: {
+      notSupported: 'Please select an SVG, PNG, or WebP file:',
+      tooLarge: 'File exceeds the 30 MB limit:',
+      generic: 'Could not render icons. Make sure your SVG/PNG file is valid.',
+    },
+  },
+  signatureToPng: {
+    modeLabel: 'Select signature input mode',
+    tabPhoto: 'Photo from Paper',
+    tabDraw: 'Draw on Screen',
+    formatsHint: 'Signature photo JPG, PNG, WebP • Up to 30 MB',
+    changeFile: 'Change photo',
+    thresholdLabel: 'Paper threshold',
+    softnessLabel: 'Edge smoothness',
+    inkColorLabel: 'Ink color',
+    inkBlack: 'Deep Black',
+    inkBlue: 'Pen Blue',
+    inkNavy: 'Dark Navy',
+    inkOriginal: 'Original',
+    autoTrimLabel: 'Auto-trim empty margins',
+    previewLabel: 'Transparent PNG preview',
+    strokeWidthLabel: 'Pen width',
+    undoButton: 'Undo',
+    clearPadButton: 'Clear',
+    drawHint: 'Sign inside the white box below using your mouse, trackpad, or touchscreen.',
+    downloadPng: 'Download Transparent PNG',
+    errors: {
+      notImage: 'Unsupported file format (use JPG, PNG, or WebP):',
+      tooLarge: 'Image exceeds the 30 MB limit:',
+      emptyPad: 'Please draw your signature first before downloading.',
+      generic: 'Could not process signature. Try again or pick another photo.',
+    },
+  },
+  passportPhotoGrid: {
+    formatsHint: 'JPG, PNG, WebP (1 ID photo) • Up to 30 MB',
+    changeFile: 'Change photo',
+    settingsHeading: 'Print sheet settings',
+    photoSizeLabel: 'ID photo size',
+    paperSizeLabel: 'Print paper size',
+    copiesLabel: 'Number of copies',
+    gapLabel: 'Spacing between photos',
+    cropMarksLabel: 'Show corner crop marks',
+    borderLabel: 'Show subtle border around photos',
+    previewHeading: 'Print-ready sheet preview',
+    downloadJpg: 'Download JPG (300 DPI)',
+    downloadPdf: 'Download Print-Ready PDF',
+    errors: {
+      notImage: 'Unsupported file format (use JPG, PNG, or WebP):',
+      tooLarge: 'Image exceeds the 30 MB limit:',
+      generic: 'Could not generate print sheet. Check your file and try again.',
     },
   },
   stripExif: {

@@ -50,7 +50,7 @@ export const idDictionary = {
     keyNavigate: 'pilih',
     keyOpen: 'buka',
     keyClear: 'hapus',
-    launcherFooterRight: '19 tools · 100% gratis · tanpa upload',
+    launcherFooterRight: '23 tools · 100% gratis · tanpa upload',
     catalogTitle: 'Semua tools',
     catalogSubtitle:
       'Dokumen, PDF, gambar, studio pasfoto, hingga utilitas kerja harian. 100% gratis, tanpa login, dan semuanya jalan di perangkatmu.',
@@ -649,6 +649,146 @@ export const idDictionary = {
         },
       ],
     },
+    'passport-photo-grid': {
+      name: 'Cetak Pasfoto Grid (4R / A4)',
+      cta: 'Susun lembar cetak',
+      shortDescription:
+        'Susun banyak pasfoto 2×3, 3×4, atau 4×6 cm ke satu lembar kertas 4R atau A4 siap cetak 300 DPI.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'Cetak Pasfoto Grid 4R & A4 (300 DPI) Gratis | izikit',
+      seoDescription:
+        'Susun pasfoto 2x3, 3x4, atau 4x6 cm ke kertas 4R atau A4 (300 DPI) lengkap dengan garis potong. Unduh JPG atau PDF gratis langsung di browser.',
+      guideTitle: 'Tips mencetak pasfoto agar ukuran pas',
+      guideItems: [
+        'Gunakan tool Hapus Background Foto terlebih dahulu bila ingin mengganti latar belakang pasfoto menjadi merah atau biru.',
+        'Saat mencetak file PDF, pastikan pengaturan printer disetel ke "Actual Size / 100%" (bukan Fit to Page) agar ukuran cm tetap akurat.',
+        'Aktifkan garis bantu potong (crop marks) untuk memudahkan pemotongan dengan gunting atau pemotong kertas.',
+      ],
+      howToSteps: [
+        'Pilih satu file pasfoto JPG, PNG, atau WebP dari perangkat kamu.',
+        'Pilih ukuran pasfoto (2×3, 3×4, atau 4×6 cm), kertas cetak (4R atau A4), jumlah salinan, dan garis bantu potong.',
+        'Unduh lembar siap cetak sebagai JPG 300 DPI atau PDF ukuran fisik presisi.',
+      ],
+      faqs: [
+        {
+          q: 'Berapa pasfoto 3×4 yang muat dalam satu lembar kertas 4R?',
+          a: 'izikit otomatis memilih orientasi kertas terbaik (landscape 15,2 × 10,2 cm) sehingga bisa memuat hingga 8 pasfoto ukuran 3×4 cm dalam satu lembar 4R.',
+        },
+        {
+          q: 'Apakah hasil cetaknya tajam di studio foto atau printer rumahan?',
+          a: 'Ya, lembar disusun pada resolusi standar cetak 300 DPI dengan dimensi fisik milimeter yang presisi baik di format JPG maupun PDF.',
+        },
+        {
+          q: 'Bagaimana agar pasfoto saya tidak terpotong di bagian kepala?',
+          a: 'izikit menggunakan smart top-biased crop yang memprioritaskan area atas foto sehingga kepala tetap berada di posisi proporsional.',
+        },
+      ],
+    },
+    'signature-to-png': {
+      name: 'Tanda Tangan ke PNG Transparan',
+      cta: 'Buat PNG transparan',
+      shortDescription:
+        'Ubah foto tanda tangan di kertas putih atau goresan layar menjadi PNG transparan bersih.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'Tanda Tangan ke PNG Transparan Online Gratis | izikit',
+      seoDescription:
+        'Ubah foto tanda tangan di kertas putih atau gambar langsung di layar menjadi PNG transparan bersih siap tempel ke Word, Docs, dan PDF tanpa upload.',
+      guideTitle: 'Tips membuat tanda tangan transparan rapi',
+      guideItems: [
+        'Foto tanda tangan di atas kertas putih polos dengan pencahayaan merata, lalu geser slider Sensitivitas Kertas hingga latar hilang bersih.',
+        'Gunakan warna tinta Hitam Pekat atau Biru Tinta agar goresan terlihat tajam di atas dokumen Word, Google Docs, maupun PDF.',
+        'Aktifkan Potong Otomatis (Auto-Trim) supaya tidak ada ruang kosong berlebih di sekeliling tanda tangan.',
+      ],
+      howToSteps: [
+        'Pilih mode Foto dari Kertas untuk mengunggah foto tanda tangan, atau mode Gambar di Layar untuk menandatangani langsung.',
+        'Sesuaikan sensitivitas latar kertas, kehalusan tepi, dan warna tinta hingga terlihat bersih di atas latar transparan.',
+        'Klik Unduh PNG Transparan dan tempel langsung ke dokumen Word, Google Docs, atau tool Edit PDF.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah foto tanda tangan saya aman dan tidak disimpan di server?',
+          a: 'Ya, seluruh proses penghapusan latar dan pewarnaan tinta dijalankan 100% di browser perangkat kamu tanpa unggah ke server.',
+        },
+        {
+          q: 'Bagaimana jika kertas foto tanda tangan agak redup atau kekuningan?',
+          a: 'Turunkan slider Sensitivitas Kertas secara bertahap hingga seluruh bayangan kertas menghilang, lalu pilih warna tinta Hitam Pekat.',
+        },
+        {
+          q: 'Bisakah hasilnya langsung dipakai di Word atau Google Docs?',
+          a: 'Bisa. Hasil ekspor berformat PNG berlatar transparan murni dan sudah dipotong rapat sehingga langsung rapi saat ditempel.',
+        },
+      ],
+    },
+    'svg-favicon-generator': {
+      name: 'SVG ke PNG & Favicon Generator',
+      cta: 'Buat paket favicon',
+      shortDescription:
+        'Hasilkan favicon.ico multi-ukuran, apple-touch-icon, dan ikon PWA dari satu file SVG atau PNG.',
+      categoryLabel: 'Gambar',
+      seoTitle: 'SVG ke PNG & Favicon Generator (.ico + ZIP) | izikit',
+      seoDescription:
+        'Ubah logo SVG atau PNG menjadi favicon.ico (16/32/48), apple-touch-icon, icon-192, icon-512, dan site.webmanifest dalam satu ZIP gratis di browser.',
+      guideTitle: 'Tips menyiapkan favicon website & PWA',
+      guideItems: [
+        'Gunakan logo SVG atau PNG persegi resolusi minimal 512×512 px agar semua ukuran tetap tajam.',
+        'Atur padding 8–12% bila memakai latar warna solid supaya logo tidak menempel ke tepi ikon aplikasi.',
+        'Salin potongan tag HTML <link> yang disediakan lalu tempel di dalam <head> website kamu.',
+      ],
+      howToSteps: [
+        'Unggah satu file logo SVG, PNG, atau WebP dari perangkat kamu.',
+        'Atur nama aplikasi, padding, dan latar belakang transparan atau warna solid sesuai kebutuhan.',
+        'Unduh favicon.ico langsung, ikon PNG satuan, atau Unduh Paket Lengkap (.zip) beserta site.webmanifest.',
+      ],
+      faqs: [
+        {
+          q: 'Ukuran apa saja yang masuk ke dalam file favicon.ico?',
+          a: 'File favicon.ico yang dihasilkan memuat 3 frame resolusi sekaligus (16×16, 32×32, dan 48×48 piksel) dalam format ICO standar modern.',
+        },
+        {
+          q: 'Apa saja isi paket ZIP yang diunduh?',
+          a: 'Satu ZIP berisi favicon.ico, favicon-16x16.png, favicon-32x32.png, favicon-48x48.png, apple-touch-icon.png (180px), icon-192.png, icon-512.png, dan site.webmanifest.',
+        },
+        {
+          q: 'Apakah logo brand saya diunggah ke server saat membuat favicon?',
+          a: 'Tidak. Rendering SVG ke PNG dan pengemasan file biner .ico berjalan 100% lokal di browser kamu.',
+        },
+      ],
+    },
+    'extract-pdf-images': {
+      name: 'Ekstrak Gambar dari PDF',
+      cta: 'Ekstrak gambar',
+      shortDescription:
+        'Ambil semua foto dan gambar asli yang tertanam di dalam dokumen PDF lalu unduh satuan atau ZIP.',
+      categoryLabel: 'Dokumen PDF',
+      seoTitle: 'Ekstrak Gambar dari PDF ke PNG/JPG Gratis | izikit',
+      seoDescription:
+        'Ambil semua foto dan gambar tertanam di dalam file PDF langsung di browser tanpa unggah ke server. Lihat galeri pratinjau lalu unduh satuan atau ZIP.',
+      guideTitle: 'Perbedaan Ekstrak Gambar vs PDF ke Gambar',
+      guideItems: [
+        'Ekstrak Gambar mengambil foto/ilustrasi asli yang tertanam di dalam PDF tanpa teks halaman.',
+        'Jika kamu ingin menyimpan seluruh halaman PDF (termasuk teks dan tata letak) sebagai gambar, gunakan tool PDF ke Gambar.',
+        'Logo berulang di header/footer otomatis dideduplikasi agar galeri hasil ekstraksi tetap rapi.',
+      ],
+      howToSteps: [
+        'Pilih satu dokumen PDF dari perangkat kamu.',
+        'Tunggu proses pemindaian otomatis untuk menemukan semua gambar tertanam di tiap halaman.',
+        'Pilih format PNG atau JPEG lalu unduh gambar satu per satu atau Unduh Semua (.zip).',
+      ],
+      faqs: [
+        {
+          q: 'Kenapa PDF saya menampilkan pesan tidak ada gambar tertanam?',
+          a: 'Dokumen yang seluruhnya berisi teks vektor atau grafik kurva tidak memiliki objek gambar raster. Gunakan tool PDF ke Gambar untuk merender seluruh halaman.',
+        },
+        {
+          q: 'Apakah gambar hasil ekstraksi mempertahankan resolusi aslinya?',
+          a: 'Ya, setiap gambar diekstrak pada dimensi piksel asli yang tersimpan di dalam file PDF.',
+        },
+        {
+          q: 'Apakah file PDF saya dikirim ke server saat memindai gambar?',
+          a: 'Tidak. Pemindaian objek PDF dan konversi gambar berjalan 100% lokal di browser kamu.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Kunci & Buka Sandi PDF',
       cta: 'Kunci / buka PDF',
@@ -836,22 +976,6 @@ export const idDictionary = {
     },
   },
   upcomingTools: {
-    'passport-photo-grid': {
-      name: 'Cetak Pasfoto Grid (4R / A4)',
-      shortDescription: 'Susun banyak pasfoto 2×3, 3×4, atau 4×6 ke satu lembar kertas 4R atau A4 siap cetak 300 DPI.',
-    },
-    'signature-to-png': {
-      name: 'Tanda Tangan ke PNG Transparan',
-      shortDescription: 'Ubah foto tanda tangan di kertas putih atau goresan layar jadi PNG transparan bersih.',
-    },
-    'svg-favicon-generator': {
-      name: 'SVG ke PNG & Favicon Generator',
-      shortDescription: 'Hasilkan favicon.ico multi-ukuran, apple-touch-icon, dan ikon PWA dari satu file SVG atau PNG.',
-    },
-    'extract-pdf-images': {
-      name: 'Ekstrak Gambar dari PDF',
-      shortDescription: 'Ambil semua foto dan gambar asli yang tertanam di dalam dokumen PDF lalu unduh sebagai ZIP.',
-    },
     'qr-code-generator': {
       name: 'QR Code Generator',
       shortDescription: 'Buat QR Code Link, WhatsApp, WiFi, atau vCard dengan warna custom & logo tanpa masa kedaluwarsa.',
@@ -871,6 +995,99 @@ export const idDictionary = {
     'media-trim-gif': {
       name: 'Potong Media & MP4 ke GIF',
       shortDescription: 'Potong klip video/audio pendek atau ubah rekaman MP4 menjadi animasi GIF ringan di browser.',
+    },
+  },
+  extractPdfImages: {
+    formatsHint: 'PDF (1 dokumen) • Maks. 100 MB',
+    pagesUnit: 'halaman',
+    imagesUnit: 'gambar',
+    pageLabel: 'Halaman',
+    formatLabel: 'Format gambar hasil',
+    changeFile: 'Ganti PDF',
+    progressScanning: 'Memindai objek gambar di dalam PDF...',
+    progressPage: 'Memindai halaman',
+    resultReadyTitle: 'Gambar berhasil diekstrak',
+    emptyResultTitle: 'Tidak ada gambar tertanam ditemukan',
+    emptyResultBody:
+      'PDF ini kemungkinan hanya berisi teks atau grafik vektor. Gunakan tool PDF ke Gambar jika kamu ingin menyimpan seluruh halaman sebagai gambar.',
+    downloadSingle: 'Unduh',
+    downloadAllSingle: 'Unduh Satu per Satu',
+    downloadZip: 'Unduh Semua (.zip)',
+    downloadZipSingle: 'Unduh (.zip)',
+    errors: {
+      notPdf: 'File bukan dokumen PDF yang valid:',
+      tooLarge: 'Ukuran PDF melebihi batas 100 MB:',
+      encrypted: 'PDF ini terkunci kata sandi. Buka dulu sandinya di tool Kunci & Buka Sandi PDF.',
+      generic: 'Gagal mengekstrak gambar dari PDF. Periksa file kamu lalu coba lagi.',
+    },
+  },
+  svgFavicon: {
+    formatsHint: 'Logo SVG, PNG, atau WebP • Maks. 30 MB',
+    filesUnit: 'file siap unduh',
+    changeFile: 'Ganti logo',
+    appNameLabel: 'Nama aplikasi (manifest)',
+    paddingLabel: 'Padding tepi',
+    backgroundLabel: 'Latar belakang ikon',
+    bgTransparent: 'Transparan',
+    bgSolid: 'Warna Solid',
+    bgColorLabel: 'Warna latar',
+    radiusLabel: 'Sudut membulat',
+    downloadIco: 'Unduh favicon.ico',
+    downloadZip: 'Unduh Paket Lengkap (.zip)',
+    downloadSingle: 'Unduh',
+    htmlSnippetHeading: 'Tag HTML <head>',
+    copyButton: 'Salin HTML',
+    copiedButton: 'Tersalin!',
+    errors: {
+      notSupported: 'Gunakan file SVG, PNG, atau WebP:',
+      tooLarge: 'Ukuran file melebihi batas 30 MB:',
+      generic: 'Gagal merender ikon. Pastikan file SVG/PNG kamu valid.',
+    },
+  },
+  signatureToPng: {
+    modeLabel: 'Pilih sumber tanda tangan',
+    tabPhoto: 'Foto dari Kertas',
+    tabDraw: 'Gambar di Layar',
+    formatsHint: 'Foto tanda tangan JPG, PNG, WebP • Maks. 30 MB',
+    changeFile: 'Ganti foto',
+    thresholdLabel: 'Sensitivitas latar kertas',
+    softnessLabel: 'Kehalusan tepi tinta',
+    inkColorLabel: 'Warna tinta',
+    inkBlack: 'Hitam Pekat',
+    inkBlue: 'Biru Tinta',
+    inkNavy: 'Biru Tua',
+    inkOriginal: 'Warna Asli',
+    autoTrimLabel: 'Potong ruang kosong otomatis (Auto-Trim)',
+    previewLabel: 'Pratinjau PNG transparan',
+    strokeWidthLabel: 'Tebal pena',
+    undoButton: 'Undo',
+    clearPadButton: 'Bersihkan',
+    drawHint: 'Goreskan tanda tangan di kotak putih di bawah menggunakan mouse, trackpad, atau layar sentuh.',
+    downloadPng: 'Unduh PNG Transparan',
+    errors: {
+      notImage: 'Format file tidak didukung (gunakan JPG, PNG, atau WebP):',
+      tooLarge: 'Ukuran foto melebihi batas 30 MB:',
+      emptyPad: 'Goreskan tanda tangan terlebih dahulu sebelum mengunduh.',
+      generic: 'Gagal memproses tanda tangan. Coba lagi atau gunakan foto lain.',
+    },
+  },
+  passportPhotoGrid: {
+    formatsHint: 'JPG, PNG, WebP (1 pasfoto) • Maks. 30 MB',
+    changeFile: 'Ganti pasfoto',
+    settingsHeading: 'Pengaturan lembar cetak',
+    photoSizeLabel: 'Ukuran pasfoto',
+    paperSizeLabel: 'Ukuran kertas cetak',
+    copiesLabel: 'Jumlah foto di lembar',
+    gapLabel: 'Jarak antar foto',
+    cropMarksLabel: 'Tampilkan garis bantu potong (crop marks)',
+    borderLabel: 'Tampilkan bingkai tipis di tepi foto',
+    previewHeading: 'Pratinjau lembar siap cetak',
+    downloadJpg: 'Unduh JPG (300 DPI)',
+    downloadPdf: 'Unduh PDF Siap Cetak',
+    errors: {
+      notImage: 'Format file tidak didukung (gunakan JPG, PNG, atau WebP):',
+      tooLarge: 'Ukuran foto melebihi batas 30 MB:',
+      generic: 'Gagal menyusun lembar pasfoto. Periksa file kamu lalu coba lagi.',
     },
   },
   stripExif: {
