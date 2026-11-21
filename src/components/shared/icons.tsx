@@ -286,6 +286,78 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <path d="M10 9.5l5 2.5-5 2.5v-5Z" fill="currentColor" />
         </svg>
       );
+    case 'invoice-generator':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M6 3.5h12v17l-2.2-1.5-2.3 1.5L11.2 19 9 20.5 6 18.5v-15Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M9 8h6M9 11.5h6M9 15h3.5" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" />
+        </svg>
+      );
+    case 'pdf-to-text':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M5.5 4h8l5 5v11h-13V4Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M8.5 11.5h7M8.5 15h5" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" />
+        </svg>
+      );
+    case 'screenshot-mockup':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="3" y="4.5" width="18" height="15" rx="2.5" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M3 9h18" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="6.2" cy="6.8" r="0.8" fill="currentColor" />
+          <circle cx="8.8" cy="6.8" r="0.8" fill="currentColor" />
+        </svg>
+      );
+    case 'image-color-palette':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M12 3.5a8.5 8.5 0 1 0 0 17h1.4a2.2 2.2 0 0 0 1.6-3.7 1.8 1.8 0 0 1 1.3-3h1.2A3 3 0 0 0 20.5 11c0-4.2-3.8-7.5-8.5-7.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <circle cx="8.5" cy="10" r="1.1" fill="currentColor" />
+          <circle cx="12" cy="8" r="1.1" fill="currentColor" />
+          <circle cx="15.5" cy="10" r="1.1" fill="currentColor" />
+        </svg>
+      );
+    case 'fill-pdf-form':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M7.5 9h9M7.5 13h5M14.5 15l1.5 1.5 3-3" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'flatten-clean-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M12 4L4.5 8 12 12l7.5-4L12 4Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M4.5 12.5L12 16.5l7.5-4M4.5 16.5L12 20.5l7.5-4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'text-diff':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M5 7h6M8 4v6M5 17h6M14 7h5M14 12h5M14 17h5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      );
+    case 'markdown-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M6.5 15V9l2.5 3 2.5-3v6M16.5 9v6m0 0l-2-2m2 2l2-2" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'password-generator':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <circle cx="8.5" cy="12" r="3.5" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M12 12h8.5m-2.5 0v2.5m-3-2.5v2" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      );
+    case 'audio-tools':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4.5 10.5v3M8 7.5v9M12 4.5v15M16 8v8M19.5 10.5v3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      );
   }
 }
 

@@ -35,7 +35,17 @@ export type ToolIconKey =
   | 'data-converter'
   | 'compare-pdf'
   | 'ocr-text'
-  | 'media-trim-gif';
+  | 'media-trim-gif'
+  | 'invoice-generator'
+  | 'pdf-to-text'
+  | 'screenshot-mockup'
+  | 'image-color-palette'
+  | 'fill-pdf-form'
+  | 'flatten-clean-pdf'
+  | 'text-diff'
+  | 'markdown-to-pdf'
+  | 'password-generator'
+  | 'audio-tools';
 
 export interface ToolDefinition {
   id: string;
@@ -45,7 +55,7 @@ export interface ToolDefinition {
   badge?: ToolBadge;
   formatLabel: string;
   status: ToolStatus;
-  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   icon: ToolIconKey;
   acceptedExtensions: string[];
   relatedToolIds?: readonly string[];
@@ -489,14 +499,16 @@ export const TOOLS: readonly ToolDefinition[] = [
     slug: 'qr-code-generator',
     category: 'utility',
     group: 'daily-utilities',
+    badge: 'new',
     formatLabel: 'SVG / PNG',
-    status: 'coming-soon',
+    status: 'live',
     phase: 7,
     icon: 'qr-code-generator',
     acceptedExtensions: [],
+    relatedToolIds: ['svg-favicon-generator', 'data-converter', 'watermark-image'],
     keywords: {
-      id: ['qr code generator', 'buat qr code', 'qr whatsapp', 'qr wifi', 'qr logo'],
-      en: ['qr code generator', 'custom qr code', 'wifi qr', 'vcard qr'],
+      id: ['qr code generator', 'buat qr code', 'qr whatsapp', 'qr wifi', 'qr logo', 'vcard'],
+      en: ['qr code generator', 'custom qr code', 'wifi qr', 'vcard qr', 'whatsapp qr'],
     },
   },
   {
@@ -504,14 +516,16 @@ export const TOOLS: readonly ToolDefinition[] = [
     slug: 'data-converter',
     category: 'utility',
     group: 'daily-utilities',
+    badge: 'new',
     formatLabel: 'CSV ⇄ XLSX ⇄ JSON',
-    status: 'coming-soon',
+    status: 'live',
     phase: 7,
     icon: 'data-converter',
     acceptedExtensions: ['.csv', '.xlsx', '.json'],
+    relatedToolIds: ['qr-code-generator', 'word-to-pdf', 'compare-pdf'],
     keywords: {
-      id: ['csv ke excel', 'excel ke csv', 'json formatter', 'konversi data'],
-      en: ['csv to excel', 'xlsx converter', 'json formatter', 'data utility'],
+      id: ['csv ke excel', 'excel ke csv', 'xlsx ke csv', 'json formatter', 'konversi data'],
+      en: ['csv to excel', 'xlsx converter', 'json formatter', 'json validator', 'data utility'],
     },
   },
   {
@@ -519,11 +533,13 @@ export const TOOLS: readonly ToolDefinition[] = [
     slug: 'compare-pdf',
     category: 'pdf',
     group: 'pdf-edit-security',
+    badge: 'new',
     formatLabel: 'PDF DIFF',
-    status: 'coming-soon',
+    status: 'live',
     phase: 7,
     icon: 'compare-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['edit-pdf', 'merge-pdf', 'split-pdf'],
     keywords: {
       id: ['bandingkan pdf', 'pdf diff', 'cek perbedaan pdf', 'revisi kontrak'],
       en: ['compare pdf', 'pdf diff', 'visual pdf diff', 'check document changes'],
@@ -557,6 +573,156 @@ export const TOOLS: readonly ToolDefinition[] = [
     keywords: {
       id: ['mp4 ke gif', 'potong video', 'potong audio', 'kompres video ringan'],
       en: ['mp4 to gif', 'trim video', 'trim audio', 'lightweight media'],
+    },
+  },
+  {
+    id: 'invoice-generator',
+    slug: 'invoice-generator',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'PDF INVOICE',
+    status: 'coming-soon',
+    phase: 9,
+    icon: 'invoice-generator',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['buat invoice', 'kuitansi pdf', 'tagihan umkm', 'invoice generator gratis'],
+      en: ['invoice generator', 'receipt maker', 'pdf invoice', 'billing template'],
+    },
+  },
+  {
+    id: 'pdf-to-text',
+    slug: 'pdf-to-text',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'PDF → TXT / DOCX',
+    status: 'coming-soon',
+    phase: 9,
+    icon: 'pdf-to-text',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['pdf ke word', 'pdf ke teks', 'ekstrak teks pdf', 'pdf to txt', 'pdf to docx'],
+      en: ['pdf to text', 'pdf to word', 'extract text from pdf', 'pdf to docx'],
+    },
+  },
+  {
+    id: 'screenshot-mockup',
+    slug: 'screenshot-mockup',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'PNG / WEBP',
+    status: 'coming-soon',
+    phase: 9,
+    icon: 'screenshot-mockup',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['mockup screenshot', 'bingkai screenshot', 'background gradasi', 'foto presentasi'],
+      en: ['screenshot mockup', 'pretty screenshot', 'gradient frame', 'social media mockup'],
+    },
+  },
+  {
+    id: 'image-color-palette',
+    slug: 'image-color-palette',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'HEX / RGB / HSL',
+    status: 'coming-soon',
+    phase: 9,
+    icon: 'image-color-palette',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['color picker', 'ekstrak warna gambar', 'palet warna', 'cek kontras wcag', 'kode hex'],
+      en: ['color picker', 'extract color palette', 'eyedropper', 'hex rgb hsl', 'wcag contrast'],
+    },
+  },
+  {
+    id: 'fill-pdf-form',
+    slug: 'fill-pdf-form',
+    category: 'pdf',
+    group: 'pdf-edit-security',
+    formatLabel: 'PDF FORM',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'fill-pdf-form',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['isi formulir pdf', 'form pdf', 'acroform', 'formulir lamaran pdf'],
+      en: ['fill pdf form', 'pdf form filler', 'interactive pdf form', 'acroform'],
+    },
+  },
+  {
+    id: 'flatten-clean-pdf',
+    slug: 'flatten-clean-pdf',
+    category: 'pdf',
+    group: 'pdf-edit-security',
+    formatLabel: 'PDF PRIVASI',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'flatten-clean-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['flatten pdf', 'hapus metadata pdf', 'kunci anotasi pdf', 'bersihkan pdf'],
+      en: ['flatten pdf', 'strip pdf metadata', 'remove pdf author', 'lock annotations'],
+    },
+  },
+  {
+    id: 'text-diff',
+    slug: 'text-diff',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'TEXT DIFF',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'text-diff',
+    acceptedExtensions: ['.txt', '.md', '.json'],
+    keywords: {
+      id: ['bandingkan teks', 'text diff', 'cek perbedaan teks', 'compare text'],
+      en: ['text diff', 'compare text', 'diff checker', 'side by side diff'],
+    },
+  },
+  {
+    id: 'markdown-to-pdf',
+    slug: 'markdown-to-pdf',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'MD → PDF / HTML',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'markdown-to-pdf',
+    acceptedExtensions: ['.md', '.markdown', '.txt'],
+    keywords: {
+      id: ['markdown ke pdf', 'md ke pdf', 'preview markdown', 'markdown ke html'],
+      en: ['markdown to pdf', 'md to pdf', 'markdown preview', 'markdown to html'],
+    },
+  },
+  {
+    id: 'password-generator',
+    slug: 'password-generator',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'CRYPTO LOKAL',
+    status: 'coming-soon',
+    phase: 11,
+    icon: 'password-generator',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['generator password', 'buat sandi kuat', 'passphrase', 'cek kekuatan password'],
+      en: ['password generator', 'strong password', 'passphrase generator', 'password strength'],
+    },
+  },
+  {
+    id: 'audio-tools',
+    slug: 'audio-tools',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'MP3 / WAV',
+    status: 'coming-soon',
+    phase: 11,
+    icon: 'audio-tools',
+    acceptedExtensions: ['.mp3', '.wav', '.ogg', '.m4a'],
+    keywords: {
+      id: ['potong audio', 'gabung audio', 'rekam suara', 'konversi wav mp3'],
+      en: ['trim audio', 'merge audio', 'voice recorder', 'audio cutter'],
     },
   },
 ] as const;

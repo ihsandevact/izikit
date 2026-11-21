@@ -50,7 +50,7 @@ export const idDictionary = {
     keyNavigate: 'pilih',
     keyOpen: 'buka',
     keyClear: 'hapus',
-    launcherFooterRight: '23 tools · 100% gratis · tanpa upload',
+    launcherFooterRight: '26 tools · 100% gratis · tanpa upload',
     catalogTitle: 'Semua tools',
     catalogSubtitle:
       'Dokumen, PDF, gambar, studio pasfoto, hingga utilitas kerja harian. 100% gratis, tanpa login, dan semuanya jalan di perangkatmu.',
@@ -789,6 +789,111 @@ export const idDictionary = {
         },
       ],
     },
+    'qr-code-generator': {
+      name: 'QR Code Generator',
+      cta: 'Buat QR Code',
+      shortDescription:
+        'Buat QR Code Link, WhatsApp, WiFi, atau vCard dengan warna kustom & logo tengah tanpa masa kedaluwarsa.',
+      categoryLabel: 'Utilitas Harian',
+      seoTitle: 'QR Code Generator Gratis (Logo, WiFi, WA) | izikit',
+      seoDescription:
+        'Buat QR Code URL, WhatsApp, WiFi, atau vCard secara gratis di browser tanpa login. Atur warna, tambah logo tengah, dan unduh SVG atau PNG resolusi tinggi.',
+      guideTitle: 'Tips agar QR Code mudah dipindai',
+      guideItems: [
+        'QR Code yang dihasilkan bersifat statis dan permanen — tidak ada tautan pelacak (redirect) dan tidak akan pernah kedaluwarsa.',
+        'Saat menambahkan logo di tengah, izikit otomatis menaikkan koreksi error (ECC) ke level H (30%) agar tetap mudah dipindai.',
+        'Gunakan warna gelap untuk modul QR dan warna terang untuk latar belakang dengan rasio kontras tinggi.',
+      ],
+      howToSteps: [
+        'Pilih jenis QR Code: URL, WhatsApp, WiFi, Kontak (vCard), atau Teks Bebas lalu isi datanya.',
+        'Sesuaikan warna, gaya modul (kotak/membulat), dan tambahkan logo tengah jika diinginkan.',
+        'Unduh QR Code dalam format vektor SVG atau gambar PNG hingga resolusi 2048px.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah QR Code yang dibuat di izikit memiliki masa kedaluwarsa?',
+          a: 'Tidak. Semua QR Code dibuat secara statis langsung di browser tanpa server perantara sehingga aktif selamanya.',
+        },
+        {
+          q: 'Apakah nomor WhatsApp 08 otomatis diubah ke format internasional?',
+          a: 'Ya, nomor yang diawali 08 otomatis dikonversi ke format 628 agar langsung membuka chat WhatsApp dengan benar.',
+        },
+        {
+          q: 'Apakah password WiFi atau kontak vCard saya dikirim ke server?',
+          a: 'Tidak. Seluruh pembuatan matriks QR dan ekspor PNG/SVG berjalan 100% lokal di perangkat kamu.',
+        },
+      ],
+    },
+    'data-converter': {
+      name: 'CSV ↔ Excel & JSON Formatter',
+      cta: 'Konversi data',
+      shortDescription:
+        'Konversi cepat CSV, Excel (.xlsx), dan JSON sekaligus rapikan serta validasi struktur data di browser.',
+      categoryLabel: 'Utilitas Harian',
+      seoTitle: 'Konversi CSV ke Excel (.xlsx) & JSON Formatter | izikit',
+      seoDescription:
+        'Konversi CSV ke Excel (.xlsx), Excel ke CSV/JSON, serta rapikan dan validasi JSON gratis langsung di browser tanpa unggah data sensitif ke server.',
+      guideTitle: 'Tips konversi CSV, Excel & JSON',
+      guideItems: [
+        'Pemisah koma (,) maupun titik koma (;) dari ekspor Excel lokal otomatis terdeteksi saat membaca CSV.',
+        'File CSV hasil ekspor sudah dilengkapi UTF-8 BOM sehingga karakter khusus langsung terbaca rapi di Microsoft Excel.',
+        'Gunakan tab JSON Formatter untuk memvalidasi sintaks, mengurutkan key, minify, atau membuka JSON array langsung sebagai tabel Excel.',
+      ],
+      howToSteps: [
+        'Unggah file .csv, .xlsx, atau .json — atau tempel data langsung ke kotak teks.',
+        'Cek pratinjau tabel, pilih sheet (untuk file Excel multi-sheet), dan atur pemisah CSV bila perlu.',
+        'Klik Unduh .XLSX, .CSV, atau .JSON, atau salin hasil JSON langsung ke clipboard.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah data laporan keuangan atau daftar pelanggan saya dikirim ke server?',
+          a: 'Tidak. Pembacaan file Excel (.xlsx), CSV, dan JSON dilakukan 100% lokal di dalam browser kamu.',
+        },
+        {
+          q: 'Apakah file Excel dengan banyak sheet didukung?',
+          a: 'Ya. Kamu bisa memilih sheet mana yang ingin dilihat pratinjaunya lalu diekspor ke CSV atau JSON.',
+        },
+        {
+          q: 'Mengapa file CSV kadang berantakan saat dibuka di Excel?',
+          a: 'Excel di pengaturan regional Indonesia sering memakai titik koma (;). Kamu bisa mengganti opsi pemisah CSV ke Titik koma (;) sebelum mengunduh.',
+        },
+      ],
+    },
+    'compare-pdf': {
+      name: 'Bandingkan 2 PDF (PDF Diff)',
+      cta: 'Bandingkan PDF',
+      shortDescription:
+        'Sorot perbedaan visual dan teks antar dua versi dokumen atau kontrak secara berdampingan di browser.',
+      categoryLabel: 'Dokumen PDF',
+      seoTitle: 'Bandingkan 2 PDF (PDF Diff) Gratis Tanpa Upload | izikit',
+      seoDescription:
+        'Bandingkan dua versi file PDF secara visual dan teks langsung di browser tanpa upload. Sorot perubahan kontrak atau laporan dan ekspor hasil diff ke PNG.',
+      guideTitle: 'Cara membaca sorotan PDF Diff',
+      guideItems: [
+        'Warna merah menandai bagian yang ada di PDF Asli (A) namun dihapus pada PDF Revisi (B).',
+        'Warna hijau menandai elemen atau teks baru yang ditambahkan pada PDF Revisi (B).',
+        'Gunakan mode Overlay Visual untuk PDF hasil scan, dan mode Perbandingan Teks untuk melacak perubahan kalimat baris per baris.',
+      ],
+      howToSteps: [
+        'Unggah dokumen pertama sebagai PDF Asli (A) dan dokumen kedua sebagai PDF Revisi (B).',
+        'Pilih mode tampilan: Overlay Visual, Berdampingan, atau Perbandingan Teks.',
+        'Navigasi antar halaman untuk mengecek persentase perubahan, lalu unduh gambar Diff PNG jika diperlukan.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah dokumen kontrak rahasia saya aman saat dibandingkan?',
+          a: 'Ya. Kedua file PDF dirender dan dibandingkan 100% di memori browser perangkat kamu tanpa dikirim ke server mana pun.',
+        },
+        {
+          q: 'Apakah bisa membandingkan dua PDF yang jumlah halamannya berbeda?',
+          a: 'Bisa. izikit menampilkan hingga jumlah halaman terbanyak dan menandai halaman tambahan atau halaman yang tidak ada di salah satu dokumen.',
+        },
+        {
+          q: 'Apakah PDF hasil scan (gambar) tetap bisa dibandingkan?',
+          a: 'Ya, mode Overlay Visual membandingkan piksel halaman secara langsung sehingga perbedaan pada PDF hasil scan tetap terlihat jelas.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Kunci & Buka Sandi PDF',
       cta: 'Kunci / buka PDF',
@@ -973,21 +1078,12 @@ export const idDictionary = {
       6: 'Studio Visual & Ekstraksi PDF',
       7: 'Utilitas Kerja Harian & Perbandingan PDF',
       8: 'OCR & Media Ringan (WASM)',
+      9: 'Utilitas Bisnis, Dokumen & Kreator',
+      10: 'Formulir PDF, Privasi & Teks',
+      11: 'Keamanan Sandi & Audio Ringan',
     },
   },
   upcomingTools: {
-    'qr-code-generator': {
-      name: 'QR Code Generator',
-      shortDescription: 'Buat QR Code Link, WhatsApp, WiFi, atau vCard dengan warna custom & logo tanpa masa kedaluwarsa.',
-    },
-    'data-converter': {
-      name: 'CSV ↔ Excel & JSON Formatter',
-      shortDescription: 'Konversi cepat CSV, Excel (.xlsx), dan JSON sekaligus rapikan serta validasi struktur data.',
-    },
-    'compare-pdf': {
-      name: 'Bandingkan 2 PDF (PDF Diff)',
-      shortDescription: 'Sorot perbedaan visual dan teks antar dua versi dokumen atau kontrak secara berdampingan.',
-    },
     'ocr-text': {
       name: 'OCR Gambar & PDF Scan ke Teks',
       shortDescription: 'Ekstrak teks dari hasil scan dokumen, struk, atau foto catatan langsung di browser.',
@@ -995,6 +1091,46 @@ export const idDictionary = {
     'media-trim-gif': {
       name: 'Potong Media & MP4 ke GIF',
       shortDescription: 'Potong klip video/audio pendek atau ubah rekaman MP4 menjadi animasi GIF ringan di browser.',
+    },
+    'invoice-generator': {
+      name: 'Buat Invoice & Kuitansi PDF',
+      shortDescription: 'Susun tagihan atau kuitansi profesional lengkap dengan logo, pajak, diskon, dan tanda tangan lalu unduh PDF.',
+    },
+    'pdf-to-text': {
+      name: 'PDF ke Teks / Word (.txt / .docx)',
+      shortDescription: 'Ekstrak seluruh teks bersih dari dokumen PDF dan simpan menjadi file teks atau dokumen Word sederhana.',
+    },
+    'screenshot-mockup': {
+      name: 'Mockup Screenshot Cantik',
+      shortDescription: 'Ubah tangkapan layar biasa menjadi visual estetik dengan latar gradasi, bayangan, dan rasio media sosial.',
+    },
+    'image-color-palette': {
+      name: 'Color Picker & Palet Warna Gambar',
+      shortDescription: 'Ambil kode warna HEX/RGB/HSL dari foto, ekstrak warna dominan otomatis, dan cek rasio kontras WCAG.',
+    },
+    'fill-pdf-form': {
+      name: 'Isi Formulir PDF (Form Filler)',
+      shortDescription: 'Deteksi dan isi kolom formulir PDF interaktif (teks, centang, pilihan) langsung di browser tanpa cetak kertas.',
+    },
+    'flatten-clean-pdf': {
+      name: 'Flatten & Hapus Metadata PDF',
+      shortDescription: 'Kunci formulir atau anotasi PDF agar tidak dapat diubah serta bersihkan metadata penulis yang tersembunyi.',
+    },
+    'text-diff': {
+      name: 'Bandingkan Teks (Text Diff)',
+      shortDescription: 'Bandingkan dua versi teks, email, JSON, atau kode secara berdampingan dengan sorotan perubahan per baris.',
+    },
+    'markdown-to-pdf': {
+      name: 'Markdown ke PDF & HTML',
+      shortDescription: 'Tulis atau tempel file Markdown (.md) dengan pratinjau langsung lalu ekspor ke dokumen PDF rapi atau HTML.',
+    },
+    'password-generator': {
+      name: 'Generator Password & Cek Sandi',
+      shortDescription: 'Buat kata sandi acak kuat dan passphrase aman via Web Crypto lokal sekaligus cek estimasi kekuatannya.',
+    },
+    'audio-tools': {
+      name: 'Potong & Gabung Audio Ringan',
+      shortDescription: 'Potong bagian sunyi, gabungkan beberapa rekaman suara, atau ubah format audio MP3/WAV langsung di browser.',
     },
   },
   extractPdfImages: {

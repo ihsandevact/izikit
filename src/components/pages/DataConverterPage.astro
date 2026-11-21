@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import DataConverterTool from '@/tools/utility/data-converter/DataConverterTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/data-converter" toolKey="data-converter">
+  <DataConverterTool client:load locale={locale} />
+</ToolPageLayout>

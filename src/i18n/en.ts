@@ -52,7 +52,7 @@ export const enDictionary: Dictionary = {
     keyNavigate: 'select',
     keyOpen: 'open',
     keyClear: 'clear',
-    launcherFooterRight: '23 tools · 100% free · zero upload',
+    launcherFooterRight: '26 tools · 100% free · zero upload',
     catalogTitle: 'All tools',
     catalogSubtitle:
       'Documents, PDFs, images, ID photo studio, and everyday utilities. 100% free, no account, and everything runs on your device.',
@@ -791,6 +791,111 @@ export const enDictionary: Dictionary = {
         },
       ],
     },
+    'qr-code-generator': {
+      name: 'QR Code Generator',
+      cta: 'Generate QR Code',
+      shortDescription:
+        'Create custom Link, WhatsApp, WiFi, or vCard QR codes with colors, center logos, and zero expiration.',
+      categoryLabel: 'Daily Utilities',
+      seoTitle: 'Free QR Code Generator (Logo, WiFi, vCard) | izikit',
+      seoDescription:
+        'Generate custom URL, WhatsApp, WiFi, or vCard QR codes for free in your browser with zero tracking. Customize colors, add a center logo, and export SVG or PNG.',
+      guideTitle: 'Tips for reliable QR scanning',
+      guideItems: [
+        'Generated QR codes are 100% static with no tracking redirects, meaning they never expire.',
+        'When you add a center logo, izikit automatically raises error correction (ECC) to Level H (30%) to preserve scannability.',
+        'Keep high contrast between dark foreground modules and light backgrounds for fastest camera detection.',
+      ],
+      howToSteps: [
+        'Pick a QR type (URL, WhatsApp, WiFi, vCard Contact, or Plain Text) and enter your details.',
+        'Customize foreground/background colors, module shape, and optional center logo.',
+        'Download crisp vector SVG or high-resolution PNG up to 2048px.',
+      ],
+      faqs: [
+        {
+          q: 'Do QR codes generated with izikit ever expire?',
+          a: 'No. Every QR code encodes your data directly as a static ISO/IEC 18004 matrix with no redirect server, so it works forever.',
+        },
+        {
+          q: 'Can I add my brand logo in the center of the QR code?',
+          a: 'Yes. Upload a PNG, JPG, WebP, or SVG logo and adjust its size; izikit automatically enables High (30%) error correction.',
+        },
+        {
+          q: 'Are my WiFi passwords or contact details sent to a server?',
+          a: 'No. QR encoding and PNG/SVG export run 100% locally inside your browser.',
+        },
+      ],
+    },
+    'data-converter': {
+      name: 'CSV ↔ Excel & JSON Formatter',
+      cta: 'Convert data',
+      shortDescription:
+        'Convert between CSV, Excel (.xlsx), and JSON plus format and validate JSON directly in your browser.',
+      categoryLabel: 'Daily Utilities',
+      seoTitle: 'CSV to Excel (.xlsx) & JSON Formatter Free | izikit',
+      seoDescription:
+        'Convert CSV to Excel (.xlsx), XLSX to CSV/JSON, and format or validate JSON for free right inside your browser with zero server uploads.',
+      guideTitle: 'Tips for CSV, Excel & JSON conversion',
+      guideItems: [
+        'Comma, semicolon, and tab delimiters are detected automatically when reading CSV/TSV files.',
+        'Exported CSV files include a UTF-8 BOM so international characters open cleanly in Microsoft Excel.',
+        'Use the JSON Formatter tab to validate syntax, sort keys, minify, or open JSON arrays directly as an Excel table.',
+      ],
+      howToSteps: [
+        'Upload a .csv, .xlsx, or .json file — or paste raw CSV/JSON directly.',
+        'Inspect the live table preview, choose a worksheet if needed, and pick your CSV delimiter.',
+        'Export to .xlsx, .csv, or .json in one click, or copy formatted JSON straight to your clipboard.',
+      ],
+      faqs: [
+        {
+          q: 'Is my spreadsheet or JSON data uploaded to a server?',
+          a: 'No. All CSV, Excel (.xlsx), and JSON parsing and generation run 100% locally inside your browser.',
+        },
+        {
+          q: 'Does it support Excel workbooks with multiple sheets?',
+          a: 'Yes. You can switch between sheets using the dropdown selector and export each sheet to CSV or JSON.',
+        },
+        {
+          q: 'Can I convert a JSON array into an Excel (.xlsx) file?',
+          a: 'Yes. Upload or paste your JSON array, preview the columns, and click Export .XLSX.',
+        },
+      ],
+    },
+    'compare-pdf': {
+      name: 'Compare 2 PDFs (PDF Diff)',
+      cta: 'Compare PDFs',
+      shortDescription:
+        'Highlight visual and text differences between two versions of a contract or report locally in your browser.',
+      categoryLabel: 'PDF Document',
+      seoTitle: 'Compare 2 PDFs (Visual & Text PDF Diff) Free | izikit',
+      seoDescription:
+        'Compare two PDF versions visually and by text directly in your browser with zero uploads. Highlight contract or report revisions and export diff pages as PNG.',
+      guideTitle: 'How to read PDF Diff highlights',
+      guideItems: [
+        'Red highlights mark content present in Original PDF (A) that was removed in Revised PDF (B).',
+        'Green highlights mark new elements or text added in Revised PDF (B).',
+        'Use Visual Overlay for scanned documents and Text Diff to inspect line-by-line wording changes.',
+      ],
+      howToSteps: [
+        'Drop your first file as Original PDF (A) and the second file as Revised PDF (B).',
+        'Switch between Visual Overlay, Side-by-Side, and Text Diff views.',
+        'Step through pages to check percentage differences and export any diff page as PNG.',
+      ],
+      faqs: [
+        {
+          q: 'Are my confidential contracts uploaded anywhere during comparison?',
+          a: 'No. Both PDFs are rendered and compared 100% locally in your browser memory with zero network uploads.',
+        },
+        {
+          q: 'Can I compare two PDFs with different page counts?',
+          a: 'Yes. izikit compares up to the highest page count and clearly indicates extra or missing pages.',
+        },
+        {
+          q: 'Does PDF Diff work on scanned PDFs?',
+          a: 'Yes. Visual Overlay compares rendered page pixels directly, making edits on scanned documents easy to spot.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Protect & Unlock PDF',
       cta: 'Lock / unlock PDF',
@@ -975,21 +1080,12 @@ export const enDictionary: Dictionary = {
       6: 'Visual Studio & PDF Extraction',
       7: 'Daily Work Utilities & PDF Diff',
       8: 'OCR & Lightweight Media (WASM)',
+      9: 'Business, Document & Creator Utilities',
+      10: 'PDF Forms, Privacy & Text Tools',
+      11: 'Password Security & Lightweight Audio',
     },
   },
   upcomingTools: {
-    'qr-code-generator': {
-      name: 'QR Code Generator',
-      shortDescription: 'Create custom Link, WhatsApp, WiFi, or vCard QR codes with center logos and zero tracking.',
-    },
-    'data-converter': {
-      name: 'CSV ↔ Excel & JSON Formatter',
-      shortDescription: 'Convert between CSV, Excel (.xlsx), and JSON plus format and validate JSON locally.',
-    },
-    'compare-pdf': {
-      name: 'Compare 2 PDFs (PDF Diff)',
-      shortDescription: 'Highlight visual and text differences between two versions of a contract or report.',
-    },
     'ocr-text': {
       name: 'OCR Image & Scanned PDF to Text',
       shortDescription: 'Extract selectable text from scanned PDFs, receipts, or photos right in your browser.',
@@ -997,6 +1093,46 @@ export const enDictionary: Dictionary = {
     'media-trim-gif': {
       name: 'Trim Media & MP4 to GIF',
       shortDescription: 'Trim short video/audio clips or convert MP4 clips into lightweight animated GIFs locally.',
+    },
+    'invoice-generator': {
+      name: 'Invoice & Receipt PDF Generator',
+      shortDescription: 'Build clean invoices or receipts with your logo, tax, discounts, and signature, then export to PDF locally.',
+    },
+    'pdf-to-text': {
+      name: 'PDF to Text / Word (.txt / .docx)',
+      shortDescription: 'Extract clean selectable text from any PDF document and export to plain text or a simple Word file.',
+    },
+    'screenshot-mockup': {
+      name: 'Pretty Screenshot Mockup',
+      shortDescription: 'Turn plain screenshots into polished visuals with gradient backdrops, soft shadows, and social aspect ratios.',
+    },
+    'image-color-palette': {
+      name: 'Color Picker & Image Palette Extractor',
+      shortDescription: 'Pick HEX/RGB/HSL colors from any photo, extract dominant color palettes, and check WCAG contrast ratios.',
+    },
+    'fill-pdf-form': {
+      name: 'Fill PDF Form (AcroForm Filler)',
+      shortDescription: 'Detect and fill interactive PDF form fields (text, checkboxes, dropdowns) right in your browser.',
+    },
+    'flatten-clean-pdf': {
+      name: 'Flatten & Strip PDF Metadata',
+      shortDescription: 'Lock PDF form fields and annotations permanently while removing hidden author and software metadata.',
+    },
+    'text-diff': {
+      name: 'Compare Text (Text Diff)',
+      shortDescription: 'Compare two versions of text, emails, JSON, or code side by side with clear line-by-line highlights.',
+    },
+    'markdown-to-pdf': {
+      name: 'Markdown to PDF & HTML',
+      shortDescription: 'Write or paste Markdown (.md) with live preview and export to clean printable PDF or HTML.',
+    },
+    'password-generator': {
+      name: 'Password Generator & Strength Checker',
+      shortDescription: 'Generate cryptographically strong passwords and passphrases locally using Web Crypto with strength estimates.',
+    },
+    'audio-tools': {
+      name: 'Trim & Merge Lightweight Audio',
+      shortDescription: 'Trim clips, join voice recordings, or convert between MP3 and WAV directly inside your browser.',
     },
   },
   extractPdfImages: {
