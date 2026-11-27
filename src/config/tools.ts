@@ -42,6 +42,7 @@ export type ToolIconKey =
   | 'image-color-palette'
   | 'fill-pdf-form'
   | 'flatten-clean-pdf'
+  | 'pdf-scanner'
   | 'text-diff'
   | 'markdown-to-pdf'
   | 'password-generator'
@@ -659,14 +660,33 @@ export const TOOLS: readonly ToolDefinition[] = [
     slug: 'flatten-clean-pdf',
     category: 'pdf',
     group: 'pdf-edit-security',
+    badge: 'new',
     formatLabel: 'PDF PRIVASI',
-    status: 'coming-soon',
+    status: 'live',
     phase: 10,
     icon: 'flatten-clean-pdf',
     acceptedExtensions: ['.pdf'],
+    relatedToolIds: ['protect-pdf', 'edit-pdf', 'compress-pdf'],
     keywords: {
       id: ['flatten pdf', 'hapus metadata pdf', 'kunci anotasi pdf', 'bersihkan pdf'],
       en: ['flatten pdf', 'strip pdf metadata', 'remove pdf author', 'lock annotations'],
+    },
+  },
+  {
+    id: 'pdf-scanner',
+    slug: 'pdf-scanner',
+    category: 'pdf',
+    group: 'pdf-organize',
+    badge: 'new',
+    formatLabel: 'SCAN → PDF',
+    status: 'live',
+    phase: 10,
+    icon: 'pdf-scanner',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    relatedToolIds: ['image-to-pdf', 'compress-pdf', 'flatten-clean-pdf'],
+    keywords: {
+      id: ['scan pdf', 'pdf scanner', 'foto ke pdf scan', 'scan dokumen hp', 'scan hitam putih'],
+      en: ['pdf scanner', 'scan documents to pdf', 'mobile scanner', 'photo scan to pdf'],
     },
   },
   {

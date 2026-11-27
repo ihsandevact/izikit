@@ -332,6 +332,14 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <path d="M4.5 12.5L12 16.5l7.5-4M4.5 16.5L12 20.5l7.5-4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
+    case 'pdf-scanner':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8m8 0h2.5A1.5 1.5 0 0 1 20 5.5V8m0 8v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M4.5 12h15" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M8.5 8.5h7M8.5 15.5h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
     case 'text-diff':
       return (
         <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">

@@ -999,6 +999,76 @@ export const idDictionary = {
         },
       ],
     },
+    'flatten-clean-pdf': {
+      name: 'Flatten & Hapus Metadata PDF',
+      cta: 'Flatten PDF',
+      shortDescription:
+        'Kunci formulir atau halaman PDF agar tidak bisa diedit serta bersihkan metadata penulis yang tersembunyi.',
+      categoryLabel: 'Dokumen PDF',
+      seoTitle: 'Flatten PDF & Hapus Metadata Penulis Gratis | izikit',
+      seoDescription:
+        'Kunci formulir dan anotasi PDF agar tidak dapat diubah serta hapus metadata penulis tersembunyi langsung di browser. 100% gratis, tanpa login, dan tanpa upload.',
+      guideTitle: 'Kapan memakai Flatten Formulir vs Flatten Total?',
+      guideItems: [
+        'Pilih "Flatten Formulir & Bersihkan Metadata" jika ingin mengunci isian form dan menghapus nama penulis/aplikasi sambil menjaga teks tetap tajam.',
+        'Pilih "Flatten Total (Anti-Edit)" untuk mengubah seluruh halaman termasuk tanda tangan dan stempel menjadi gambar datar beresolusi tinggi.',
+        'Periksa panel Inspeksi Metadata sebelum memproses untuk melihat info tersembunyi yang tersimpan di dalam file PDF kamu.',
+      ],
+      howToSteps: [
+        'Unggah file PDF yang ingin dikunci formulirnya atau dibersihkan metadatanya.',
+        'Tinjau daftar formulir, anotasi, dan metadata tersembunyi yang otomatis terdeteksi.',
+        'Pilih mode Flatten Formulir atau Flatten Total, lalu klik proses dan unduh PDF bersih kamu.',
+      ],
+      faqs: [
+        {
+          q: 'Apa bedanya Flatten PDF dengan Kunci Sandi PDF?',
+          a: 'Flatten PDF menyatukan kolom formulir/anotasi ke dalam halaman agar tidak bisa diedit lagi, sedangkan Kunci Sandi PDF melindungi file dengan password pembuka.',
+        },
+        {
+          q: 'Metadata apa saja yang dibersihkan oleh tool ini?',
+          a: 'Seluruh metadata dokumen seperti Judul, Penulis, Subjek, Kata Kunci, aplikasi Creator/Producer, hingga stream XMP dibersihkan secara menyeluruh.',
+        },
+        {
+          q: 'Apakah dokumen rahasia saya diunggah ke server saat dibersihkan?',
+          a: 'Tidak. Inspeksi metadata, flatten formulir, hingga rasterisasi halaman berjalan 100% lokal di memori browser perangkat kamu.',
+        },
+      ],
+    },
+    'pdf-scanner': {
+      name: 'PDF Scanner (Scan Dokumen)',
+      cta: 'Scan ke PDF',
+      shortDescription:
+        'Ubah foto dokumen dari kamera HP atau galeri menjadi PDF scan bersih dengan filter Hitam-Putih dan Scan Warna.',
+      categoryLabel: 'Dokumen PDF',
+      seoTitle: 'Scan Dokumen ke PDF (PDF Scanner) Gratis | izikit',
+      seoDescription:
+        'Ubah foto dokumen dari kamera HP atau galeri menjadi PDF scan bersih dengan filter Hitam-Putih, Scan Warna, dan atur halaman langsung di browser tanpa upload.',
+      guideTitle: 'Tips hasil scan dokumen lebih tajam',
+      guideItems: [
+        'Potret dokumen di tempat terang dengan posisi kamera sejajar kertas agar teks tidak melengkung.',
+        'Gunakan filter "Hitam-Putih" untuk struk, surat, dan formulir agar latar kertas jadi putih bersih dan tulisan kontras.',
+        'Gunakan "Scan Warna" bila dokumen memiliki stempel warna, tanda tangan biru, atau foto KTP/sertifikat yang ingin tetap berwarna.',
+      ],
+      howToSteps: [
+        'Tekan Buka Kamera di HP untuk memotret dokumen langsung, atau unggah foto dari galeri/komputer.',
+        'Pilih filter (Scan Warna, Hitam-Putih, Abu-abu, atau Asli), putar halaman, dan atur urutan bila perlu.',
+        'Pilih ukuran kertas A4/Letter beserta margin, lalu klik Unduh PDF untuk menyimpan semua halaman.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah hasil foto dokumen KTP, ijazah, atau kontrak saya dikirim ke server?',
+          a: 'Tidak. Pemrosesan filter scan dan penyusunan file PDF dilakukan 100% lokal di dalam browser perangkat kamu tanpa unggahan apa pun.',
+        },
+        {
+          q: 'Bisakah saya menggabungkan beberapa halaman foto scan ke satu file PDF?',
+          a: 'Bisa. Kamu dapat mengambil foto berulang kali dari kamera atau memilih banyak gambar sekaligus, lalu mengurutkannya sebelum ekspor ke satu PDF.',
+        },
+        {
+          q: 'Apakah hasil scan PDF diberi watermark seperti aplikasi scanner berbayar?',
+          a: 'Tidak sama sekali. Semua hasil scan PDF di izikit 100% bersih tanpa watermark dan gratis tanpa batas halaman.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Kunci & Buka Sandi PDF',
       cta: 'Kunci / buka PDF',
