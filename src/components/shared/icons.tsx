@@ -332,6 +332,14 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <path d="M4.5 12.5L12 16.5l7.5-4M4.5 16.5L12 20.5l7.5-4" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
+    case 'pdf-scanner':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8m8 0h2.5A1.5 1.5 0 0 1 20 5.5V8m0 8v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M4.5 12h15" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M8.5 8.5h7M8.5 15.5h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
     case 'text-diff':
       return (
         <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
@@ -356,6 +364,54 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
       return (
         <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
           <path d="M4.5 10.5v3M8 7.5v9M12 4.5v15M16 8v8M19.5 10.5v3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        </svg>
+      );
+    case 'crop-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M7 3.5v13.5h13.5M3.5 7h13.5v13.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'redact-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M7.5 9h9" stroke="currentColor" strokeWidth="1.65" strokeLinecap="round" />
+          <rect x="7" y="12" width="10" height="3.5" rx="0.75" fill="currentColor" />
+        </svg>
+      );
+    case 'pdf-reader':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11a2 2 0 0 1 2 2v14a1.5 1.5 0 0 0-1.5-1.5h-6A1.5 1.5 0 0 1 4 17V5.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+          <path d="M20 5.5A1.5 1.5 0 0 0 18.5 4H13a2 2 0 0 0-2 2v14a1.5 1.5 0 0 1 1.5-1.5h6A1.5 1.5 0 0 0 20 17V5.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'excel-csv-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M4 9.5h16M4 14.5h16M10 9.5V20" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case 'txt-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M6 3.5h8.5L19 8v12.5H6V3.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M9 11.5h6M9 15h6M9 18h3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
+    case 'zip-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="4.5" y="4" width="15" height="16" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M12 4v16" stroke="currentColor" strokeWidth="1.75" strokeDasharray="2 2" />
+        </svg>
+      );
+    case 'html-to-pdf':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M8.5 8.5L4.5 12l4 3.5M15.5 8.5l4 3.5-4 3.5M13.5 6.5l-3 11" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
   }

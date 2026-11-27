@@ -1,6 +1,33 @@
 export type CompressPdfMode = 'lossless' | 'rasterize';
 export type PdfPageSizeTarget = 'keep' | 'a4' | 'letter';
 export type RasterizeDpi = 96 | 120 | 150;
+export type PdfTargetPresetKey = 'custom' | '500kb' | '800kb' | '1mb';
+
+export function parsePdfTargetPreset(raw: string | null): PdfTargetPresetKey {
+  if (!raw) return 'custom';
+  const norm = raw.trim().toLowerCase();
+  if (norm === '500kb') return '500kb';
+  if (norm === '800kb') return '800kb';
+  if (norm === '1mb' || norm === '1000kb') return '1mb';
+  return 'custom';
+}
+
+export function getPdfTargetBytes(preset: PdfTargetPresetKey): number | null {
+  // ~97% safety buffer so compressed PDFs fit reliably under SSCASN/portal caps
+  if (preset === '500kb') return 485 * 1024;
+  if (preset === '800kb') return 780 * 1024;
+  if (preset === '1mb') return 980 * 1024;
+  return null;
+}
+
+export function getPdfTargetAttempts(): Array<{ dpi: number; jpegQuality: number }> {
+  return [
+    { dpi: 150, jpegQuality: 0.78 },
+    { dpi: 120, jpegQuality: 0.68 },
+    { dpi: 100, jpegQuality: 0.56 },
+    { dpi: 84, jpegQuality: 0.45 },
+  ];
+}
 
 export type CompressPdfErrorCode = 'ENCRYPTED' | 'CORRUPT' | 'INVALID_OPTIONS' | 'EMPTY_PAGES';
 

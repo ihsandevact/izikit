@@ -1001,6 +1001,76 @@ export const enDictionary: Dictionary = {
         },
       ],
     },
+    'flatten-clean-pdf': {
+      name: 'Flatten & Clean PDF Metadata',
+      cta: 'Flatten PDF',
+      shortDescription:
+        'Lock PDF forms or pages so they cannot be edited and scrub hidden author and software metadata.',
+      categoryLabel: 'PDF Document',
+      seoTitle: 'Flatten PDF & Strip Hidden Metadata Free | izikit',
+      seoDescription:
+        'Lock PDF forms and annotations so they cannot be edited and scrub hidden author metadata right in your browser. 100% free, no login, and zero server uploads.',
+      guideTitle: 'Flatten Forms vs. Full Flatten',
+      guideItems: [
+        'Use "Flatten Forms & Clean Metadata" to lock AcroForm fields and remove author/app metadata while keeping crisp vector text.',
+        'Use "Full Flatten (Uneditable)" to convert every page, stamp, and signature into flat high-DPI page images.',
+        'Check the Metadata Inspection card right after uploading to see hidden fields embedded in your PDF.',
+      ],
+      howToSteps: [
+        'Drop your PDF file to inspect its form fields, annotations, and hidden metadata.',
+        'Choose between Flatten Forms & Metadata (vector) or Full Flatten (uneditable raster pages).',
+        'Run the process and download your clean, privacy-safe PDF immediately.',
+      ],
+      faqs: [
+        {
+          q: 'How is flattening a PDF different from password-protecting it?',
+          a: 'Flattening merges interactive form fields and annotations into static page content so they cannot be edited, whereas protection encrypts the file with a password.',
+        },
+        {
+          q: 'Which metadata fields are removed during scrubbing?',
+          a: 'Title, Author, Subject, Keywords, Creator, Producer, Info dictionary entries, and embedded XMP metadata streams are all stripped.',
+        },
+        {
+          q: 'Are my confidential PDF files uploaded to a server?',
+          a: 'No. Inspection, flattening, metadata removal, and page rasterization all run 100% locally in your browser.',
+        },
+      ],
+    },
+    'pdf-scanner': {
+      name: 'PDF Scanner (Scan to PDF)',
+      cta: 'Scan to PDF',
+      shortDescription:
+        'Turn camera photos or document images into clean multi-page PDF scans with B&W and Magic Color filters.',
+      categoryLabel: 'PDF Document',
+      seoTitle: 'PDF Scanner — Scan Photos to Clean PDF Free | izikit',
+      seoDescription:
+        'Turn camera photos or images of paper documents into crisp multi-page PDF scans with B&W and Magic Color filters directly in your browser with zero uploads.',
+      guideTitle: 'Tips for sharp document scans',
+      guideItems: [
+        'Shoot in even daylight with the camera parallel to the paper so lines stay straight and shadows stay minimal.',
+        'Pick "B&W Doc" for receipts, letters, and contracts to brighten paper to clean white with dark ink.',
+        'Pick "Magic Color" to whiten dull paper backgrounds while keeping colored stamps, logos, or ID details intact.',
+      ],
+      howToSteps: [
+        'Tap Open Camera on your phone to capture pages, or upload photos from your gallery or computer.',
+        'Choose a scan filter (Magic Color, B&W Doc, Grayscale, or Original), rotate, and reorder pages.',
+        'Pick A4, Letter, or Fit Image sizing and click Download PDF to save your multi-page scan.',
+      ],
+      faqs: [
+        {
+          q: 'Are photos of my ID cards, receipts, or contracts uploaded anywhere?',
+          a: 'No. All image enhancement filters and PDF assembly happen 100% locally inside your browser with zero uploads.',
+        },
+        {
+          q: 'Can I scan multiple paper pages into a single PDF document?',
+          a: 'Yes. Capture or add as many pages as you need, reorder or rotate them, and export them together as one PDF.',
+        },
+        {
+          q: 'Does izikit add any scanner watermark to my PDF?',
+          a: 'Never. Every scanned PDF is 100% watermark-free, free to use, and has no page limits.',
+        },
+      ],
+    },
     'protect-pdf': {
       name: 'Protect & Unlock PDF',
       cta: 'Lock / unlock PDF',
@@ -1188,6 +1258,7 @@ export const enDictionary: Dictionary = {
       9: 'Business, Document & Creator Utilities',
       10: 'PDF Forms, Privacy & Text Tools',
       11: 'Password Security & Lightweight Audio',
+      12: 'Document & Archive to PDF Conversion',
     },
   },
   upcomingTools: {
@@ -1238,6 +1309,34 @@ export const enDictionary: Dictionary = {
     'audio-tools': {
       name: 'Trim & Merge Lightweight Audio',
       shortDescription: 'Trim clips, join voice recordings, or convert between MP3 and WAV directly inside your browser.',
+    },
+    'crop-pdf': {
+      name: 'Crop PDF Pages',
+      shortDescription: 'Visually trim margins or crop specific areas of PDF pages losslessly while keeping vector text sharp.',
+    },
+    'redact-pdf': {
+      name: 'Redact PDF (Permanent Censor)',
+      shortDescription: 'Permanently black out and remove sensitive information (IDs, bank numbers, names) from PDF pages locally.',
+    },
+    'pdf-reader': {
+      name: 'PDF Reader (View & Print)',
+      shortDescription: 'Open, read, search text, zoom, and print PDF documents directly in your browser with zero uploads.',
+    },
+    'excel-csv-to-pdf': {
+      name: 'Excel & CSV to PDF',
+      shortDescription: 'Convert Excel (.xlsx) spreadsheets or CSV files into clean, print-ready PDF tables locally in browser.',
+    },
+    'txt-to-pdf': {
+      name: 'TXT to PDF',
+      shortDescription: 'Convert plain text (.txt) files or notes into neatly formatted PDF documents with custom margins and fonts.',
+    },
+    'zip-to-pdf': {
+      name: 'ZIP to PDF',
+      shortDescription: 'Unpack a .zip archive of images, PDFs, or text files and automatically merge them into one clean PDF.',
+    },
+    'html-to-pdf': {
+      name: 'HTML to PDF',
+      shortDescription: 'Convert HTML files or snippets into clean printable PDF documents directly inside your browser.',
     },
   },
   extractPdfImages: {

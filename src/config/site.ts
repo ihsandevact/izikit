@@ -19,6 +19,10 @@ export const SITE_CONFIG = {
     imageSoftMaxBytes: 30 * 1024 * 1024, // 30 MB per image recommendation
     maxBatchFiles: 50,
   },
+  features: {
+    /** Toggle seasonal CPNS / SSCASN promo banner on the Indonesian homepage. */
+    showCpnsPromo: true,
+  },
 } as const;
 
 export function getActiveSupportChannels(): Array<{ id: string; label: string; url: string }> {
