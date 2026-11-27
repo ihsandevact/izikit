@@ -6,6 +6,7 @@ import { validateImageFiles } from '@/lib/file-validation';
 import { downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
 import SupportCard from '@/components/shared/SupportCard';
 import {
   ArrowDownIcon,
@@ -574,9 +575,26 @@ export default function PdfScannerTool({ locale }: PdfScannerToolProps) {
               </button>
 
               {resultBlob && (
-                <p className="font-data m-0 text-center text-[11px] text-[var(--ink-muted)] tabular-nums">
-                  {resultBlob.filename} · {formatBytes(resultBlob.blob.size)}
-                </p>
+                <>
+                  <p className="font-data m-0 text-center text-[11px] text-[var(--ink-muted)] tabular-nums">
+                    {resultBlob.filename} · {formatBytes(resultBlob.blob.size)}
+                  </p>
+                  <HandoffChainBar
+                    locale={locale}
+                    sourceRoute="/pdf-scanner"
+                    getFiles={() => [
+                      new File([resultBlob.blob], resultBlob.filename, {
+                        type: 'application/pdf',
+                      }),
+                    ]}
+                    actions={[
+                      {
+                        label: isId ? 'Kompres PDF < 1 MB' : 'Compress PDF < 1 MB',
+                        href: '/compress-pdf?preset=1mb',
+                      },
+                    ]}
+                  />
+                </>
               )}
             </div>
           </div>

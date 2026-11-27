@@ -3,9 +3,12 @@ import { getDictionary, type Locale } from '@/i18n';
 import { formatBytes, sanitizeFilename } from '@/lib/format';
 import { validateImageFiles } from '@/lib/file-validation';
 import { downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon } from '@/components/shared/icons';
 import { clearCachedModels, getCachedModelStats, type ModelCacheStats } from './idb-cache';
@@ -155,6 +158,8 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     setPreviewTab('result');
     setBrushMode('none');
     setResultBlob(null);
+    sourceRgbaRef.current = null;
+    setImageSize(null);
 
     try {
       const { accepted, errors: validationErrors } = await validateImageFiles([selected], {
@@ -263,16 +268,22 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     setProgress({ percent: 8, detail: copy.progressDownloadingModel });
 
     try {
-      const { width, height } = await ensureSourcePixelsLoaded();
-      const mask = await runOnnxBackgroundRemovalMask(file, width, height, (info) => {
-        setProgress({
-          percent: info.percent,
-          detail:
-            info.phase === 'downloading'
-              ? copy.progressDownloadingModel
-              : copy.progressRunningAi,
-        });
-      });
+      const { rgba, width, height } = await ensureSourcePixelsLoaded();
+      const mask = await runOnnxBackgroundRemovalMask(
+        file,
+        width,
+        height,
+        (info) => {
+          setProgress({
+            percent: info.percent,
+            detail:
+              info.phase === 'downloading'
+                ? copy.progressDownloadingModel
+                : copy.progressRunningAi,
+          });
+        },
+        { sourceRgba: rgba },
+      );
 
       initialMaskRef.current = new Uint8ClampedArray(mask);
       currentMaskRef.current = new Uint8ClampedArray(mask);
@@ -280,8 +291,20 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
       setPreviewTab('result');
       redrawComposedCanvas(mask, backdropColor, outputFormat, { width, height });
       refreshCacheStats();
-    } catch {
-      setErrors([copy.errors.aiFailed]);
+    } catch (err) {
+      const errSummary =
+        err instanceof Error || (typeof DOMException !== 'undefined' && err instanceof DOMException)
+          ? `${err.name}: ${err.message}`
+          : String(err);
+      const errDetail =
+        err instanceof Error || (typeof DOMException !== 'undefined' && err instanceof DOMException)
+          ? `${errSummary}\n${err.stack ?? ''}`
+          : errSummary;
+      console.error(`[izikit:remove-bg] AI background removal failed: ${errDetail}`);
+      const trimmedSummary = errSummary.trim().slice(0, 220);
+      setErrors(
+        trimmedSummary ? [copy.errors.aiFailed, `Detail: ${trimmedSummary}`] : [copy.errors.aiFailed],
+      );
     } finally {
       setIsProcessing(false);
     }
@@ -351,6 +374,10 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
     downloadBlob(resultBlob, `${stem}.${ext}`);
   };
 
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFileSelected(incomingFiles),
+  );
+
   const backdropOptions = [
     { value: 'transparent', label: copy.bgTransparent },
     { value: '#FFFFFF', label: copy.bgWhite },
@@ -364,6 +391,11 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -643,6 +675,39 @@ export default function RemoveBgTool({ locale }: RemoveBgToolProps) {
                       <span>{copy.downloadButton}</span>
                     </button>
                   </div>
+                )}
+
+                {hasMask && resultBlob && (
+                  <HandoffChainBar
+                    locale={locale}
+                    sourceRoute="/remove-bg"
+                    originSource={handoffSource}
+                    originMeta={handoffMeta}
+                    getFiles={() => {
+                      const ext =
+                        outputFormat === 'image/png'
+                          ? 'png'
+                          : outputFormat === 'image/webp'
+                            ? 'webp'
+                            : 'jpg';
+                      const stem = sanitizeFilename(
+                        outputName.replace(/\.[^/.]+$/, ''),
+                        'izikit-cutout',
+                      );
+                      return [new File([resultBlob], `${stem}.${ext}`, { type: outputFormat })];
+                    }}
+                    actions={[
+                      {
+                        label:
+                          locale === 'id' ? 'Kompres < 200 KB (JPG)' : 'Compress < 200 KB (JPG)',
+                        href: '/compress-image?preset=200kb',
+                      },
+                      {
+                        label: locale === 'id' ? 'Cetak grid pasfoto' : 'Passport photo grid',
+                        href: '/passport-photo-grid',
+                      },
+                    ]}
+                  />
                 )}
               </div>
 

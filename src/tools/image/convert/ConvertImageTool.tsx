@@ -10,9 +10,12 @@ import {
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadAsZip, downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon, TrashIcon } from '@/components/shared/icons';
 import { buildConversionPlan } from './convert.logic';
@@ -59,6 +62,18 @@ export default function ConvertImageTool({
   const [targetFormat, setTargetFormat] = useState<ConvertibleImageMime>(
     defaultTargetFormat ?? (isHeicMode ? 'image/jpeg' : 'image/webp'),
   );
+
+  useEffect(() => {
+    try {
+      const param = new URLSearchParams(window.location.search).get('format')?.toLowerCase();
+      if (param === 'jpg' || param === 'jpeg') setTargetFormat('image/jpeg');
+      else if (param === 'png') setTargetFormat('image/png');
+      else if (param === 'webp') setTargetFormat('image/webp');
+      else if (param === 'avif') setTargetFormat('image/avif');
+    } catch {
+      // Ignore URL parse errors
+    }
+  }, []);
   const [quality, setQuality] = useState(90);
   const [jpegBackground, setJpegBackground] = useState('#FFFFFF');
   const [errors, setErrors] = useState<string[]>([]);
@@ -100,6 +115,10 @@ export default function ConvertImageTool({
       setItems((prev) => [...prev, ...nextItems]);
     }
   };
+
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFilesSelected(incomingFiles),
+  );
 
   const removeItem = (id: string) => {
     setItems((prev) => {
@@ -251,6 +270,11 @@ export default function ConvertImageTool({
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -440,6 +464,33 @@ export default function ConvertImageTool({
                   )}
                 </div>
               </div>
+
+              <HandoffChainBar
+                locale={locale}
+                sourceRoute={isHeicMode ? '/heic-to-jpg' : '/convert-image'}
+                originSource={handoffSource}
+                originMeta={handoffMeta}
+                getFiles={() =>
+                  doneItems.map(
+                    (item) =>
+                      new File(
+                        [item.convertedBlob!],
+                        item.outputFilename || item.file.name,
+                        { type: item.outputMime || item.convertedBlob!.type || 'image/jpeg' },
+                      ),
+                  )
+                }
+                actions={[
+                  {
+                    label: locale === 'id' ? 'Kompres < 200 KB (JPG)' : 'Compress < 200 KB (JPG)',
+                    href: '/compress-image?preset=200kb',
+                  },
+                  {
+                    label: locale === 'id' ? 'Gabung ke PDF' : 'Image to PDF',
+                    href: '/image-to-pdf',
+                  },
+                ]}
+              />
 
               <SupportCard
                 locale={locale}

@@ -8,6 +8,7 @@ import { downloadBlob } from '@/lib/download';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
 import SupportCard from '@/components/shared/SupportCard';
 import {
   ArrowDownIcon,
@@ -436,6 +437,21 @@ export default function MergePdfTool({ locale }: MergePdfToolProps) {
               </button>
             </div>
           </div>
+
+          <HandoffChainBar
+            locale={locale}
+            sourceRoute="/merge-pdf"
+            className="mt-4"
+            getFiles={() => [
+              new File([result.blob], result.filename, { type: 'application/pdf' }),
+            ]}
+            actions={[
+              {
+                label: locale === 'id' ? 'Kompres PDF < 1 MB' : 'Compress PDF < 1 MB',
+                href: '/compress-pdf?preset=1mb',
+              },
+            ]}
+          />
 
           <SupportCard
             locale={locale}

@@ -8,7 +8,11 @@ import {
   getPdfTargetBytes,
   parsePdfTargetPreset,
 } from '@/tools/pdf/compress/plan';
-import { CPNS_DOC_SLOTS, validateCpnsBuffer } from '../cpns-checker.logic';
+import {
+  CPNS_DOC_SLOTS,
+  parseCpnsPersistedChecklist,
+  validateCpnsBuffer,
+} from '../cpns-checker.logic';
 
 const FAKE_JPEG_HEADER = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10]);
 const FAKE_PNG_HEADER = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
@@ -53,7 +57,7 @@ describe('CPNS target-size presets & SSCASN file checker', () => {
     });
     expect(wrongPng.status).toBe('fail');
     expect(wrongPng.detectedFormat).toBe('PNG');
-    expect(wrongPng.fixes.some((f) => f.href === '/convert-image')).toBe(true);
+    expect(wrongPng.fixes.some((f) => f.href === '/convert-image?format=jpg')).toBe(true);
   });
 
   it('validates real PDF documents and suggests /compress-pdf?preset=1mb when oversized', async () => {
@@ -77,5 +81,64 @@ describe('CPNS target-size presets & SSCASN file checker', () => {
     });
     expect(tooBig.status).toBe('fail');
     expect(tooBig.fixes.some((f) => f.href === '/compress-pdf?preset=1mb')).toBe(true);
+  });
+
+  it('adds advisory warnings for landscape or low-resolution pasfoto without failing valid JPG', async () => {
+    const pasfotoSlot = CPNS_DOC_SLOTS.find((s) => s.id === 'pasfoto')!;
+
+    const portraitOk = await validateCpnsBuffer(pasfotoSlot, {
+      name: 'pasfoto-portrait.jpg',
+      size: 120 * 1024,
+      bytes: FAKE_JPEG_HEADER,
+      dimensions: { width: 472, height: 709 },
+    });
+    expect(portraitOk.status).toBe('pass');
+    expect(portraitOk.warnings).toHaveLength(0);
+    expect(portraitOk.dimensions).toEqual({ width: 472, height: 709 });
+
+    const landscapeLowRes = await validateCpnsBuffer(pasfotoSlot, {
+      name: 'pasfoto-landscape.jpg',
+      size: 95 * 1024,
+      bytes: FAKE_JPEG_HEADER,
+      dimensions: { width: 280, height: 200 },
+    });
+    expect(landscapeLowRes.status).toBe('pass');
+    expect(landscapeLowRes.warnings).toHaveLength(2);
+  });
+
+  it('parses persisted checklist metadata safely and ignores corrupt or unknown slots', () => {
+    expect(parseCpnsPersistedChecklist(null)).toBeNull();
+    expect(parseCpnsPersistedChecklist('{not-json')).toBeNull();
+
+    const parsed = parseCpnsPersistedChecklist(
+      JSON.stringify({
+        results: {
+          pasfoto: {
+            status: 'pass',
+            fileName: 'pasfoto.jpg',
+            fileSizeBytes: 150000,
+            maxKbUsed: 200,
+            detectedFormat: 'JPG',
+            issues: [],
+            warnings: [],
+            fixes: [],
+          },
+          unknownSlot: {
+            status: 'pass',
+            fileName: 'x.jpg',
+            fileSizeBytes: 100,
+            maxKbUsed: 200,
+            detectedFormat: 'JPG',
+            issues: [],
+            fixes: [],
+          },
+        },
+        maxKbOverrides: { pasfoto: 300, invalidSlot: 500 },
+      }),
+    );
+
+    expect(parsed).not.toBeNull();
+    expect(Object.keys(parsed!.results)).toEqual(['pasfoto']);
+    expect(parsed!.maxKbOverrides).toEqual({ pasfoto: 300 });
   });
 });

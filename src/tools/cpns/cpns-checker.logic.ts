@@ -22,6 +22,11 @@ export interface CpnsDocSlot {
   quickTools: readonly CpnsFixAction[];
 }
 
+export interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
 export interface CpnsCheckResult {
   status: 'pass' | 'fail';
   fileName: string;
@@ -29,8 +34,59 @@ export interface CpnsCheckResult {
   maxKbUsed: number;
   detectedFormat: CpnsDetectedFormat;
   pageCount?: number;
+  dimensions?: ImageDimensions;
   issues: string[];
+  warnings: string[];
   fixes: CpnsFixAction[];
+}
+
+export interface CpnsPersistedChecklist {
+  results: Record<string, CpnsCheckResult>;
+  maxKbOverrides: Record<string, number>;
+}
+
+export const CPNS_SESSION_STORAGE_KEY = 'izikit-cpns-checklist-v1';
+
+export function parseCpnsPersistedChecklist(raw: string | null): CpnsPersistedChecklist | null {
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as Partial<CpnsPersistedChecklist>;
+    if (!parsed || typeof parsed !== 'object') return null;
+    const validSlotIds = new Set(CPNS_DOC_SLOTS.map((s) => s.id));
+
+    const results: Record<string, CpnsCheckResult> = {};
+    if (parsed.results && typeof parsed.results === 'object') {
+      for (const [slotId, entry] of Object.entries(parsed.results)) {
+        if (!validSlotIds.has(slotId) || !entry || typeof entry !== 'object') continue;
+        if (
+          (entry.status === 'pass' || entry.status === 'fail') &&
+          typeof entry.fileName === 'string' &&
+          typeof entry.fileSizeBytes === 'number' &&
+          typeof entry.maxKbUsed === 'number' &&
+          Array.isArray(entry.issues) &&
+          Array.isArray(entry.fixes)
+        ) {
+          results[slotId] = {
+            ...entry,
+            warnings: Array.isArray(entry.warnings) ? entry.warnings : [],
+          };
+        }
+      }
+    }
+
+    const maxKbOverrides: Record<string, number> = {};
+    if (parsed.maxKbOverrides && typeof parsed.maxKbOverrides === 'object') {
+      for (const [slotId, kb] of Object.entries(parsed.maxKbOverrides)) {
+        if (validSlotIds.has(slotId) && typeof kb === 'number' && Number.isFinite(kb) && kb > 0) {
+          maxKbOverrides[slotId] = kb;
+        }
+      }
+    }
+
+    return { results, maxKbOverrides };
+  } catch {
+    return null;
+  }
 }
 
 export const CPNS_DOC_SLOTS: readonly CpnsDocSlot[] = [
@@ -143,13 +199,19 @@ function dedupeFixes(fixes: CpnsFixAction[]): CpnsFixAction[] {
  */
 export async function validateCpnsBuffer(
   slot: CpnsDocSlot,
-  input: { name: string; size: number; bytes: Uint8Array },
+  input: {
+    name: string;
+    size: number;
+    bytes: Uint8Array;
+    dimensions?: ImageDimensions;
+  },
   maxKbOverride?: number,
 ): Promise<CpnsCheckResult> {
   const maxKbUsed = maxKbOverride ?? slot.defaultMaxKb;
   const maxBytes = maxKbUsed * 1024;
   const detectedFormat = detectFileFormatFromBytes(input.bytes);
   const issues: string[] = [];
+  const warnings: string[] = [];
   const fixes: CpnsFixAction[] = [];
   let pageCount: number | undefined;
 
@@ -160,7 +222,7 @@ export async function validateCpnsBuffer(
         fixes.push({ label: 'Ubah HEIC ke JPG', href: '/heic-to-jpg' });
       } else if (detectedFormat === 'PNG' || detectedFormat === 'WEBP' || detectedFormat === 'AVIF') {
         issues.push(`File berformat ${detectedFormat}, padahal syarat berkas ini wajib JPG/JPEG.`);
-        fixes.push({ label: 'Konversi ke JPG', href: '/convert-image' });
+        fixes.push({ label: 'Konversi ke JPG', href: '/convert-image?format=jpg' });
       } else if (detectedFormat === 'PDF') {
         issues.push('File berformat PDF, padahal syarat berkas ini wajib foto JPG/JPEG.');
         fixes.push({ label: 'PDF ke JPG', href: '/pdf-to-image' });
@@ -177,6 +239,20 @@ export async function validateCpnsBuffer(
         label: `Kompres ke < ${maxKbUsed <= 200 ? '200 KB' : '500 KB'} JPG`,
         href: `/compress-image?preset=${preset}`,
       });
+    }
+
+    if (input.dimensions && input.dimensions.width > 0 && input.dimensions.height > 0) {
+      const { width, height } = input.dimensions;
+      if (slot.id === 'pasfoto' && width > height) {
+        warnings.push(
+          'Orientasi pasfoto terdeteksi mendatar (landscape). Pasfoto SSCASN umumnya vertikal (3×4 atau 4×6).',
+        );
+      }
+      if (Math.min(width, height) < 300) {
+        warnings.push(
+          `Resolusi gambar cukup kecil (${width}×${height} px) dan berisiko terlihat buram saat diverifikasi.`,
+        );
+      }
     }
   } else {
     if (detectedFormat !== 'PDF') {
@@ -226,7 +302,9 @@ export async function validateCpnsBuffer(
     maxKbUsed,
     detectedFormat,
     pageCount,
+    dimensions: input.dimensions,
     issues,
+    warnings,
     fixes: dedupeFixes(fixes),
   };
 }

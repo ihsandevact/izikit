@@ -7,9 +7,12 @@ import {
   type SupportedImageMime,
 } from '@/lib/file-validation';
 import { downloadAsZip, downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon } from '@/components/shared/icons';
 import { SplitPdfError } from '@/tools/pdf/split/range-parser';
@@ -116,6 +119,10 @@ export default function PdfToImageTool({ locale }: PdfToImageToolProps) {
       setIsInspecting(false);
     }
   };
+
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFilesSelected(incomingFiles),
+  );
 
   const resetAll = () => {
     abortRef.current?.abort();
@@ -227,6 +234,11 @@ export default function PdfToImageTool({ locale }: PdfToImageToolProps) {
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -449,6 +461,25 @@ export default function PdfToImageTool({ locale }: PdfToImageToolProps) {
                     )}
                   </div>
                 </div>
+
+                <HandoffChainBar
+                  locale={locale}
+                  sourceRoute="/pdf-to-image"
+                  originSource={handoffSource}
+                  originMeta={handoffMeta}
+                  getFiles={() =>
+                    results.map(
+                      (item) =>
+                        new File([item.blob], item.filename, { type: item.blob.type || format }),
+                    )
+                  }
+                  actions={[
+                    {
+                      label: locale === 'id' ? 'Kompres < 200 KB (JPG)' : 'Compress < 200 KB (JPG)',
+                      href: '/compress-image?preset=200kb',
+                    },
+                  ]}
+                />
 
                 <SupportCard
                   locale={locale}
