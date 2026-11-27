@@ -9,7 +9,15 @@ import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon } from '@/components/shared/icons';
-import type { CompressPdfMode, PdfPageSizeTarget, RasterizeDpi } from './plan';
+import {
+  getPdfTargetAttempts,
+  getPdfTargetBytes,
+  parsePdfTargetPreset,
+  type CompressPdfMode,
+  type PdfPageSizeTarget,
+  type PdfTargetPresetKey,
+  type RasterizeDpi,
+} from './plan';
 import { rasterizePdfToJpegs } from './rasterize';
 import type {
   CompressPdfInspectResponse,
@@ -52,7 +60,29 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
   const [inspecting, setInspecting] = useState(false);
 
   const [mode, setMode] = useState<CompressPdfMode>('lossless');
+  const [targetPreset, setTargetPreset] = useState<PdfTargetPresetKey>('custom');
   const [stripMetadata, setStripMetadata] = useState(true);
+
+  const applyTargetPreset = (preset: PdfTargetPresetKey) => {
+    setTargetPreset(preset);
+    setOutput(null);
+    if (preset !== 'custom') {
+      setMode('rasterize');
+      setStripMetadata(true);
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const param = new URLSearchParams(window.location.search).get('preset');
+      const parsed = parsePdfTargetPreset(param);
+      if (parsed !== 'custom') {
+        applyTargetPreset(parsed);
+      }
+    } catch {
+      // Ignore URL parse errors
+    }
+  }, []);
   const [pageSize, setPageSize] = useState<PdfPageSizeTarget>('keep');
   const [dpi, setDpi] = useState<RasterizeDpi>(120);
   const [jpegQuality, setJpegQuality] = useState(0.72);
@@ -172,41 +202,65 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
           },
         );
       } else {
-        const sourceBuffer = await file.arrayBuffer();
-        const renderedPages = await rasterizePdfToJpegs(sourceBuffer, {
-          dpi,
-          jpegQuality,
-          signal: controller.signal,
-          onPageRendered: (current, total) => {
-            const pct = Math.max(8, Math.round((current / total) * 70));
-            setProgress({
-              percent: pct,
-              detail: `${copy.progressRendering} ${current}/${total}`,
-            });
-          },
-        });
+        const targetBytes = getPdfTargetBytes(targetPreset);
+        const attempts = targetBytes
+          ? getPdfTargetAttempts()
+          : [{ dpi, jpegQuality }];
 
-        setProgress({ percent: 75, detail: copy.progressPacking });
-        const transferables = renderedPages.map((p) => p.jpegBuffer);
+        let bestResponse: CompressPdfWorkerResponse | null = null;
 
-        response = await runWorkerTask<CompressPdfWorkerRequest, CompressPdfWorkerResponse>(
-          createCompressPdfWorker,
-          {
-            action: 'pack-jpegs',
-            pages: renderedPages,
-            originalByteLength: file.size,
-            pageSize,
-            stripMetadata,
-          },
-          {
-            transfer: transferables,
+        for (let attemptIdx = 0; attemptIdx < attempts.length; attemptIdx += 1) {
+          const step = attempts[attemptIdx];
+          const sourceBuffer = await file.arrayBuffer();
+          const renderedPages = await rasterizePdfToJpegs(sourceBuffer, {
+            dpi: step.dpi,
+            jpegQuality: step.jpegQuality,
             signal: controller.signal,
-            onProgress: (evt) => {
-              const mapped = 75 + Math.round(evt.percent * 0.25);
-              setProgress({ percent: Math.min(100, mapped), detail: copy.progressPacking });
+            onPageRendered: (current, total) => {
+              const basePct = Math.round((attemptIdx / attempts.length) * 85);
+              const stepSpan = Math.round(70 / attempts.length);
+              const pct = Math.max(8, basePct + Math.round((current / total) * stepSpan));
+              setProgress({
+                percent: Math.min(92, pct),
+                detail: targetBytes
+                  ? `${copy.progressRendering} ${current}/${total} (${step.dpi} DPI)`
+                  : `${copy.progressRendering} ${current}/${total}`,
+              });
             },
-          },
-        );
+          });
+
+          setProgress({ percent: 85, detail: copy.progressPacking });
+          const transferables = renderedPages.map((p) => p.jpegBuffer);
+
+          const candidate = await runWorkerTask<CompressPdfWorkerRequest, CompressPdfWorkerResponse>(
+            createCompressPdfWorker,
+            {
+              action: 'pack-jpegs',
+              pages: renderedPages,
+              originalByteLength: file.size,
+              pageSize,
+              stripMetadata,
+            },
+            {
+              transfer: transferables,
+              signal: controller.signal,
+              onProgress: (evt) => {
+                const mapped = 85 + Math.round(evt.percent * 0.15);
+                setProgress({ percent: Math.min(100, mapped), detail: copy.progressPacking });
+              },
+            },
+          );
+
+          if (!bestResponse || candidate.finalBytes < bestResponse.finalBytes) {
+            bestResponse = candidate;
+          }
+
+          if (targetBytes && candidate.finalBytes <= targetBytes) {
+            break;
+          }
+        }
+
+        response = bestResponse!;
       }
 
       const safeFilename = sanitizeFilename(
@@ -355,6 +409,34 @@ export default function CompressPdfTool({ locale }: CompressPdfToolProps) {
                 <p className="m-0 text-xs leading-relaxed text-[var(--ink-muted)]">
                   {copy.rasterizeNotice}
                 </p>
+
+                {/* Quick Target Size Presets (CPNS / SSCASN) */}
+                <div className="flex flex-wrap items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-recess)]/60 px-3 py-2.5">
+                  <span className="text-xs font-bold text-[var(--ink-muted)]">
+                    {locale === 'id' ? 'Target Ukuran:' : 'Target Size:'}
+                  </span>
+                  {(
+                    [
+                      ['custom', locale === 'id' ? 'Manual' : 'Manual'],
+                      ['500kb', '< 500 KB'],
+                      ['800kb', '< 800 KB'],
+                      ['1mb', locale === 'id' ? '< 1 MB (CPNS/SSCASN)' : '< 1 MB'],
+                    ] as Array<[PdfTargetPresetKey, string]>
+                  ).map(([key, label]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => applyTargetPreset(key)}
+                      className={`font-data inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-semibold transition-colors ${
+                        targetPreset === key
+                          ? 'border-[var(--accent)] bg-[var(--accent-pill)] text-[var(--accent-pill-ink)]'
+                          : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--ink-primary)] hover:border-[var(--accent)]'
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="space-y-1.5">

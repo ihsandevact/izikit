@@ -1,0 +1,207 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getSeoUrls } from '@/i18n';
+import { ShieldLocalIcon } from '@/components/shared/icons';
+import CpnsCheckerTool from '@/tools/cpns/CpnsCheckerTool';
+
+const locale = 'id';
+const seo = getSeoUrls('/cpns', locale);
+
+const title = 'Paket berkas CPNS & cek syarat SSCASN gratis | izikit';
+const description =
+  'Siapkan berkas pendaftaran CPNS dan PPPK SSCASN langsung di browser tanpa kirim KTP atau ijazah ke server: pasfoto latar merah, kompres foto di bawah 200 KB, kompres PDF di bawah 1 MB, dan cek file.';
+
+const primaryTools = [
+  {
+    title: 'Ganti latar pasfoto merah atau biru',
+    desc: 'Hapus background foto langsung di browser lalu ganti ke warna merah atau biru resmi instansi.',
+    href: '/remove-bg',
+  },
+  {
+    title: 'Kompres PDF di bawah 1 MB',
+    desc: 'Perkecil scan ijazah, transkrip, dan surat lamaran agar masuk batas 500 KB hingga 1000 KB.',
+    href: '/compress-pdf?preset=1mb',
+  },
+];
+
+const supportingTools = [
+  {
+    title: 'Kompres foto di bawah 200 KB (JPG)',
+    desc: 'Kecilkan pasfoto, KTP, dan swafoto ke format JPG di bawah batas 200 KB.',
+    href: '/compress-image?preset=200kb',
+  },
+  {
+    title: 'Gabung ijazah dan transkrip PDF',
+    desc: 'Satukan beberapa lembar scan dokumen atau sertifikat menjadi satu file PDF berurutan.',
+    href: '/merge-pdf',
+  },
+  {
+    title: 'Scan dokumen dari kamera HP ke PDF',
+    desc: 'Potret dokumen kertas lalu jernihkan kontrasnya dengan filter scan warna atau hitam-putih.',
+    href: '/pdf-scanner',
+  },
+  {
+    title: 'Ubah surat lamaran Word ke PDF',
+    desc: 'Konversi file .docx ke PDF, lalu lanjutkan tanda tangan di Edit PDF bila perlu.',
+    href: '/word-to-pdf',
+  },
+];
+
+const faqs = [
+  {
+    q: 'Apakah KTP, KK, dan ijazah saya diunggah ke server saat diproses di izikit?',
+    a: 'Tidak. Semua alat di izikit berjalan di memori browser perangkatmu. Tidak ada file yang dikirim ke server mana pun, dan kamu bisa memeriksanya sendiri lewat tab Network di DevTools (F12).',
+  },
+  {
+    q: 'Kenapa foto KTP atau pasfoto dari iPhone sering ditolak portal SSCASN?',
+    a: 'Kamera iPhone menyimpan foto dalam format HEIC secara default, sedangkan portal SSCASN hanya menerima JPG/JPEG. Ubah dulu fotonya di tool HEIC ke JPG, lalu kompres ke bawah 200 KB.',
+  },
+  {
+    q: 'Bagaimana cara mengecilkan PDF scan ijazah dan transkrip agar di bawah 1 MB?',
+    a: 'Buka Kompres PDF, pilih preset < 1 MB (CPNS/SSCASN), lalu klik Kompres. izikit menyesuaikan DPI dan kualitas JPEG secara bertahap sampai ukuran file masuk batas yang dipilih.',
+  },
+  {
+    q: 'PDF saya ditolak karena terkunci sandi atau gagal dibaca di SSCASN. Apa solusinya?',
+    a: 'Buka proteksi sandinya lewat Kunci & Buka Sandi PDF. Jika file berisi formulir atau tanda tangan yang tidak terbaca rapi, satukan halamannya lewat Flatten PDF.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  name: title,
+  url: seo.canonical,
+  inLanguage: 'id-ID',
+  mainEntity: faqs.map((item) => ({
+    '@type': 'Question',
+    name: item.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: item.a,
+    },
+  })),
+};
+---
+
+<BaseLayout
+  locale={locale}
+  currentRoute="/cpns"
+  title={title}
+  description={description}
+  jsonLd={jsonLd}
+>
+  <section class="mx-auto flex max-w-5xl flex-col gap-8 px-4 py-6 sm:gap-10 sm:px-6 sm:py-10">
+    {/* Header */}
+    <header class="flex flex-col gap-3 border-b border-[var(--border-subtle)] pb-6">
+      <h1 class="font-display m-0 text-[clamp(1.65rem,4vw,2.4rem)] leading-tight font-extrabold text-[var(--ink-primary)]">
+        Paket berkas CPNS &amp; PPPK (SSCASN)
+      </h1>
+      <p class="m-0 max-w-2xl text-sm leading-relaxed text-[var(--ink-muted)] sm:text-base">
+        Siapkan pasfoto latar merah, kecilkan foto KTP di bawah 200 KB, gabung dan kompres PDF di
+        bawah 1 MB, lalu periksa kelayakan berkasmu sebelum unggah ke SSCASN.
+      </p>
+      <p class="m-0 inline-flex items-center gap-1.5 text-xs font-semibold text-[var(--accent)]">
+        <ShieldLocalIcon className="h-3.5 w-3.5 shrink-0" />
+        <span>Semua file diproses lokal di browser. KTP dan ijazah tidak dikirim ke server.</span>
+      </p>
+    </header>
+
+    {/* Primary Interactive Tool First: SSCASN File Checker */}
+    <section aria-labelledby="cpns-checker-heading" class="flex flex-col gap-4">
+      <div class="flex flex-col gap-1">
+        <h2
+          id="cpns-checker-heading"
+          class="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+        >
+          Cek kelayakan berkas SSCASN
+        </h2>
+        <p class="m-0 text-xs text-[var(--ink-muted)] sm:text-sm">
+          Pilih file di bawah ini untuk memeriksa format asli, ukuran file, dan status enkripsi PDF
+          sebelum kamu unggah ke portal pendaftaran.
+        </p>
+      </div>
+      <div class="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-6">
+        <CpnsCheckerTool client:load />
+      </div>
+    </section>
+
+    {/* Varied Hierarchy Tool Shortcuts */}
+    <section aria-labelledby="cpns-tools-heading" class="flex flex-col gap-4">
+      <h2
+        id="cpns-tools-heading"
+        class="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+      >
+        Alat yang paling sering dipakai pelamar CPNS
+      </h2>
+
+      {/* 2 Primary Flagship Actions */}
+      <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2">
+        {
+          primaryTools.map((card) => (
+            <a
+              href={card.href}
+              class="group flex min-h-11 flex-col justify-between gap-2 rounded-2xl border border-[var(--accent-row-border)] bg-[var(--accent-row-bg)] p-5 text-[var(--ink-primary)] no-underline transition-colors hover:border-[var(--accent)]"
+            >
+              <div class="flex flex-col gap-1.5">
+                <h3 class="font-display m-0 text-base font-extrabold text-[var(--ink-primary)] group-hover:text-[var(--link)]">
+                  {card.title}
+                </h3>
+                <p class="m-0 text-xs leading-relaxed text-[var(--ink-muted)] sm:text-sm">
+                  {card.desc}
+                </p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      {/* 4 Compact Supporting Tool Rows */}
+      <div class="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+        {
+          supportingTools.map((card) => (
+            <a
+              href={card.href}
+              class="group flex min-h-11 flex-col justify-center gap-1 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-4 py-3.5 text-[var(--ink-primary)] no-underline transition-colors hover:border-[var(--accent)]"
+            >
+              <h3 class="font-display m-0 text-sm font-bold text-[var(--ink-primary)] group-hover:text-[var(--link)]">
+                {card.title}
+              </h3>
+              <p class="m-0 text-xs leading-relaxed text-[var(--ink-muted)]">{card.desc}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    {/* FAQ */}
+    <section
+      aria-labelledby="cpns-faq-heading"
+      class="rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:p-6"
+    >
+      <h2
+        id="cpns-faq-heading"
+        class="font-display m-0 mb-2 text-base font-extrabold text-[var(--ink-primary)] sm:text-lg"
+      >
+        Pertanyaan umum soal berkas SSCASN
+      </h2>
+      <div class="divide-y divide-[var(--border-subtle)]">
+        {
+          faqs.map((faq) => (
+            <details class="group py-3 first:pt-1 last:pb-1">
+              <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--link)]">
+                <span>{faq.q}</span>
+                <span
+                  aria-hidden="true"
+                  class="font-data shrink-0 text-base text-[var(--ink-muted)] transition-transform group-open:rotate-45"
+                >
+                  +
+                </span>
+              </summary>
+              <p class="m-0 mt-2 text-sm leading-relaxed text-[var(--ink-muted)]">{faq.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+  </section>
+</BaseLayout>

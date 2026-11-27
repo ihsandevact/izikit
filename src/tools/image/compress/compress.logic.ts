@@ -1,11 +1,41 @@
 import type { SupportedImageMime } from '@/lib/file-validation';
 
 export type OutputFormatOption = 'image/webp' | 'original' | 'image/jpeg' | 'image/png';
+export type ImageTargetPresetKey = 'custom' | '200kb' | '500kb';
 
 export interface CompressOptions {
   quality: number; // 10..100
   outputFormat: OutputFormatOption;
   maxWidth: number | null; // null keeps original width
+  targetMaxBytes?: number | null; // optional iterative target-size fit (e.g. CPNS < 200 KB)
+}
+
+export function parseImageTargetPreset(raw: string | null): ImageTargetPresetKey {
+  if (!raw) return 'custom';
+  const norm = raw.trim().toLowerCase();
+  if (norm === '200kb' || norm === 'cpns-200kb') return '200kb';
+  if (norm === '500kb' || norm === 'cpns-500kb') return '500kb';
+  return 'custom';
+}
+
+export function getImageTargetBytes(preset: ImageTargetPresetKey): number | null {
+  // ~97% safety buffer so files stay comfortably below strict portal limits (e.g. SSCASN)
+  if (preset === '200kb') return 194 * 1024;
+  if (preset === '500kb') return 485 * 1024;
+  return null;
+}
+
+export function getImageTargetAttempts(
+  initialMaxWidth: number | null,
+): Array<{ quality: number; maxWidth: number | null }> {
+  const cap = (w: number) => (initialMaxWidth ? Math.min(initialMaxWidth, w) : w);
+  return [
+    { quality: 82, maxWidth: cap(1600) },
+    { quality: 68, maxWidth: cap(1400) },
+    { quality: 54, maxWidth: cap(1200) },
+    { quality: 42, maxWidth: cap(960) },
+    { quality: 32, maxWidth: cap(760) },
+  ];
 }
 
 export interface Dimensions {

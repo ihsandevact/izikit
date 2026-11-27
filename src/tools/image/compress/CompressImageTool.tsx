@@ -13,7 +13,13 @@ import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon, TrashIcon } from '@/components/shared/icons';
-import type { CompressOptions, OutputFormatOption } from './compress.logic';
+import {
+  getImageTargetBytes,
+  parseImageTargetPreset,
+  type CompressOptions,
+  type ImageTargetPresetKey,
+  type OutputFormatOption,
+} from './compress.logic';
 import type {
   CompressWorkerRequest,
   CompressWorkerResponse,
@@ -52,11 +58,40 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
   const maxWidthId = useId();
 
   const [items, setItems] = useState<ImageQueueItem[]>([]);
+  const [targetPreset, setTargetPreset] = useState<ImageTargetPresetKey>('custom');
   const [options, setOptions] = useState<CompressOptions>({
     quality: 80,
     outputFormat: 'image/webp',
     maxWidth: null,
+    targetMaxBytes: null,
   });
+
+  const applyTargetPreset = (preset: ImageTargetPresetKey) => {
+    setTargetPreset(preset);
+    const targetBytes = getImageTargetBytes(preset);
+    if (targetBytes) {
+      setOptions((prev) => ({
+        ...prev,
+        outputFormat: 'image/jpeg',
+        quality: 80,
+        targetMaxBytes: targetBytes,
+      }));
+    } else {
+      setOptions((prev) => ({ ...prev, targetMaxBytes: null }));
+    }
+  };
+
+  useEffect(() => {
+    try {
+      const param = new URLSearchParams(window.location.search).get('preset');
+      const parsed = parseImageTargetPreset(param);
+      if (parsed !== 'custom') {
+        applyTargetPreset(parsed);
+      }
+    } catch {
+      // Ignore URL parse errors in non-browser environments
+    }
+  }, []);
   const [errors, setErrors] = useState<string[]>([]);
   const [isCompressing, setIsCompressing] = useState(false);
   const [isZipping, setIsZipping] = useState(false);
@@ -281,6 +316,33 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
             <legend className="px-1 text-sm font-semibold text-[var(--ink-primary)]">
               {copy.settingsHeading}
             </legend>
+
+            {/* Quick Target Size Presets (CPNS / SSCASN) */}
+            <div className="mt-2 mb-4 flex flex-wrap items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2.5">
+              <span className="text-xs font-bold text-[var(--ink-muted)]">
+                {locale === 'id' ? 'Target Ukuran:' : 'Target Size:'}
+              </span>
+              {(
+                [
+                  ['custom', locale === 'id' ? 'Bebas (Manual)' : 'Manual'],
+                  ['200kb', locale === 'id' ? '< 200 KB JPG (Pasfoto/KTP CPNS)' : '< 200 KB JPG'],
+                  ['500kb', locale === 'id' ? '< 500 KB JPG (Dokumen)' : '< 500 KB JPG'],
+                ] as Array<[ImageTargetPresetKey, string]>
+              ).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    onClick={() => applyTargetPreset(key)}
+                    className={`inline-flex min-h-11 items-center rounded-lg border px-3 text-xs font-semibold transition-colors ${
+                      targetPreset === key
+                        ? 'border-[var(--accent)] bg-[var(--accent-pill)] text-[var(--accent-pill-ink)]'
+                        : 'border-[var(--border-subtle)] bg-[var(--bg-recess)] text-[var(--ink-primary)] hover:border-[var(--accent)]'
+                    }`}
+                  >
+                    {label}
+                  </button>
+              ))}
+            </div>
 
             <div className="mt-2 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               <div className="space-y-1.5">
