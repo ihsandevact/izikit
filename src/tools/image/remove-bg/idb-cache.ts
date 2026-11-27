@@ -29,6 +29,7 @@ function openModelCacheDb(): Promise<IDBDatabase | null> {
       };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => resolve(null);
+      req.onblocked = () => resolve(null);
     } catch {
       resolve(null);
     }
@@ -40,47 +41,60 @@ async function readCachedRecord(url: string): Promise<CachedModelRecord | null> 
   if (!db) return null;
 
   return new Promise((resolve) => {
+    let settled = false;
+    const finish = (val: CachedModelRecord | null) => {
+      if (settled) return;
+      settled = true;
+      db.close();
+      resolve(val);
+    };
+
     try {
       const tx = db.transaction(STORE_NAME, 'readonly');
       const store = tx.objectStore(STORE_NAME);
       const req = store.get(url);
-      req.onsuccess = () => {
-        db.close();
-        resolve((req.result as CachedModelRecord | undefined) ?? null);
-      };
-      req.onerror = () => {
-        db.close();
-        resolve(null);
-      };
+      req.onsuccess = () => finish((req.result as CachedModelRecord | undefined) ?? null);
+      req.onerror = () => finish(null);
+      tx.onabort = () => finish(null);
+      tx.onerror = () => finish(null);
     } catch {
-      db.close();
-      resolve(null);
+      finish(null);
     }
   });
 }
 
-async function writeCachedRecord(record: CachedModelRecord): Promise<void> {
-  const db = await openModelCacheDb();
-  if (!db) return;
+// Serialize IndexedDB writes so 11 parallel 4 MB model chunks never contend or deadlock
+let writeQueue: Promise<void> = Promise.resolve();
 
-  return new Promise((resolve) => {
-    try {
-      const tx = db.transaction(STORE_NAME, 'readwrite');
-      const store = tx.objectStore(STORE_NAME);
-      store.put(record);
-      tx.oncomplete = () => {
-        db.close();
-        resolve();
-      };
-      tx.onerror = () => {
-        db.close();
-        resolve();
-      };
-    } catch {
-      db.close();
-      resolve();
-    }
-  });
+function writeCachedRecord(record: CachedModelRecord): Promise<void> {
+  writeQueue = writeQueue
+    .catch(() => {})
+    .then(async () => {
+      const db = await openModelCacheDb();
+      if (!db) return;
+
+      await new Promise<void>((resolve) => {
+        let settled = false;
+        const finish = () => {
+          if (settled) return;
+          settled = true;
+          db.close();
+          resolve();
+        };
+
+        try {
+          const tx = db.transaction(STORE_NAME, 'readwrite');
+          tx.objectStore(STORE_NAME).put(record);
+          tx.oncomplete = finish;
+          tx.onerror = finish;
+          tx.onabort = finish;
+        } catch {
+          finish();
+        }
+      });
+    });
+
+  return writeQueue;
 }
 
 export async function getCachedModelStats(): Promise<ModelCacheStats> {
@@ -88,6 +102,14 @@ export async function getCachedModelStats(): Promise<ModelCacheStats> {
   if (!db) return { entryCount: 0, totalBytes: 0 };
 
   return new Promise((resolve) => {
+    let settled = false;
+    const finish = (val: ModelCacheStats) => {
+      if (settled) return;
+      settled = true;
+      db.close();
+      resolve(val);
+    };
+
     try {
       const tx = db.transaction(STORE_NAME, 'readonly');
       const store = tx.objectStore(STORE_NAME);
@@ -95,16 +117,13 @@ export async function getCachedModelStats(): Promise<ModelCacheStats> {
       req.onsuccess = () => {
         const rows = (req.result as CachedModelRecord[] | undefined) ?? [];
         const totalBytes = rows.reduce((sum, r) => sum + (r.buffer?.byteLength ?? 0), 0);
-        db.close();
-        resolve({ entryCount: rows.length, totalBytes });
+        finish({ entryCount: rows.length, totalBytes });
       };
-      req.onerror = () => {
-        db.close();
-        resolve({ entryCount: 0, totalBytes: 0 });
-      };
+      req.onerror = () => finish({ entryCount: 0, totalBytes: 0 });
+      tx.onabort = () => finish({ entryCount: 0, totalBytes: 0 });
+      tx.onerror = () => finish({ entryCount: 0, totalBytes: 0 });
     } catch {
-      db.close();
-      resolve({ entryCount: 0, totalBytes: 0 });
+      finish({ entryCount: 0, totalBytes: 0 });
     }
   });
 }
@@ -114,25 +133,30 @@ export async function clearCachedModels(): Promise<void> {
   if (!db) return;
 
   return new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      db.close();
+      resolve();
+    };
+
     try {
       const tx = db.transaction(STORE_NAME, 'readwrite');
       tx.objectStore(STORE_NAME).clear();
-      tx.oncomplete = () => {
-        db.close();
-        resolve();
-      };
-      tx.onerror = () => {
-        db.close();
-        resolve();
-      };
+      tx.oncomplete = finish;
+      tx.onerror = finish;
+      tx.onabort = finish;
     } catch {
-      db.close();
-      resolve();
+      finish();
     }
   });
 }
 
 function isModelAssetUrl(url: string): boolean {
+  if (url.startsWith('blob:') || url.startsWith('data:')) {
+    return false;
+  }
   return (
     url.includes('staticimgly.com') ||
     url.includes('background-removal-data') ||
@@ -145,7 +169,7 @@ let fetchInterceptorInstalled = false;
 
 /**
  * Installs a transparent fetch wrapper that serves ONNX/WASM model files from
- * IndexedDB when available and persists downloaded chunks on first fetch.
+ * IndexedDB when available and persists downloaded chunks asynchronously on first fetch.
  */
 export function ensureIndexedDbModelFetchCache(): void {
   if (fetchInterceptorInstalled || typeof window === 'undefined' || typeof window.fetch !== 'function') {
@@ -178,21 +202,30 @@ export function ensureIndexedDbModelFetchCache(): void {
     }
 
     const response = await nativeFetch(input, init);
-    if (response.ok) {
-      try {
-        const clone = response.clone();
-        const buffer = await clone.arrayBuffer();
-        const contentType = clone.headers.get('Content-Type') || 'application/octet-stream';
-        await writeCachedRecord({
-          url,
-          buffer,
-          contentType,
-          updatedAt: Date.now(),
-        });
-      } catch {
-        // Ignore IndexedDB quota errors; normal network response still proceeds
-      }
+    if (!response.ok) {
+      return response;
     }
-    return response;
+
+    const contentType = response.headers.get('Content-Type') || 'application/octet-stream';
+    const buffer = await response.arrayBuffer();
+
+    // Persist asynchronously without blocking the fetch return or teeing streams
+    if (buffer.byteLength > 0) {
+      void writeCachedRecord({
+        url,
+        buffer: buffer.slice(0),
+        contentType,
+        updatedAt: Date.now(),
+      });
+    }
+
+    return new Response(buffer, {
+      status: response.status,
+      statusText: response.statusText,
+      headers: {
+        'Content-Type': contentType,
+        'Content-Length': String(buffer.byteLength),
+      },
+    });
   };
 }
