@@ -212,13 +212,18 @@ const serializedJsonLd = jsonLd
       (function () {
         try {
           var splash = document.getElementById('izikit-splash');
-          var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
           var alreadyShown = false;
           try {
             alreadyShown = sessionStorage.getItem('izikit-splash-shown') === '1';
           } catch (e) {}
 
-          if (splash && !alreadyShown && !reduced) {
+          var isReload = false;
+          try {
+            var navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+            isReload = Boolean(navEntries && navEntries[0] && navEntries[0].type === 'reload');
+          } catch (e) {}
+
+          if (splash && (!alreadyShown || isReload)) {
             splash.hidden = false;
             try {
               sessionStorage.setItem('izikit-splash-shown', '1');
@@ -231,17 +236,23 @@ const serializedJsonLd = jsonLd
               splash.classList.add('is-hiding');
               window.setTimeout(function () {
                 splash.hidden = true;
-              }, 240);
+              }, 260);
+            };
+
+            var minShowMs = 650;
+            var startedAt = Date.now();
+            var scheduleDismiss = function () {
+              var elapsed = Date.now() - startedAt;
+              var remaining = Math.max(0, minShowMs - elapsed);
+              window.setTimeout(dismissSplash, remaining);
             };
 
             if (document.readyState === 'complete') {
-              window.setTimeout(dismissSplash, 260);
+              scheduleDismiss();
             } else {
-              window.addEventListener('DOMContentLoaded', function () {
-                window.setTimeout(dismissSplash, 280);
-              });
+              window.addEventListener('DOMContentLoaded', scheduleDismiss);
             }
-            window.setTimeout(dismissSplash, 1100);
+            window.setTimeout(dismissSplash, 1600);
           }
 
           var loader = document.getElementById('izikit-route-loader');
