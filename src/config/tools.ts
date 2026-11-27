@@ -46,7 +46,14 @@ export type ToolIconKey =
   | 'text-diff'
   | 'markdown-to-pdf'
   | 'password-generator'
-  | 'audio-tools';
+  | 'audio-tools'
+  | 'crop-pdf'
+  | 'redact-pdf'
+  | 'pdf-reader'
+  | 'excel-csv-to-pdf'
+  | 'txt-to-pdf'
+  | 'zip-to-pdf'
+  | 'html-to-pdf';
 
 export interface ToolDefinition {
   id: string;
@@ -56,7 +63,7 @@ export interface ToolDefinition {
   badge?: ToolBadge;
   formatLabel: string;
   status: ToolStatus;
-  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   icon: ToolIconKey;
   acceptedExtensions: string[];
   relatedToolIds?: readonly string[];
@@ -749,6 +756,111 @@ export const TOOLS: readonly ToolDefinition[] = [
     keywords: {
       id: ['potong audio', 'gabung audio', 'rekam suara', 'konversi wav mp3'],
       en: ['trim audio', 'merge audio', 'voice recorder', 'audio cutter'],
+    },
+  },
+  {
+    id: 'crop-pdf',
+    slug: 'crop-pdf',
+    category: 'pdf',
+    group: 'pdf-edit-security',
+    formatLabel: 'CROP PDF',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'crop-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['crop pdf', 'potong margin pdf', 'pangkas halaman pdf'],
+      en: ['crop pdf', 'trim pdf margins', 'pdf cropper'],
+    },
+  },
+  {
+    id: 'redact-pdf',
+    slug: 'redact-pdf',
+    category: 'pdf',
+    group: 'pdf-edit-security',
+    formatLabel: 'REDACT PDF',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'redact-pdf',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['redact pdf', 'sensor pdf', 'hitamkan teks sensitif pdf', 'hapus data rahasia pdf'],
+      en: ['redact pdf', 'black out pdf text', 'remove sensitive info pdf'],
+    },
+  },
+  {
+    id: 'pdf-reader',
+    slug: 'pdf-reader',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'PDF VIEWER',
+    status: 'coming-soon',
+    phase: 10,
+    icon: 'pdf-reader',
+    acceptedExtensions: ['.pdf'],
+    keywords: {
+      id: ['baca pdf', 'pdf reader', 'penampil pdf online', 'cetak pdf'],
+      en: ['pdf reader', 'pdf viewer', 'open pdf in browser', 'print pdf'],
+    },
+  },
+  {
+    id: 'excel-csv-to-pdf',
+    slug: 'excel-csv-to-pdf',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'XLSX / CSV → PDF',
+    status: 'coming-soon',
+    phase: 12,
+    icon: 'excel-csv-to-pdf',
+    acceptedExtensions: ['.xlsx', '.csv'],
+    keywords: {
+      id: ['excel ke pdf', 'csv ke pdf', 'xlsx ke pdf', 'tabel ke pdf'],
+      en: ['excel to pdf', 'csv to pdf', 'xlsx to pdf', 'spreadsheet to pdf'],
+    },
+  },
+  {
+    id: 'txt-to-pdf',
+    slug: 'txt-to-pdf',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'TXT → PDF',
+    status: 'coming-soon',
+    phase: 12,
+    icon: 'txt-to-pdf',
+    acceptedExtensions: ['.txt', '.log'],
+    keywords: {
+      id: ['txt ke pdf', 'teks ke pdf', 'ubah catatan ke pdf'],
+      en: ['txt to pdf', 'text to pdf', 'plain text to pdf'],
+    },
+  },
+  {
+    id: 'zip-to-pdf',
+    slug: 'zip-to-pdf',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'ZIP → PDF',
+    status: 'coming-soon',
+    phase: 12,
+    icon: 'zip-to-pdf',
+    acceptedExtensions: ['.zip'],
+    keywords: {
+      id: ['zip ke pdf', 'ekstrak zip ke pdf', 'gabung isi zip jadi pdf'],
+      en: ['zip to pdf', 'convert zip to pdf', 'archive to pdf'],
+    },
+  },
+  {
+    id: 'html-to-pdf',
+    slug: 'html-to-pdf',
+    category: 'pdf',
+    group: 'pdf-organize',
+    formatLabel: 'HTML → PDF',
+    status: 'coming-soon',
+    phase: 12,
+    icon: 'html-to-pdf',
+    acceptedExtensions: ['.html', '.htm'],
+    keywords: {
+      id: ['html ke pdf', 'kode html ke pdf', 'halaman web ke pdf'],
+      en: ['html to pdf', 'convert html to pdf', 'webpage html to pdf'],
     },
   },
 ] as const;

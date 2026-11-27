@@ -1256,6 +1256,7 @@ export const idDictionary = {
       9: 'Utilitas Bisnis, Dokumen & Kreator',
       10: 'Formulir PDF, Privasi & Teks',
       11: 'Keamanan Sandi & Audio Ringan',
+      12: 'Konversi Dokumen & Arsip ke PDF',
     },
   },
   upcomingTools: {
@@ -1306,6 +1307,34 @@ export const idDictionary = {
     'audio-tools': {
       name: 'Potong & Gabung Audio Ringan',
       shortDescription: 'Potong bagian sunyi, gabungkan beberapa rekaman suara, atau ubah format audio MP3/WAV langsung di browser.',
+    },
+    'crop-pdf': {
+      name: 'Crop PDF (Potong Margin Halaman)',
+      shortDescription: 'Pangkas margin kosong atau area tertentu pada halaman PDF secara visual tanpa mengurangi ketajaman teks.',
+    },
+    'redact-pdf': {
+      name: 'Redact PDF (Sensor Permanen)',
+      shortDescription: 'Hitamkan dan hapus permanen data sensitif (NIK, rekening, nama) di dokumen PDF agar tidak dapat disalin kembali.',
+    },
+    'pdf-reader': {
+      name: 'PDF Reader (Baca & Cetak PDF)',
+      shortDescription: 'Buka, baca, cari teks, zoom, dan cetak dokumen PDF ringan langsung di browser tanpa aplikasi tambahan.',
+    },
+    'excel-csv-to-pdf': {
+      name: 'Excel & CSV ke PDF',
+      shortDescription: 'Ubah file spreadsheet Excel (.xlsx) atau CSV menjadi dokumen tabel PDF rapi siap cetak secara lokal.',
+    },
+    'txt-to-pdf': {
+      name: 'TXT ke PDF',
+      shortDescription: 'Konversi file teks biasa (.txt) atau catatan menjadi dokumen PDF rapi dengan pengaturan margin dan font.',
+    },
+    'zip-to-pdf': {
+      name: 'ZIP ke PDF',
+      shortDescription: 'Bongkar arsip .zip berisi gambar, PDF, atau teks lalu gabungkan isinya otomatis menjadi satu dokumen PDF.',
+    },
+    'html-to-pdf': {
+      name: 'HTML ke PDF',
+      shortDescription: 'Ubah file atau potongan kode HTML menjadi dokumen PDF bersih siap simpan langsung di browser.',
     },
   },
   extractPdfImages: {

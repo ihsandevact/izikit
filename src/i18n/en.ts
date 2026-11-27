@@ -1258,6 +1258,7 @@ export const enDictionary: Dictionary = {
       9: 'Business, Document & Creator Utilities',
       10: 'PDF Forms, Privacy & Text Tools',
       11: 'Password Security & Lightweight Audio',
+      12: 'Document & Archive to PDF Conversion',
     },
   },
   upcomingTools: {
@@ -1308,6 +1309,34 @@ export const enDictionary: Dictionary = {
     'audio-tools': {
       name: 'Trim & Merge Lightweight Audio',
       shortDescription: 'Trim clips, join voice recordings, or convert between MP3 and WAV directly inside your browser.',
+    },
+    'crop-pdf': {
+      name: 'Crop PDF Pages',
+      shortDescription: 'Visually trim margins or crop specific areas of PDF pages losslessly while keeping vector text sharp.',
+    },
+    'redact-pdf': {
+      name: 'Redact PDF (Permanent Censor)',
+      shortDescription: 'Permanently black out and remove sensitive information (IDs, bank numbers, names) from PDF pages locally.',
+    },
+    'pdf-reader': {
+      name: 'PDF Reader (View & Print)',
+      shortDescription: 'Open, read, search text, zoom, and print PDF documents directly in your browser with zero uploads.',
+    },
+    'excel-csv-to-pdf': {
+      name: 'Excel & CSV to PDF',
+      shortDescription: 'Convert Excel (.xlsx) spreadsheets or CSV files into clean, print-ready PDF tables locally in browser.',
+    },
+    'txt-to-pdf': {
+      name: 'TXT to PDF',
+      shortDescription: 'Convert plain text (.txt) files or notes into neatly formatted PDF documents with custom margins and fonts.',
+    },
+    'zip-to-pdf': {
+      name: 'ZIP to PDF',
+      shortDescription: 'Unpack a .zip archive of images, PDFs, or text files and automatically merge them into one clean PDF.',
+    },
+    'html-to-pdf': {
+      name: 'HTML to PDF',
+      shortDescription: 'Convert HTML files or snippets into clean printable PDF documents directly inside your browser.',
     },
   },
   extractPdfImages: {
