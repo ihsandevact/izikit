@@ -414,6 +414,81 @@ export function ToolGlyph({ icon, className = 'h-5 w-5' }: { icon: ToolIconKey; 
           <path d="M8.5 8.5L4.5 12l4 3.5M15.5 8.5l4 3.5-4 3.5M13.5 6.5l-3 11" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
+    case 'ats-cv-builder':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="5" y="3.5" width="14" height="17" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <circle cx="10" cy="8.5" r="1.8" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M8 14h8M8 17h5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        </svg>
+      );
+    case 'wa-link-cleaner':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M10 14a4 4 0 0 0 5.66 0l2.12-2.12a4 4 0 0 0-5.66-5.66L10.8 7.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M14 10a4 4 0 0 0-5.66 0l-2.12 2.12a4 4 0 0 0 5.66 5.66l1.3-1.3" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+        </svg>
+      );
+    case 'word-counter-cleaner':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M5 7h14M5 12h10M5 17h7" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <path d="M16 15l1.5 1.5L20 14" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
+    case 'ig-grid-splitter':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M9.33 4v16M14.67 4v16M4 9.33h16M4 14.67h16" stroke="currentColor" strokeWidth="1.4" />
+        </svg>
+      );
+    case 'wa-sticker-maker':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M5 5h14v9l-5 5H5V5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M14 19v-5h5" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <circle cx="9.5" cy="10" r="1" fill="currentColor" />
+          <circle cx="14.5" cy="10" r="1" fill="currentColor" />
+        </svg>
+      );
+    case 'qr-scanner':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8m8 0h2.5A1.5 1.5 0 0 1 20 5.5V8m0 8v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+          <rect x="8" y="8" width="3.5" height="3.5" rx="0.6" stroke="currentColor" strokeWidth="1.5" />
+          <rect x="12.5" y="12.5" width="3.5" height="3.5" rx="0.6" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case 'zip-manager':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M4.5 6.5A2 2 0 0 1 6.5 4.5h3.5l2 2h5.5a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-11Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <path d="M12 10v6" stroke="currentColor" strokeWidth="1.75" strokeDasharray="2 2" />
+        </svg>
+      );
+    case 'file-encryptor':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M12 3.5L5.5 6v5.2c0 4.2 2.8 7.6 6.5 9.3 3.7-1.7 6.5-5.1 6.5-9.3V6L12 3.5Z" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+          <rect x="9.5" y="11" width="5" height="4" rx="0.8" stroke="currentColor" strokeWidth="1.5" />
+          <path d="M10.8 11v-1.2a1.2 1.2 0 1 1 2.4 0V11" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
+      );
+    case 'encode-decode-jwt':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <path d="M8 7L4 12l4 5M16 7l4 5-4 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+        </svg>
+      );
+    case 'regex-timezone-tools':
+      return (
+        <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden="true">
+          <circle cx="12" cy="12" r="7.5" stroke="currentColor" strokeWidth="1.75" />
+          <path d="M12 8v4l2.8 1.8" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      );
   }
 }
 

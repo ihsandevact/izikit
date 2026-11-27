@@ -1259,6 +1259,8 @@ export const enDictionary: Dictionary = {
       10: 'PDF Forms, Privacy & Text Tools',
       11: 'Password Security & Lightweight Audio',
       12: 'Document & Archive to PDF Conversion',
+      13: 'Career, Business & Content Creators',
+      14: 'Archives, Encryption & Developer Utilities',
     },
   },
   upcomingTools: {
@@ -1337,6 +1339,46 @@ export const enDictionary: Dictionary = {
     'html-to-pdf': {
       name: 'HTML to PDF',
       shortDescription: 'Convert HTML files or snippets into clean printable PDF documents directly inside your browser.',
+    },
+    'ats-cv-builder': {
+      name: 'ATS-Friendly CV Builder (PDF)',
+      shortDescription: 'Build a clean ATS-friendly resume with experience, education, and skills, then export a watermark-free PDF.',
+    },
+    'wa-link-cleaner': {
+      name: 'WhatsApp Link & URL Cleaner',
+      shortDescription: 'Generate wa.me chat links with prefilled messages and strip tracking parameters like utm or fbclid from URLs.',
+    },
+    'word-counter-cleaner': {
+      name: 'Word Counter & Text Cleaner',
+      shortDescription: 'Count words, characters, and reading time, switch text case, and clean up extra spaces or blank lines locally.',
+    },
+    'ig-grid-splitter': {
+      name: 'Instagram Grid & Carousel Splitter',
+      shortDescription: 'Slice a panorama or poster into seamless 4:5 carousel slides or a 3x3 profile grid and download as a ZIP.',
+    },
+    'wa-sticker-maker': {
+      name: 'WhatsApp Sticker Maker (512px WebP)',
+      shortDescription: 'Crop photos, add a crisp white outline and short caption, and export 512x512 WebP stickers under 100 KB.',
+    },
+    'qr-scanner': {
+      name: 'QR Code Scanner (Camera / Image)',
+      shortDescription: 'Decode QR links or text from screenshots, saved images, or your phone camera right inside the browser.',
+    },
+    'zip-manager': {
+      name: 'Browser ZIP Viewer & Archiver',
+      shortDescription: 'Inspect .zip archive contents, extract individual files, or pack multiple local files into a new .zip archive.',
+    },
+    'file-encryptor': {
+      name: 'Local File & Text Encryptor (AES-256)',
+      shortDescription: 'Lock any file or private message locally using AES-256-GCM via Web Crypto before sharing over chat or email.',
+    },
+    'encode-decode-jwt': {
+      name: 'Base64, URL & JWT Inspector',
+      shortDescription: 'Encode or decode Base64 and URLs, and inspect JWT headers and payloads locally without sending tokens online.',
+    },
+    'regex-timezone-tools': {
+      name: 'Regex Tester & Timezone Converter',
+      shortDescription: 'Test regular expressions with live match highlights and convert Unix timestamps across global timezones.',
     },
   },
   extractPdfImages: {

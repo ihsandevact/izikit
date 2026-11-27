@@ -1257,6 +1257,8 @@ export const idDictionary = {
       10: 'Formulir PDF, Privasi & Teks',
       11: 'Keamanan Sandi & Audio Ringan',
       12: 'Konversi Dokumen & Arsip ke PDF',
+      13: 'Karier, Bisnis & Kreator Konten',
+      14: 'Arsip, Enkripsi & Utilitas Developer',
     },
   },
   upcomingTools: {
@@ -1335,6 +1337,46 @@ export const idDictionary = {
     'html-to-pdf': {
       name: 'HTML ke PDF',
       shortDescription: 'Ubah file atau potongan kode HTML menjadi dokumen PDF bersih siap simpan langsung di browser.',
+    },
+    'ats-cv-builder': {
+      name: 'Generator CV ATS-Friendly (PDF)',
+      shortDescription: 'Susun CV rapi sesuai format ATS (pengalaman, pendidikan, keahlian) lalu unduh PDF bersih tanpa watermark.',
+    },
+    'wa-link-cleaner': {
+      name: 'Link WhatsApp & Pembersih URL',
+      shortDescription: 'Buat link wa.me dengan pesan otomatis untuk bio jualan sekaligus hapus parameter pelacak panjang dari URL.',
+    },
+    'word-counter-cleaner': {
+      name: 'Hitung Kata, Karakter & Rapikan Teks',
+      shortDescription: 'Hitung jumlah kata, karakter, dan waktu baca, ubah huruf besar/kecil, serta bersihkan spasi atau baris ganda.',
+    },
+    'ig-grid-splitter': {
+      name: 'Potong Grid & Carousel Instagram',
+      shortDescription: 'Potong satu foto panorama atau poster menjadi beberapa slide carousel 4:5 atau grid 3x3 lalu unduh ZIP.',
+    },
+    'wa-sticker-maker': {
+      name: 'Pembuat Stiker WhatsApp (WebP 512px)',
+      shortDescription: 'Potong foto, tambah garis tepi putih dan teks singkat, lalu ekspor otomatis ke WebP 512x512 di bawah 100 KB.',
+    },
+    'qr-scanner': {
+      name: 'Scan & Baca QR Code (Kamera / Gambar)',
+      shortDescription: 'Baca isi tautan atau teks QR Code dari screenshot, foto galeri, atau kamera HP langsung di browser.',
+    },
+    'zip-manager': {
+      name: 'Buka & Buat File ZIP di Browser',
+      shortDescription: 'Lihat daftar isi arsip .zip, ambil file tertentu tanpa ekstrak semua, atau gabungkan file jadi .zip lokal.',
+    },
+    'file-encryptor': {
+      name: 'Enkripsi File & Teks (AES-256 Lokal)',
+      shortDescription: 'Kunci file apa pun atau teks rahasia dengan sandi AES-256-GCM lokal via Web Crypto sebelum dikirim.',
+    },
+    'encode-decode-jwt': {
+      name: 'Base64, URL & JWT Inspector',
+      shortDescription: 'Encode atau decode Base64, URL, dan periksa isi payload token JWT secara lokal tanpa kirim token ke server.',
+    },
+    'regex-timezone-tools': {
+      name: 'Penguji Regex & Konverter Waktu',
+      shortDescription: 'Uji pola regular expression secara langsung serta konversi Unix timestamp dan zona waktu WIB/WITA/WIT/UTC.',
     },
   },
   extractPdfImages: {
