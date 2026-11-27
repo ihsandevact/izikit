@@ -407,26 +407,6 @@ export default function ToolDirectory({ locale, mode = 'launcher' }: ToolDirecto
             })}
           </div>
         </section>
-
-        {/* Keyboard Hints Footer Bar */}
-        <div className="hidden items-center justify-between border-t border-[var(--border-subtle)] pt-4 text-[11px] text-[var(--ink-muted)] sm:flex">
-          <div className="flex items-center gap-3.5">
-            <span className="inline-flex items-center gap-1">
-              <kbd className="kbd-cap">↑</kbd>
-              <kbd className="kbd-cap">↓</kbd>
-              <span>{dict.home.keyNavigate}</span>
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <kbd className="kbd-cap">↵</kbd>
-              <span>{dict.home.keyOpen}</span>
-            </span>
-            <span className="inline-flex items-center gap-1">
-              <kbd className="kbd-cap">esc</kbd>
-              <span>{dict.home.keyClear}</span>
-            </span>
-          </div>
-          <span className="font-data">{dict.home.launcherFooterRight}</span>
-        </div>
       </div>
     );
   }

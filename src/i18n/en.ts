@@ -116,7 +116,7 @@ export const enDictionary: Dictionary = {
     faqs: [
       {
         q: 'Are all PDF and image tools on izikit really free with no login?',
-        a: 'Yes. All 19 PDF and image tools on izikit are 100% free with no account sign-up, no forced watermarks, and no daily usage quotas.',
+        a: 'Yes. All tools on izikit are 100% free with no account sign-up, no forced watermarks, and no daily usage quotas.',
       },
       {
         q: 'Are my documents and photos safe? Do you upload files to a server?',

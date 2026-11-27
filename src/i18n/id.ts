@@ -114,7 +114,7 @@ export const idDictionary = {
     faqs: [
       {
         q: 'Apakah semua alat PDF dan gambar di izikit benar-benar gratis tanpa login?',
-        a: 'Ya, seluruh 19 alat PDF dan gambar di izikit 100% gratis tanpa perlu membuat akun, tanpa watermark paksa, dan tanpa batas kuota harian.',
+        a: 'Ya, seluruh alat di izikit 100% gratis tanpa perlu membuat akun, tanpa watermark paksa, dan tanpa batas kuota harian.',
       },
       {
         q: 'Apakah dokumen dan foto saya aman? Apakah file diunggah ke server?',
