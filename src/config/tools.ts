@@ -53,7 +53,17 @@ export type ToolIconKey =
   | 'excel-csv-to-pdf'
   | 'txt-to-pdf'
   | 'zip-to-pdf'
-  | 'html-to-pdf';
+  | 'html-to-pdf'
+  | 'ats-cv-builder'
+  | 'wa-link-cleaner'
+  | 'word-counter-cleaner'
+  | 'ig-grid-splitter'
+  | 'wa-sticker-maker'
+  | 'qr-scanner'
+  | 'zip-manager'
+  | 'file-encryptor'
+  | 'encode-decode-jwt'
+  | 'regex-timezone-tools';
 
 export interface ToolDefinition {
   id: string;
@@ -63,7 +73,7 @@ export interface ToolDefinition {
   badge?: ToolBadge;
   formatLabel: string;
   status: ToolStatus;
-  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  phase: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
   icon: ToolIconKey;
   acceptedExtensions: string[];
   relatedToolIds?: readonly string[];
@@ -861,6 +871,156 @@ export const TOOLS: readonly ToolDefinition[] = [
     keywords: {
       id: ['html ke pdf', 'kode html ke pdf', 'halaman web ke pdf'],
       en: ['html to pdf', 'convert html to pdf', 'webpage html to pdf'],
+    },
+  },
+  {
+    id: 'ats-cv-builder',
+    slug: 'ats-cv-builder',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'PDF CV ATS',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'ats-cv-builder',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['buat cv ats', 'cv generator pdf', 'resume ats gratis', 'lamaran kerja'],
+      en: ['ats cv builder', 'resume generator pdf', 'free ats resume'],
+    },
+  },
+  {
+    id: 'wa-link-cleaner',
+    slug: 'wa-link-cleaner',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'WA / URL',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'wa-link-cleaner',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['buat link wa', 'wa.me generator', 'bersihkan link utm', 'hapus fbclid'],
+      en: ['whatsapp link generator', 'url cleaner', 'strip utm params'],
+    },
+  },
+  {
+    id: 'word-counter-cleaner',
+    slug: 'word-counter-cleaner',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'TEKS',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'word-counter-cleaner',
+    acceptedExtensions: ['.txt', '.md'],
+    keywords: {
+      id: ['hitung kata', 'hitung karakter', 'rapikan teks', 'ubah kapital huruf'],
+      en: ['word counter', 'character counter', 'text case converter', 'clean text'],
+    },
+  },
+  {
+    id: 'ig-grid-splitter',
+    slug: 'ig-grid-splitter',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'IG GRID / ZIP',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'ig-grid-splitter',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['potong grid instagram', 'carousel splitter', 'feed 3x3 ig'],
+      en: ['instagram grid splitter', 'carousel photo slicer', 'split photo 3x3'],
+    },
+  },
+  {
+    id: 'wa-sticker-maker',
+    slug: 'wa-sticker-maker',
+    category: 'image',
+    group: 'image-studio',
+    formatLabel: 'WEBP 512PX',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'wa-sticker-maker',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['buat stiker wa', 'stiker whatsapp webp', 'stiker transparan'],
+      en: ['whatsapp sticker maker', '512x512 webp sticker', 'transparent sticker'],
+    },
+  },
+  {
+    id: 'qr-scanner',
+    slug: 'qr-scanner',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'SCAN QR',
+    status: 'coming-soon',
+    phase: 13,
+    icon: 'qr-scanner',
+    acceptedExtensions: ['.jpg', '.jpeg', '.png', '.webp'],
+    keywords: {
+      id: ['scan qr code', 'baca qr dari gambar', 'qr reader kamera'],
+      en: ['qr code scanner', 'read qr from image', 'camera qr reader'],
+    },
+  },
+  {
+    id: 'zip-manager',
+    slug: 'zip-manager',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'ZIP LOKAL',
+    status: 'coming-soon',
+    phase: 14,
+    icon: 'zip-manager',
+    acceptedExtensions: ['.zip'],
+    keywords: {
+      id: ['buka file zip', 'ekstrak zip online', 'buat arsip zip'],
+      en: ['zip extractor', 'browse zip in browser', 'create zip archive'],
+    },
+  },
+  {
+    id: 'file-encryptor',
+    slug: 'file-encryptor',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'AES-256',
+    status: 'coming-soon',
+    phase: 14,
+    icon: 'file-encryptor',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['enkripsi file', 'kunci file sandi aes', 'dekripsi teks lokal'],
+      en: ['encrypt file locally', 'aes-256 file locker', 'browser encryption'],
+    },
+  },
+  {
+    id: 'encode-decode-jwt',
+    slug: 'encode-decode-jwt',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'BASE64 / JWT',
+    status: 'coming-soon',
+    phase: 14,
+    icon: 'encode-decode-jwt',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['base64 encode decode', 'jwt decoder lokal', 'url encode'],
+      en: ['base64 converter', 'jwt inspector local', 'url encoder decoder'],
+    },
+  },
+  {
+    id: 'regex-timezone-tools',
+    slug: 'regex-timezone-tools',
+    category: 'utility',
+    group: 'daily-utilities',
+    formatLabel: 'REGEX / UTC',
+    status: 'coming-soon',
+    phase: 14,
+    icon: 'regex-timezone-tools',
+    acceptedExtensions: [],
+    keywords: {
+      id: ['regex tester', 'konversi wib wita wit utc', 'unix timestamp'],
+      en: ['regex tester', 'timezone converter', 'unix timestamp converter'],
     },
   },
 ] as const;
