@@ -4,9 +4,12 @@ import { formatBytes, sanitizeFilename } from '@/lib/format';
 import { validatePdfFiles } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon } from '@/components/shared/icons';
 import {
@@ -127,6 +130,10 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
       setInspecting(false);
     }
   };
+
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFileSelected(incomingFiles),
+  );
 
   const resetAll = () => {
     abortRef.current?.abort();
@@ -289,6 +296,11 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -626,6 +638,26 @@ export default function ProtectPdfTool({ locale }: ProtectPdfToolProps) {
               <span>{copy.downloadButton}</span>
             </button>
           </div>
+
+          <HandoffChainBar
+            locale={locale}
+            sourceRoute="/protect-pdf"
+            originSource={handoffSource}
+            originMeta={handoffMeta}
+            getFiles={() => [
+              new File([output.blob], output.filename, { type: 'application/pdf' }),
+            ]}
+            actions={
+              output.modeUsed === 'unlock'
+                ? [
+                    {
+                      label: locale === 'id' ? 'Kompres PDF < 1 MB' : 'Compress PDF < 1 MB',
+                      href: '/compress-pdf?preset=1mb',
+                    },
+                  ]
+                : []
+            }
+          />
 
           <SupportCard
             locale={locale}

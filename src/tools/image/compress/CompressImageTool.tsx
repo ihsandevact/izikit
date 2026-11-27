@@ -8,9 +8,12 @@ import {
 } from '@/lib/file-validation';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadAsZip, downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon, TrashIcon } from '@/components/shared/icons';
 import {
@@ -145,6 +148,10 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
     }
   };
 
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFilesSelected(incomingFiles),
+  );
+
   const removeItem = (id: string) => {
     if (previewId === id) setPreviewId(null);
     setItems((prev) => {
@@ -277,6 +284,11 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -502,6 +514,29 @@ export default function CompressImageTool({ locale }: CompressImageToolProps) {
                   </button>
                 )}
               </div>
+
+              <HandoffChainBar
+                locale={locale}
+                sourceRoute="/compress-image"
+                originSource={handoffSource}
+                originMeta={handoffMeta}
+                getFiles={() =>
+                  doneItems.map(
+                    (item) =>
+                      new File(
+                        [item.compressedBlob!],
+                        item.outputFilename || item.file.name,
+                        { type: item.compressedBlob!.type || item.file.type || 'image/jpeg' },
+                      ),
+                  )
+                }
+                actions={[
+                  {
+                    label: locale === 'id' ? 'Ubah ke PDF' : 'Image to PDF',
+                    href: '/image-to-pdf',
+                  },
+                ]}
+              />
 
               <SupportCard
                 locale={locale}

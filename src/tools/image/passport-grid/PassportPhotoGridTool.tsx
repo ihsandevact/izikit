@@ -3,8 +3,10 @@ import { getDictionary, type Locale } from '@/i18n';
 import { formatBytes } from '@/lib/format';
 import { validateImageFiles } from '@/lib/file-validation';
 import { downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import { DownloadIcon } from '@/components/shared/icons';
 import {
@@ -125,6 +127,10 @@ export default function PassportPhotoGridTool({ locale }: PassportPhotoGridToolP
     img.src = nextUrl;
   };
 
+  const { handoffSource, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFilesSelected(incomingFiles),
+  );
+
   const resetAll = () => {
     if (imageUrlRef.current) {
       URL.revokeObjectURL(imageUrlRef.current);
@@ -159,6 +165,11 @@ export default function PassportPhotoGridTool({ locale }: PassportPhotoGridToolP
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}

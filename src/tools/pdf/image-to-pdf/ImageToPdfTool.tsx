@@ -5,9 +5,12 @@ import { validateImageFiles, type SupportedImageMime } from '@/lib/file-validati
 import { moveListItem, reorderById } from '@/lib/list';
 import { runWorkerTask } from '@/lib/worker-client';
 import { downloadBlob } from '@/lib/download';
+import { useFileHandoff } from '@/lib/use-file-handoff';
 import Dropzone from '@/components/shared/Dropzone';
 import ProgressBanner from '@/components/shared/ProgressBanner';
 import ErrorAlert from '@/components/shared/ErrorAlert';
+import HandoffChainBar from '@/components/shared/HandoffChainBar';
+import HandoffNotice from '@/components/shared/HandoffNotice';
 import SupportCard from '@/components/shared/SupportCard';
 import {
   ArrowDownIcon,
@@ -101,6 +104,10 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
       setItems((prev) => [...prev, ...nextItems]);
     }
   };
+
+  const { handoffSource, handoffMeta, dismissHandoffNotice } = useFileHandoff((incomingFiles) =>
+    handleFilesSelected(incomingFiles),
+  );
 
   const moveItem = (index: number, direction: -1 | 1) => {
     const target = index + direction;
@@ -197,6 +204,11 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
 
   return (
     <div className="space-y-5">
+      <HandoffNotice
+        sourceRoute={handoffSource}
+        locale={locale}
+        onDismiss={dismissHandoffNotice}
+      />
       <ErrorAlert
         messages={errors}
         dismissLabel={dict.shared.dismissError}
@@ -471,6 +483,23 @@ export default function ImageToPdfTool({ locale }: ImageToPdfToolProps) {
               </button>
             </div>
           </div>
+
+          <HandoffChainBar
+            locale={locale}
+            sourceRoute="/image-to-pdf"
+            originSource={handoffSource}
+            originMeta={handoffMeta}
+            className="mt-4"
+            getFiles={() => [
+              new File([result.blob], result.filename, { type: 'application/pdf' }),
+            ]}
+            actions={[
+              {
+                label: locale === 'id' ? 'Kompres PDF < 1 MB' : 'Compress PDF < 1 MB',
+                href: '/compress-pdf?preset=1mb',
+              },
+            ]}
+          />
 
           <SupportCard
             locale={locale}
