@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import TextDiffTool from '@/tools/utility/text-diff/TextDiffTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/text-diff" toolKey="text-diff">
+  <TextDiffTool client:load locale={locale} />
+</ToolPageLayout>

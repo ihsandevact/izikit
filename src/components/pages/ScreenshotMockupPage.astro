@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import ScreenshotMockupTool from '@/tools/image/screenshot-mockup/ScreenshotMockupTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/screenshot-mockup" toolKey="screenshot-mockup">
+  <ScreenshotMockupTool client:load locale={locale} />
+</ToolPageLayout>

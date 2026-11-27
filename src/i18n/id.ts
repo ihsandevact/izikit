@@ -50,7 +50,7 @@ export const idDictionary = {
     keyNavigate: 'pilih',
     keyOpen: 'buka',
     keyClear: 'hapus',
-    launcherFooterRight: '26 tools · 100% gratis · tanpa upload',
+    launcherFooterRight: '29 tools · 100% gratis · tanpa upload',
     catalogTitle: 'Semua tools',
     catalogSubtitle:
       'Dokumen, PDF, gambar, studio pasfoto, hingga utilitas kerja harian. 100% gratis, tanpa login, dan semuanya jalan di perangkatmu.',
@@ -891,6 +891,111 @@ export const idDictionary = {
         {
           q: 'Apakah PDF hasil scan (gambar) tetap bisa dibandingkan?',
           a: 'Ya, mode Overlay Visual membandingkan piksel halaman secara langsung sehingga perbedaan pada PDF hasil scan tetap terlihat jelas.',
+        },
+      ],
+    },
+    'text-diff': {
+      name: 'Bandingkan Teks (Text Diff)',
+      cta: 'Bandingkan teks',
+      shortDescription:
+        'Bandingkan dua versi teks, email, JSON, atau kode berdampingan dengan sorotan perubahan per baris dan kata.',
+      categoryLabel: 'Utilitas Harian',
+      seoTitle: 'Bandingkan Teks (Text Diff) Online Gratis | izikit',
+      seoDescription:
+        'Bandingkan dua versi teks, kode, JSON, atau email berdampingan dengan sorotan perubahan per baris dan kata. 100% gratis, tanpa login, dan lokal di browser.',
+      guideTitle: 'Tips membandingkan teks & kode',
+      guideItems: [
+        'Aktifkan "Hanya perubahan" jika kamu memeriksa teks panjang agar baris yang identik otomatis diringkas.',
+        'Gunakan tombol "Rapikan JSON" untuk memformat ulang dua payload JSON sebelum membandingkan perbedaannya.',
+        'Hasil perbandingan bisa disalin atau diunduh sebagai file .diff standar (unified patch) untuk dibagikan ke tim.',
+      ],
+      howToSteps: [
+        'Tempel atau unggah file teks pertama di panel Teks Asli (A) dan pembandingnya di Teks Revisi (B).',
+        'Pilih mode Berdampingan atau Satu Kolom, lalu sesuaikan opsi abaikan spasi/kapital bila perlu.',
+        'Periksa sorotan penambahan (+) dan penghapusan (-), lalu salin atau unduh file .diff.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah teks atau kode rahasia yang saya tempel dikirim ke server?',
+          a: 'Tidak. Seluruh proses perbandingan teks dan pembuatan file .diff berjalan 100% lokal di memori browser perangkat kamu.',
+        },
+        {
+          q: 'Format file apa saja yang bisa diunggah langsung ke Text Diff?',
+          a: 'Kamu bisa mengunggah file teks biasa seperti .txt, .md, .json, .csv, .html, .css, .js, .ts, .yaml, hingga file .log.',
+        },
+        {
+          q: 'Apakah perubahan kecil di tengah kalimat juga ikut disorot?',
+          a: 'Ya. Selain menandai baris yang berubah, izikit menyorot kata spesifik yang ditambah atau dihapus pada baris yang dimodifikasi.',
+        },
+      ],
+    },
+    'screenshot-mockup': {
+      name: 'Mockup Screenshot Cantik',
+      cta: 'Buat mockup',
+      shortDescription:
+        'Ubah tangkapan layar biasa menjadi visual estetik dengan latar gradasi, bingkai macOS/browser, dan rasio media sosial.',
+      categoryLabel: 'Studio Foto',
+      seoTitle: 'Mockup Screenshot Cantik Gratis Tanpa Upload | izikit',
+      seoDescription:
+        'Ubah tangkapan layar biasa jadi mockup estetik dengan latar gradasi, bingkai macOS/browser, bayangan halus, dan rasio media sosial langsung di browser gratis.',
+      guideTitle: 'Tips membuat mockup screenshot profesional',
+      guideItems: [
+        'Kamu bisa langsung menekan Ctrl+V (atau Cmd+V di Mac) untuk menempel screenshot dari clipboard tanpa menyimpan file terlebih dahulu.',
+        'Pilih rasio 16:9 untuk slide presentasi/X/LinkedIn, 4:5 untuk feed Instagram, atau 9:16 untuk Story/Reels.',
+        'Gunakan ekspor 2× HD untuk gambar super tajam pada layar Retina, lalu pilih WebP bila ingin ukuran file lebih ringan.',
+      ],
+      howToSteps: [
+        'Unggah gambar screenshot atau tempel langsung dari clipboard (Ctrl+V / Cmd+V).',
+        'Pilih rasio kanvas, latar gradasi/solid/transparan, bingkai jendela, padding, sudut, dan bayangan.',
+        'Klik Unduh PNG, Unduh WebP, atau Salin Gambar untuk langsung ditempel ke presentasi atau media sosial.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah screenshot aplikasi atau dashboard saya diunggah ke server?',
+          a: 'Tidak. Seluruh proses menggambar latar gradasi, bayangan, dan bingkai dilakukan 100% lokal via Canvas browser kamu.',
+        },
+        {
+          q: 'Apakah hasil mockup ada watermark atau batas resolusi?',
+          a: 'Tidak ada watermark sama sekali. Kamu bebas mengekspor hingga resolusi 2× HD (maksimal 4096 px) secara gratis.',
+        },
+        {
+          q: 'Bisakah membuat mockup dengan latar belakang transparan?',
+          a: 'Bisa. Pilih tab Transparan di bagian Latar Belakang lalu unduh sebagai PNG agar sudut melengkung dan bayangannya tetap menyatu di slide kamu.',
+        },
+      ],
+    },
+    'invoice-generator': {
+      name: 'Buat Invoice & Kuitansi PDF',
+      cta: 'Buat invoice PDF',
+      shortDescription:
+        'Susun tagihan invoice atau kuitansi profesional lengkap dengan logo, diskon, pajak PPN, terbilang otomatis, dan tanda tangan.',
+      categoryLabel: 'Utilitas Harian',
+      seoTitle: 'Buat Invoice & Kuitansi PDF Gratis Tanpa Login | izikit',
+      seoDescription:
+        'Buat invoice tagihan dan kuitansi PDF profesional lengkap dengan logo, pajak PPN, diskon, terbilang otomatis, dan tanda tangan. 100% gratis lokal di browser.',
+      guideTitle: 'Tips membuat invoice & kuitansi rapi',
+      guideItems: [
+        'Klik "Simpan Profil Usaha" agar nama bisnis, logo, rekening, dan nama penandatangan otomatis terisi saat kamu membuka tool ini lagi.',
+        'Pada mode Kuitansi, teks "Terbilang" (uang sejumlah) dihitung otomatis dari total nominal dalam Bahasa Indonesia maupun Inggris.',
+        'Gunakan tombol "+1" di samping nomor dokumen untuk menaikkan urutan nomor invoice (mis. INV-2026-001 → INV-2026-002) secara instan.',
+      ],
+      howToSteps: [
+        'Pilih mode Invoice atau Kuitansi, lalu isi data usaha, logo, klien, dan daftar item beserta harga.',
+        'Atur diskon, pajak PPN, uang muka/DP, info rekening pembayaran, serta tanda tangan digital bila perlu.',
+        'Cek pratinjau kertas A4 secara langsung lalu klik Unduh PDF untuk mendapatkan dokumen siap kirim.',
+      ],
+      faqs: [
+        {
+          q: 'Apakah data klien, harga, dan rekening invoice saya dikirim ke server?',
+          a: 'Tidak. Penyusunan PDF dilakukan 100% di browser kamu. Jika kamu menekan Simpan Profil Usaha, data hanya disimpan lokal di perangkat kamu.',
+        },
+        {
+          q: 'Apakah invoice hasil unduhan bebas watermark dan bisa multi-halaman?',
+          a: 'Ya. PDF yang dihasilkan 100% bersih tanpa watermark izikit dan otomatis berlanjut rapi ke halaman berikutnya bila daftar item panjang.',
+        },
+        {
+          q: 'Bisakah saya menggambar tanda tangan langsung tanpa file PNG?',
+          a: 'Bisa. Klik tombol Tambah Tanda Tangan untuk menggambar langsung dengan mouse/layar sentuh atau mengunggah file tanda tangan PNG/JPG.',
         },
       ],
     },

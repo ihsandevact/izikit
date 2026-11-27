@@ -1,0 +1,15 @@
+---
+import ToolPageLayout from './ToolPageLayout.astro';
+import InvoiceGeneratorTool from '@/tools/utility/invoice-generator/InvoiceGeneratorTool';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+---
+
+<ToolPageLayout locale={locale} route="/invoice-generator" toolKey="invoice-generator">
+  <InvoiceGeneratorTool client:load locale={locale} />
+</ToolPageLayout>
