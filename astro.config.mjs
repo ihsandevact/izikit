@@ -3,10 +3,14 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import AstroPWA from '@vite-pwa/astro';
+import vercel from '@astrojs/vercel';
 
 export default defineConfig({
   site: 'https://izikit.app',
   output: 'static',
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   trailingSlash: 'never',
   i18n: {
     defaultLocale: 'id',
