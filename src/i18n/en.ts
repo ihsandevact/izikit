@@ -52,7 +52,7 @@ export const enDictionary: Dictionary = {
     keyNavigate: 'select',
     keyOpen: 'open',
     keyClear: 'clear',
-    launcherFooterRight: '26 tools · 100% free · zero upload',
+    launcherFooterRight: '29 tools · 100% free · zero upload',
     catalogTitle: 'All tools',
     catalogSubtitle:
       'Documents, PDFs, images, ID photo studio, and everyday utilities. 100% free, no account, and everything runs on your device.',
@@ -116,7 +116,7 @@ export const enDictionary: Dictionary = {
     faqs: [
       {
         q: 'Are all PDF and image tools on izikit really free with no login?',
-        a: 'Yes. All 19 PDF and image tools on izikit are 100% free with no account sign-up, no forced watermarks, and no daily usage quotas.',
+        a: 'Yes. All tools on izikit are 100% free with no account sign-up, no forced watermarks, and no daily usage quotas.',
       },
       {
         q: 'Are my documents and photos safe? Do you upload files to a server?',
@@ -893,6 +893,111 @@ export const enDictionary: Dictionary = {
         {
           q: 'Does PDF Diff work on scanned PDFs?',
           a: 'Yes. Visual Overlay compares rendered page pixels directly, making edits on scanned documents easy to spot.',
+        },
+      ],
+    },
+    'text-diff': {
+      name: 'Compare Text (Text Diff)',
+      cta: 'Compare text',
+      shortDescription:
+        'Compare two versions of text, emails, JSON, or code side by side with line and word-level highlights.',
+      categoryLabel: 'Daily Utilities',
+      seoTitle: 'Compare Text (Text Diff Checker) Free Online | izikit',
+      seoDescription:
+        'Compare two versions of text, code, JSON, or emails side by side with line and word-level highlights. 100% free, no login, and runs locally in your browser.',
+      guideTitle: 'Tips for comparing text & code',
+      guideItems: [
+        'Enable "Changes only" on long documents to collapse unchanged blocks and focus straight on edits.',
+        'Click "Format JSON" to pretty-print both JSON payloads before inspecting structural differences.',
+        'Copy or download the result as a standard unified .diff patch file ready to share with your team.',
+      ],
+      howToSteps: [
+        'Paste or load your first text in Original (A) and the revised text in Modified (B).',
+        'Pick Side-by-Side or Unified view and toggle ignore-whitespace or ignore-case options if needed.',
+        'Review line and inline word highlights, then copy or download the .diff file.',
+      ],
+      faqs: [
+        {
+          q: 'Is my pasted text or source code ever sent to a server?',
+          a: 'No. All diff calculations and unified patch generation happen 100% locally inside your browser.',
+        },
+        {
+          q: 'Which text file formats can be loaded directly?',
+          a: 'You can load plain-text files including .txt, .md, .json, .csv, .html, .css, .js, .ts, .yaml, and .log files.',
+        },
+        {
+          q: 'Does it highlight individual changed words inside a modified line?',
+          a: 'Yes. Modified lines are paired automatically and highlight the exact added or removed words inline.',
+        },
+      ],
+    },
+    'screenshot-mockup': {
+      name: 'Pretty Screenshot Mockup',
+      cta: 'Create mockup',
+      shortDescription:
+        'Turn plain screenshots into polished visuals with gradient backdrops, macOS or browser frames, and social ratios.',
+      categoryLabel: 'Photo Studio',
+      seoTitle: 'Screenshot Mockup Generator Free Online | izikit',
+      seoDescription:
+        'Turn plain screenshots into polished visuals with gradient backdrops, macOS or browser frames, soft shadows, and social media aspect ratios locally in browser.',
+      guideTitle: 'Tips for crisp screenshot mockups',
+      guideItems: [
+        'Press Ctrl+V (or Cmd+V on macOS) anywhere on the page to paste a screenshot straight from your clipboard.',
+        'Choose 16:9 for slides, X, and LinkedIn, 4:5 for Instagram feed posts, or 9:16 for Stories and Reels.',
+        'Use 2× HD export for razor-sharp Retina visuals, or pick WebP for a smaller web-ready file size.',
+      ],
+      howToSteps: [
+        'Drop a screenshot image or paste directly from your clipboard (Ctrl+V / Cmd+V).',
+        'Customize canvas ratio, gradient/solid/transparent backdrop, window frame, padding, corner radius, and shadow.',
+        'Click Download PNG, Download WebP, or Copy Image to paste right into your slides or social post.',
+      ],
+      faqs: [
+        {
+          q: 'Are my product or dashboard screenshots uploaded to any server?',
+          a: 'No. Every gradient backdrop, shadow, and window frame is rendered 100% locally using your browser Canvas API.',
+        },
+        {
+          q: 'Does the exported mockup include any watermark?',
+          a: 'Never. All PNG and WebP exports are completely watermark-free, including 2× HD exports up to 4096 px.',
+        },
+        {
+          q: 'Can I export a framed screenshot with a transparent background?',
+          a: 'Yes. Switch Background to Transparent and download as PNG to keep clean rounded corners and soft shadows.',
+        },
+      ],
+    },
+    'invoice-generator': {
+      name: 'PDF Invoice & Receipt Generator',
+      cta: 'Create PDF invoice',
+      shortDescription:
+        'Build professional invoices or receipts with your logo, tax, discounts, amount in words, and digital signature.',
+      categoryLabel: 'Daily Utilities',
+      seoTitle: 'Free PDF Invoice & Receipt Generator Online | izikit',
+      seoDescription:
+        'Create professional PDF invoices and receipts with your logo, tax, discounts, amount in words, and digital signature. 100% free, no login, locally in browser.',
+      guideTitle: 'Tips for clean invoices & receipts',
+      guideItems: [
+        'Click "Save Business Profile" to store your company name, logo, bank details, and signer locally for future invoices.',
+        'Receipt mode automatically spells out the total amount in words alongside your payment purpose.',
+        'Use the "+1" button next to the document number to auto-increment sequential invoice numbers instantly.',
+      ],
+      howToSteps: [
+        'Pick Invoice or Receipt mode, then enter your business details, logo, client info, and line items.',
+        'Configure discounts, tax rate, deposit/amount paid, payment instructions, and an optional digital signature.',
+        'Inspect the live A4 preview and click Download PDF to export a crisp, print-ready document.',
+      ],
+      faqs: [
+        {
+          q: 'Are my client details, pricing, or bank numbers uploaded to a server?',
+          a: 'No. PDF generation runs 100% inside your browser. Saved business profiles stay strictly in your own localStorage.',
+        },
+        {
+          q: 'Are exported PDFs watermark-free and able to span multiple pages?',
+          a: 'Yes. Exported A4 PDFs have zero watermarks and automatically paginate cleanly when you have long item lists.',
+        },
+        {
+          q: 'Can I draw a signature directly without uploading an image file?',
+          a: 'Yes. Click Add Signature to draw right on screen with a mouse or touchscreen, or upload a PNG/JPG signature.',
         },
       ],
     },
