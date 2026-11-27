@@ -313,3 +313,80 @@ html.dark .bg-checkerboard {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* PWA Launch Splashscreen & Top Route Progress Loader */
+.izikit-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-paper);
+  opacity: 1;
+  transition: opacity 220ms ease-out;
+}
+
+.izikit-splash[hidden] {
+  display: none;
+}
+
+.izikit-splash.is-hiding {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.izikit-splash-bar {
+  width: 45%;
+  animation: izikit-splash-slide 700ms ease-in-out infinite alternate;
+}
+
+@keyframes izikit-splash-slide {
+  from {
+    transform: translateX(-20%);
+  }
+  to {
+    transform: translateX(140%);
+  }
+}
+
+.izikit-route-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  height: 3px;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.izikit-route-loader.is-active {
+  opacity: 1;
+  animation: izikit-route-progress 1.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes izikit-route-progress {
+  0% {
+    transform: scaleX(0.08);
+  }
+  50% {
+    transform: scaleX(0.62);
+  }
+  100% {
+    transform: scaleX(0.88);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .izikit-splash,
+  .izikit-splash-bar,
+  .izikit-route-loader {
+    animation: none;
+    transition: none;
+  }
+}

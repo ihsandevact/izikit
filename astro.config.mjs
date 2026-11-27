@@ -34,6 +34,8 @@ export default defineConfig({
     AstroPWA({
       registerType: 'autoUpdate',
       manifest: {
+        id: '/',
+        lang: 'id',
         name: 'izikit - Alat PDF & Gambar Lokal',
         short_name: 'izikit',
         description:

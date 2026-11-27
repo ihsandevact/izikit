@@ -71,6 +71,10 @@ const serializedJsonLd = jsonLd
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#0B1020" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="izikit" />
 
     {
       !noindex && (
@@ -105,6 +109,14 @@ const serializedJsonLd = jsonLd
 
     <script is:inline define:vars={{ isDev }}>
       (function () {
+        try {
+          window.addEventListener('beforeinstallprompt', function (e) {
+            e.preventDefault();
+            window.__izikitDeferredPrompt = e;
+            window.dispatchEvent(new Event('izikit:pwa-prompt-ready'));
+          });
+        } catch (e) {}
+
         try {
           var saved = localStorage.getItem('izikit-theme');
           if (saved === 'light') {
@@ -173,6 +185,97 @@ const serializedJsonLd = jsonLd
     </script>
   </head>
   <body>
+    {/* Top Route Progress Loader Bar (3px) */}
+    <div id="izikit-route-loader" class="izikit-route-loader" aria-hidden="true"></div>
+
+    {/* Launch Splashscreen (shown once per session, hidden by default for SEO/no-JS) */}
+    <div id="izikit-splash" class="izikit-splash" hidden aria-hidden="true">
+      <div class="flex flex-col items-center gap-4">
+        <div class="flex items-center gap-3">
+          <svg viewBox="0 0 64 64" fill="none" class="h-11 w-11" aria-hidden="true">
+            <circle cx="16.5" cy="16.5" r="12.5" fill="var(--logo-circle)"></circle>
+            <rect x="35" y="4" width="25" height="25" rx="7" fill="var(--logo-tr)"></rect>
+            <rect x="4" y="35" width="25" height="25" rx="7" fill="var(--logo-bl)"></rect>
+            <rect x="35" y="35" width="25" height="25" rx="7" fill="var(--logo-br)"></rect>
+          </svg>
+          <span class="font-display text-3xl font-extrabold tracking-tight text-[var(--ink-primary)]">
+            izi<span class="text-[var(--kit)]">kit</span>
+          </span>
+        </div>
+        <div class="h-1 w-36 overflow-hidden rounded-full bg-[var(--border-subtle)]">
+          <div class="izikit-splash-bar h-full rounded-full bg-[var(--accent)]"></div>
+        </div>
+      </div>
+    </div>
+
+    <script is:inline>
+      (function () {
+        try {
+          var splash = document.getElementById('izikit-splash');
+          var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var alreadyShown = false;
+          try {
+            alreadyShown = sessionStorage.getItem('izikit-splash-shown') === '1';
+          } catch (e) {}
+
+          if (splash && !alreadyShown && !reduced) {
+            splash.hidden = false;
+            try {
+              sessionStorage.setItem('izikit-splash-shown', '1');
+            } catch (e) {}
+
+            var dismissed = false;
+            var dismissSplash = function () {
+              if (dismissed) return;
+              dismissed = true;
+              splash.classList.add('is-hiding');
+              window.setTimeout(function () {
+                splash.hidden = true;
+              }, 240);
+            };
+
+            if (document.readyState === 'complete') {
+              window.setTimeout(dismissSplash, 260);
+            } else {
+              window.addEventListener('DOMContentLoaded', function () {
+                window.setTimeout(dismissSplash, 280);
+              });
+            }
+            window.setTimeout(dismissSplash, 1100);
+          }
+
+          var loader = document.getElementById('izikit-route-loader');
+          if (loader) {
+            document.addEventListener('click', function (ev) {
+              if (ev.defaultPrevented || ev.button !== 0 || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) {
+                return;
+              }
+              var target = ev.target && ev.target.closest ? ev.target.closest('a[href]') : null;
+              if (!target) return;
+              if (target.target && target.target !== '_self') return;
+              if (target.hasAttribute('download')) return;
+              var href = target.getAttribute('href') || '';
+              if (!href || href.charAt(0) === '#' || href.indexOf('mailto:') === 0 || href.indexOf('tel:') === 0) {
+                return;
+              }
+              try {
+                var nextUrl = new URL(target.href, window.location.href);
+                if (nextUrl.origin !== window.location.origin) return;
+                if (nextUrl.pathname === window.location.pathname && nextUrl.search === window.location.search) {
+                  return;
+                }
+                loader.classList.add('is-active');
+              } catch (e) {}
+            });
+
+            window.addEventListener('pageshow', function () {
+              loader.classList.remove('is-active');
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <a href="#main-content" class="skip-link">{dict.site.skipToContent}</a>
     <Header locale={locale} currentRoute={currentRoute} />
     <main id="main-content" class="flex-1">

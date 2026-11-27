@@ -3,6 +3,7 @@ import { getDictionary, getLocalizedPath, type Locale } from '@/i18n';
 import { getLiveTools } from '@/config/tools';
 import { BrandMarkIcon } from '@/components/shared/icons';
 import ThemeToggle from './ThemeToggle';
+import InstallPwaButton from './InstallPwaButton';
 
 interface Props {
   locale: Locale;
@@ -136,6 +137,8 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
         }
       </div>
 
+      <InstallPwaButton client:load locale={locale} label={dict.nav.installApp} variant="header" />
+
       <ThemeToggle
         client:load
         labelToDark={dict.site.themeToDark}
@@ -184,6 +187,14 @@ const normalizedCurrent = currentRoute === '/' ? '/' : `/${currentRoute.replace(
         >
           {dict.nav.about}
         </a>
+        <div class="col-span-2">
+          <InstallPwaButton
+            client:load
+            locale={locale}
+            label={dict.nav.installApp}
+            variant="drawer"
+          />
+        </div>
       </div>
 
       <div class="space-y-1 border-t border-[var(--border-subtle)] pt-2.5">
